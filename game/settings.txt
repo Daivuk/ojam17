@@ -1,0 +1,7 @@
+resolution = 1024x720
+gameName = Ottawa Game Jam 2017
+resizableWindow = true
+fullscreen = false
+fixedStep = false
+updateFPS = 60
+onScreenLog = true
