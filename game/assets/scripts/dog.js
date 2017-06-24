@@ -2,6 +2,11 @@ var DOG_MAX = 4;
 var DOG_MOV_SPEED = 150; 
 var DOG_SIZE;
 var DOG_BARK_COOLDOWN = 250;
+var DOG_INITIAL_FEAR_FACTOR_MIN = 1.0;
+var DOG_INITIAL_FEAR_FACTOR_MAX = 10.0;
+var DOG_INITIAL_FEAR_FACTOR = DOG_INITIAL_FEAR_FACTOR_MIN;
+var DOG_INITIAL_BARK_FEAR_CONTRIB = 2.5;
+var DOG_INITIAL_FEAR_COOLDOWN_SPEED = 2.0;
 
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_RUNNING = 1;
@@ -26,6 +31,7 @@ function dog_init()
                 barking: false,
                 barkingButtonState: false,
                 pushBackVel: new Vector2(0, 0),
+                fearFactor: DOG_INITIAL_FEAR_FACTOR
             }
 
             // MC: TODO Figure out why this is doing a segfault.
@@ -66,6 +72,12 @@ function dog_update(dog, dt) {
             print("done barking");
             dog.barking = false;        
         }, DOG_BARK_COOLDOWN);
+        dog.fearFactor = Math.min(dog.fearFactor+DOG_INITIAL_BARK_FEAR_CONTRIB, DOG_INITIAL_FEAR_FACTOR_MAX);
+    }
+    else
+    {
+        // since we're not barking on this frame, let's cool down the fear factor here.
+        dog.fearFactor = Math.max(dog.fearFactor-(DOG_INITIAL_FEAR_COOLDOWN_SPEED*dt), DOG_INITIAL_FEAR_FACTOR_MIN);
     }
     dog.barkingButtonState = barkingButtonState;
 
@@ -107,6 +119,10 @@ function dog_render()
     for (var i = 0; i < dogs.length; ++i)
     {
         var dog = dogs[i];
+
+        // TEMP TEMP TEMP testing fear range
+        SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
+
         SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
     }
 }
