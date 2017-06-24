@@ -6,6 +6,7 @@ var WOLF_STATE_IDLE;
 var WOLF_STATE_ATTACKING;
 var WOLF_STATE_HUNTING;
 
+var WOLF_WIMP_COOLDOWN_RESET = 2;
 var WOLF_STRESS_MIN = 0;
 var WOLF_STRESS_MAX = 15;
 var WOLF_STRESS_THRESHOLD = 10.0;
@@ -33,6 +34,7 @@ function wolf_create(wolfPos)
         size: WOLF_SIZE,
         stress: WOLF_STRESS_MIN,
         target: sheeps[0],
+        wimperCoolDown: 0,
         renderFn: wolf_render,
     };
 
@@ -114,11 +116,11 @@ function wolf_update(wolf, dt)
                 var factor = new Vector2(TILE_SIZE);
                 wolf.targetPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
 
-                // if (beeeeeCoolDown < 0)
-                // {
-                //     playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
-                //     beeeeeCoolDown = 1;
-                // }
+                if (wolf.wimperCoolDown < 0)
+                {
+                    playSound("SFX_dog_wimper_" + Random.randInt(1, 2) + ".wav", 0.5);
+                    wolf.wimperCoolDown = WOLF_WIMP_COOLDOWN_RESET;
+                }
             }
          }
     }
@@ -133,6 +135,7 @@ function wolf_update(wolf, dt)
     }
     else
     {
+        wolf.wimperCoolDown -= dt;
         var dir = wolf.targetPosition.sub(wolf.position).normalize();
         wolf.position = wolf.position.add(dir.mul(WOLF_SPEED * dt));
         print("Wolf is stressed!"); 
