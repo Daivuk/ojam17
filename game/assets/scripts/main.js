@@ -19,15 +19,16 @@ function update(dt)
     resolution = Renderer.getResolution();
 
     //for (var i = 0; i < 30; ++i) // Turbo mode
-    {
+
         // update dogs first so we can herb them the same frame
         dogs_update(dt);
         sheeps_update(dt);
+        wolfs_update(dt);
 
         // Overlapping entities push each others again
         pushers_update(dt);
 
-    wolfs_update(dt)
+  
         camera_update(dt);
 }
 
