@@ -47,8 +47,8 @@ function camera_update(dt)
     targetCameraZoom = Math.min(MAX_ZOOM, targetCameraZoom);
 
     // Animate the camera toward target
-    cameraPos = targetCameraPos.sub(cameraPos).mul(dt * CAMERA_TRACK_SPEED).add(cameraPos);
-    cameraZoom = (targetCameraZoom - cameraZoom) * dt * CAMERA_TRACK_SPEED + cameraZoom;
+    cameraPos = targetCameraPos.sub(cameraPos).mul(.3 + dt * CAMERA_TRACK_SPEED).add(cameraPos);
+    cameraZoom = (targetCameraZoom - cameraZoom) * (.3+ dt * CAMERA_TRACK_SPEED) + cameraZoom;
 
     // Build our matrices
     cameraMatrix = new Matrix();
