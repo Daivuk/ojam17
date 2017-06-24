@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+var WOLF_AMOUNT = 0; 
+=======
 var WOLF_AMOUNT = 1; 
+>>>>>>> 10717651dfaeb9254db020b609c14b99737913ee
 var WOLF_SIZE;
 var WOLF_SPEED = 75; 
 
