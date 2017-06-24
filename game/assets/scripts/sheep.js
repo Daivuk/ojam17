@@ -303,6 +303,7 @@ function sheep_update(sheep, dt)
             if (sheep_moveToward(sheep, sheep.targetPosition, SHEEP_WANDER_SPEED, dt))
             {
                 sheep.state = SHEEP_STATE_EATING;
+                playSound("SFX_sheep_chew_" + Random.randInt(2, 16) + ".wav", .15);
             }
             break;
         case SHEEP_STATE_EATING:
