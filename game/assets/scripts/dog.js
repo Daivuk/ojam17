@@ -31,6 +31,7 @@ function dog_init()
 
     for(var i = 0; i < DOG_MAX; ++i)
     {
+        if (!activeDogs[i]) continue;
         // MC: TODO Looks like this is too soon to Call. Gamepad connects later.
         //if (GamePad.isConnected(index))  
         {

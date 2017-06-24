@@ -66,7 +66,7 @@ function update(dt)
                 menuBarkTimeouts[i] -= dt;
                 if (GamePad.isDown(i, Button.START) && startIn == 0)
                 {
-                    startIn = 4;
+                    startIn = 1;
                 }
             }
             break;
