@@ -17,18 +17,18 @@ function update(dt)
     // Cache latest resolution each frame
     resolution = Renderer.getResolution();
 
-    // Update entities
+    //for (var i = 0; i < 30; ++i) // Turbo mode
+    {
+        // update dogs first so we can herb them the same frame
+        dogs_update(dt);
+        sheeps_update(dt);
 
-    // update dogs first so we can herb them the same frame
-    dogs_update(dt);
+        // Overlapping entities push each others again
+        pushers_update(dt);
 
-    sheeps_update(dt);
-
-    // Overlapping entities push each others again
-    pushers_update(dt);
-
-    // Update camera matrices
-    camera_update(dt);
+        // Update camera matrices
+        camera_update(dt);
+    }
 }
 
 function render()

@@ -83,11 +83,13 @@ function sheep_findGrass(sheep)
         var searchTiles = [];
         for (var i = -depth; i <= depth; ++i)
         {
-            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y));
+            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y - depth));
+            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y + depth));
         }
         for (var i = -depth + 1; i <= depth - 1; ++i)
         {
-            searchTiles.push(new Vector2(mapPos.x, mapPos.y + i));
+            searchTiles.push(new Vector2(mapPos.x - depth, mapPos.y + i));
+            searchTiles.push(new Vector2(mapPos.x + depth, mapPos.y + i));
         }
         while (searchTiles.length)
         {
