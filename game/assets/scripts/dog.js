@@ -31,7 +31,8 @@ function dog_init()
                 barking: false,
                 barkingButtonState: false,
                 pushBackVel: new Vector2(0, 0),
-                fearFactor: DOG_FEAR_FACTOR_MIN
+                fearFactor: DOG_FEAR_FACTOR_MIN,
+                renderFn: dog_render,
             }
 
             // MC: TODO Figure out why this is doing a segfault.
@@ -40,6 +41,7 @@ function dog_init()
             dogs.push(dog);
             pushers.push(dog);
             focussables.push(dog);
+            renderables.push(dog);
         }
     }
 }
@@ -115,15 +117,10 @@ function dog_update(dog, dt) {
     dog.position = tiledMap.collision(dog.position, newPosition, dog.size);
 }
 
-function dog_render()
+function dog_render(dog)
 {
-    for (var i = 0; i < dogs.length; ++i)
-    {
-        var dog = dogs[i];
+    // TEMP TEMP TEMP testing fear range
+    SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
 
-        // TEMP TEMP TEMP testing fear range
-        SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
-
-        SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
-    }
+    SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
 }

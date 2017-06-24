@@ -38,23 +38,13 @@ function render()
     tiledMap.renderLayer(GROUND_LAYER);
     SpriteBatch.setBlend(BlendMode.ALPHA);
 
-    // TEMP TEMP TEMP, draw sheeps
-    for (var i = 0; i < sheeps.length; ++i)
+    // Draw entities
+    renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
+    for (var i = 0; i < renderables.length; ++i)
     {
-        var sheep = sheeps[i];
-        if (sheep.dead)
-        {
-            SpriteBatch.drawSprite(null, sheep.position, new Color(1, 1, 1, sheep.deadAlpha.get()), 0, 20);
-        }
-        else
-        {
-            SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
-            SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
-        }
+        var entity = renderables[i];
+        entity.renderFn(entity);
     }
-
-    // dog draw
-    dog_render();
 
     SpriteBatch.end();
 }
