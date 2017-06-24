@@ -99,7 +99,7 @@ function dog_update(dog, dt) {
             break;
     }
 
-    dog.position = newPosition;
+    dog.position = tiledMap.collision(dog.position, newPosition, dog.size);
 }
 
 function dog_render()

@@ -110,11 +110,11 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
         if (distance < 0) 
         {
             distance = 0;
-            sheep.position = new Vector2(targetPosition);
+            sheep.position = tiledMap.collision(sheep.position, targetPosition, sheep.size);
             return true;
         }
         var dir = targetPosition.sub(sheep.position).normalize();
-        sheep.position = sheep.position.add(dir.mul(speed * dt));
+        sheep.position = tiledMap.collision(sheep.position, sheep.position.add(dir.mul(speed * dt)), sheep.size);
         return distance <= TILE_SIZE * .25;
     }
     return true;
