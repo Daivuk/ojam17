@@ -9,6 +9,7 @@ var focussables = [];
 
 var MAX_ZOOM = 3;
 var CAMERA_TRACK_SPEED = 2;
+var BORDER_SIZE = 1;
 
 function camera_init()
 {
@@ -33,10 +34,10 @@ function camera_update(dt)
             min = Vector2.min(entity.position, min);
             max = Vector2.max(entity.position, max);
         }
-        min.x -= TILE_SIZE * 2;
-        min.y -= TILE_SIZE * 2;
-        max.x += TILE_SIZE * 2;
-        max.y += TILE_SIZE * 2;
+        min.x -= TILE_SIZE * BORDER_SIZE;
+        min.y -= TILE_SIZE * BORDER_SIZE;
+        max.x += TILE_SIZE * BORDER_SIZE;
+        max.y += TILE_SIZE * BORDER_SIZE;
         targetCameraPos = min.add(max).div(2);
     }
 
