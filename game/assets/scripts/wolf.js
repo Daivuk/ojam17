@@ -14,6 +14,7 @@ var WOLF_STRESS_RANGE_CONTRIB_PER_SECOND = 2.0;
 var WOLF_STRESS_COOLDOWN_PER_SECOND = WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * 0.15
 
 var wolfs = [];
+var wimperCoolDown = 0;
 
 function wolf_init() 
 {
@@ -102,6 +103,8 @@ function wolf_moveToward(wolf, speed, dt)
 
 function wolf_update(wolf, dt)
 {
+    wimperCoolDown -= dt;
+
     for (var i = 0; i < dogs.length; ++i) {
         var dog = dogs[i];
 
@@ -114,11 +117,11 @@ function wolf_update(wolf, dt)
                 var factor = new Vector2(TILE_SIZE);
                 wolf.targetPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
 
-                // if (beeeeeCoolDown < 0)
-                // {
-                //     playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
-                //     beeeeeCoolDown = 1;
-                // }
+                if (wimperCoolDown < 0)
+                {
+                    playSound("SFX_dog_wimper_" + Random.randInt(1, 2) + ".wav", 0.5);
+                    wimperCoolDown = 5;
+                }
             }
          }
     }
