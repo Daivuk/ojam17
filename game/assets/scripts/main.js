@@ -10,5 +10,5 @@ function render()
     resolution = Renderer.getResolution();
 
     // Clear black
-    Renderer.clear(Color.BLACK);
+    Renderer.clear(Color.BLUE);
 }
