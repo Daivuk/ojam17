@@ -37,7 +37,7 @@ var MENU_SHEEP_COUNT = 8
 for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
 {
     menuSheeps[i] = {
-        spriteAnim: playSpriteAnim("sheep.spriteanim", "run_e", i),
+        spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
         xPos: -i * 100
     };
 }
@@ -179,6 +179,8 @@ function render()
             // Draw ground and grass first
             SpriteBatch.setBlend(BlendMode.OPAQUE);
             tiledMap.renderLayer(GROUND_LAYER);
+            tiledMap.renderLayer(1);
+            tiledMap.renderLayer(2);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
             // Draw entities

@@ -6,6 +6,16 @@
    eJztWMuOxDAI66T9/2/ey1RCXtuYtMc5IHW3DRhweMznOI7PT37ygpxfub6yvn+v8nzB+/u5nj3Ju4voWOXcEvYRx2nwM5uIdx3/MeEZ57Pyv55jPtVnhZ/FDn1Zxr7KBfON4e503OLirzC5uCkMC94xPMqesuHwu1zjO8Uvd1bdixrvjrdd/JnOzhfGE7x7Sa4Sbk75w/QoLqSSnHExcvzpOJAKxtLpnthaA/zpPVV86+qx4mh3T1z9XMQ22jrJd6z/uP93HHc1Ko2/qgmsLiq+sniw3pfyyPFnHfwOO16r93jHU+47nV38k/6l+IVnu17i9HQ5cPxPuDnNueJN6i/6nfTftF4ms0ySP3eu3rdkfks4uZsrzMGkr9wcTfC7eo3x2KkjzJ9kruv4n2LBnjqpMYxLbl5C+zv41Sw8lXTGUtgd/l1MCkfHh2nOEv53tYPlfBfLNF5P9hely8U03ecSW1VXsr88taviq/KU7q3d/LOL3815U5zq+6R/dXqSvpP4MeVpzZvj/9MZhdl1nJ7wMJl/WL7czOzywfYqlC4/zF5aP+udV7X8/qbLjds5p3U3nd+mMWJ56ub51P/KoZQ/0zgm36WcdzFK64+KSbp7ububcmhSP7HPTTiJeN74vYfxMan/ne2K72mfTmoy5sD130SvqqnuHk44pXaKrn89ieOUYwqz4mKNzxv71wU63/aV9Z2d/T3F5vb+nR3F8WyXP6iXzZwT/qgYOL1P+MNmQffNBd9X6fLkampSf7o4JveE/TbCcshyrO57Vz8xVog5rfsVv5qhpnvCZP990p8UT5DXjOcn0VHFxf8nP5nKHyVDGpU=
   </data>
  </layer>
+ <layer name="dirt" width="48" height="48">
+  <data encoding="base64" compression="zlib">
+   eJztmjFvAjEMhbNAb+mVpbCx9boxwlb+/7/qPSmf7jU6KEi08Ko+yeICdnCc2E586Uopq5GG+unPnbUHa3eVeuPtZ9qD8fXW/36kXaVD5dlb22X1/brhb/VseXa1DR0qr/OtT/C6TGdy3vemTHit/Btre5/Oy++MEXop59H+xyVAptX3FmAMss0l+j8inss0vx8jPd1XnauwGOlYJt+SDyTNwVuZfDhRf60dj4d6TtZfc/B+V42ug8cf8lGS/QXGgA+n6S/Ij6W78uOtc8xPw2Noqu3x3yTfBeTftNgDfP+QuH6kf2rsFDx+Jq4fQXOQuv4FYlDa/hngA4n5l/yVmn//Qvwnfqbpz9pJPb+z76QulWZ/zr+MIVF/zu2J+wfyLmP4t//vwmugabUfQP5KtL/A3i0xfwleA0rUX6AOl6o/cShVf+yf6L9C8vnR62+J+rN2Es9eAueX5LWfrj/vHrclr37CGYYadNo8eP02MQd7/eSRYpDi+tJobl177Kd+uK10TnYxw7O071o/gv+7fp2XmprfDfA+nIf3j4PJ+Dv5VvZYvt5bae/Z9I2M22go8/byvv1OSXvvxuVXxvMJ968kkg==
+  </data>
+ </layer>
+ <layer name="doods" width="48" height="48">
+  <data encoding="base64" compression="zlib">
+   eJzt2rENgDAMBVGvEVKlhP0HhAFcpLB8gO5Jvz+5doTeYDw7PrKZ9K+aM7TIWu3vYz/Lfpb9LPtZ9rPsZ9nPsp9lP8t+lv0s+1n2s+xn2c+yn2U/y36W/aw/9p/B/wXs7qo5gwrcYcAT5A==
+  </data>
+ </layer>
  <layer name="collisions" width="48" height="48" visible="0" opacity="0.67">
   <data encoding="base64" compression="zlib">
    eJztzsEJACAQwLBby/0XcwZBKEoC/XfNzJIu9Ar/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf+tX/+l0zbLU3g9

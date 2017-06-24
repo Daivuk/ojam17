@@ -21,4 +21,20 @@
     <frame id="12" flipH="true"/>
     <frame id="13" flipH="true"/>
   </anim>
+  <anim name="scared_e" fps="8" loop="true">
+    <frame id="16" flipH="false"/>
+    <frame id="17" flipH="false"/>
+  </anim>
+  <anim name="scared_w" fps="8" loop="true">
+    <frame id="16" flipH="true"/>
+    <frame id="17" flipH="true"/>
+  </anim>
+  <anim name="eat_e" fps="8" loop="true">
+    <frame id="24" flipH="false"/>
+    <frame id="25" flipH="false"/>
+  </anim>
+  <anim name="eat_w" fps="8" loop="true">
+    <frame id="24" flipH="true"/>
+    <frame id="25" flipH="true"/>
+  </anim>
 </sheet>

@@ -328,7 +328,18 @@ function sheep_update(sheep, dt)
 
     if (sheep.running)
     {
-        sheep.spriteAnim.play("run_" + sheep.dir);
+        if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+        {
+            sheep.spriteAnim.play("scared_" + sheep.dir);
+        }
+        else
+        {
+            sheep.spriteAnim.play("run_" + sheep.dir);
+        }
+    }
+    else if (sheep.state == SHEEP_STATE_EATING)
+    {
+        sheep.spriteAnim.play("eat_" + sheep.dir);
     }
     else
     {
