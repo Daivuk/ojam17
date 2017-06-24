@@ -6,4 +6,9 @@
    eJztzsEJADAIBDCF7j+zMxRa5CCP/NNV1fDACeHv7+/v7+/v7+/v77/98s/g7+/v7+/v7+/v7++//fLP4O//4w+3BpaiHa0=
   </data>
  </layer>
+ <layer name="collisions" width="48" height="48" visible="0" opacity="0.67">
+  <data encoding="base64" compression="zlib">
+   eJztzsEJACAQwLBby/0XcwZBKEoC/XfNzJIu9Ar/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf8t/y3/Lf+tX/+l0zbLU3g9
+  </data>
+ </layer>
 </map>
