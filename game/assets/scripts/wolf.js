@@ -10,9 +10,9 @@ var wolfs = [];
 
 function wolf_init() 
 {
-WOLF_SIZE = TILE_SIZE * 0.25; 
+    WOLF_SIZE = TILE_SIZE * 0.25; 
 
-for (var i = 0; i < WOLF_AMOUNT; i++)
+    for (var i = 0; i < WOLF_AMOUNT; i++)
     {
         wolf_spawn();
     }

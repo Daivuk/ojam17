@@ -6,15 +6,13 @@ var TILE_GRASS1 = 2;
 var TILE_GRASS2 = 3;
 var TILE_GRASS3 = 4;
 
-//var tilesetTexture = getTexture("tileset.png", false); // This ensures the texture will be cached without mipmaps
-var tiledMap = getTiledMap("map.tmx");
+var tiledMap;
 
-var TILE_SIZE = tiledMap.getTileSize();
-var MAP_SIZE = tiledMap.getSize().x;
-var INV_TILE_SIZE = 1 / TILE_SIZE;
-var HALF_TILE_SIZE = TILE_SIZE / 2;
-
-var MAP_CENTER = new Vector2(MAP_SIZE * TILE_SIZE / 2, MAP_SIZE * TILE_SIZE / 2);
+var TILE_SIZE;
+var MAP_SIZE;
+var INV_TILE_SIZE;
+var HALF_TILE_SIZE;
+var MAP_CENTER;
 
 var GROW_SPEED = 10;
 var GRASS_MAX = 3;
@@ -23,6 +21,17 @@ var grassLevel = [];
 
 function map_init()
 {
+    // Load map
+    tiledMap = getTiledMap("map.tmx");
+
+    // Set constants
+    TILE_SIZE = tiledMap.getTileSize();
+    MAP_SIZE = tiledMap.getSize().x;
+    INV_TILE_SIZE = 1 / TILE_SIZE;
+    HALF_TILE_SIZE = TILE_SIZE / 2;
+    MAP_CENTER = new Vector2(MAP_SIZE * TILE_SIZE / 2, MAP_SIZE * TILE_SIZE / 2);
+
+    // Set grass amounts
     for (var y = 0; y < MAP_SIZE; ++y)
     {
         grassLevel[y] = [];
@@ -33,9 +42,9 @@ function map_init()
                 grassLevel[y][x] = 0;
             else if (val == TILE_GRASS1)
                 grassLevel[y][x] = 1;
-            else if (val == TILE_GRASS3)
-                grassLevel[y][x] = 2;
             else if (val == TILE_GRASS2)
+                grassLevel[y][x] = 2;
+            else if (val == TILE_GRASS3)
                 grassLevel[y][x] = 3;
             else
                 grassLevel[y][x] = 0;

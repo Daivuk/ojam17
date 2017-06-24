@@ -1,6 +1,11 @@
-var PUSH_SPEED = TILE_SIZE;
+var PUSH_SPEED;
 
 var pushers = [];
+
+function pusher_init()
+{
+    PUSH_SPEED = TILE_SIZE;
+}
 
 function pushers_update(dt)
 {

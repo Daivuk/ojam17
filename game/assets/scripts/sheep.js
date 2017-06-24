@@ -1,6 +1,6 @@
 var START_SHEEP = 20;
 
-var SHEEP_SIZE = TILE_SIZE * 0.25;
+var SHEEP_SIZE;
 
 var SHEEP_STATE_IDLE = 0;
 var SHEEP_STATE_WAIT = 1;
@@ -8,7 +8,7 @@ var SHEEP_STATE_EATING = 2;
 var SHEEP_STATE_WANDERING = 3;
 var SHEEP_STATE_GO_EAT = 4;
 
-var SHEEP_WANDER_SPEED = TILE_SIZE * 1;
+var SHEEP_WANDER_SPEED;
 var SHEEP_WAIT_TIMES = [1, 3];
 var SHEEP_HUNGER_SPEED = 1 / 30;
 var SHEEP_HUNGER_THRESHOLD = .5;
@@ -26,6 +26,9 @@ var sheeps = [];
 
 function sheep_init()
 {
+    SHEEP_SIZE = TILE_SIZE * 0.25;
+    SHEEP_WANDER_SPEED = TILE_SIZE * 1;
+
     for (var i = 0; i < START_SHEEP; ++i)
     {
         sheep_spawn();
