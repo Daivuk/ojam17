@@ -6,9 +6,14 @@ var SHEEP_STATE_IDLE = 0;
 var SHEEP_STATE_WAIT = 1;
 var SHEEP_STATE_EATING = 2;
 var SHEEP_STATE_WANDERING = 3;
+var SHEEP_STATE_GO_EAT = 4;
 
 var SHEEP_WANDER_SPEED = TILE_SIZE * 1;
 var SHEEP_WAIT_TIMES = [1, 3];
+var SHEEP_HUNGER_SPEED = 1 / 30;
+var SHEEP_HUNGER_THRESHOLD = .5;
+var SHEEP_EAT_SPEED = .25;
+var SHEEP_EAT_VALUE = 3;
 
 var sheeps = [];
 
@@ -25,7 +30,8 @@ function sheep_create(pos)
     var sheep = {
         position: new Vector2(pos),
         state: SHEEP_STATE_IDLE,
-        size: SHEEP_SIZE
+        size: SHEEP_SIZE,
+        hunger: 1
     };
 
     return sheep;
@@ -50,8 +56,36 @@ function sheeps_update(dt)
     }
 }
 
+// This is slow... Matt HELP
 function sheep_findGrass(sheep)
 {
+    var mapPos = worldToMap(sheep.position);
+    var SEARCH_RADIUS = 3;
+    for (var depth = 0; depth <= SEARCH_RADIUS; ++depth)
+    {
+        var searchTiles = [];
+        for (var i = -depth; i <= depth; ++i)
+        {
+            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y));
+        }
+        for (var i = -depth + 1; i <= depth - 1; ++i)
+        {
+            searchTiles.push(new Vector2(mapPos.x, mapPos.y + i));
+        }
+        while (searchTiles.length)
+        {
+            var i = Random.randInt(searchTiles.length - 1);
+            var tilePos = searchTiles[i];
+            var grassAmount = map_getGrassAt(tilePos);
+            if (grassAmount > 0)
+            {
+                sheep.targetPosition = mapToWorld(tilePos);
+                sheep.state = SHEEP_STATE_GO_EAT;
+                return;
+            }
+            searchTiles.splice(i, 1);
+        }
+    }
 }
 
 function sheep_wander(sheep)
@@ -81,25 +115,31 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
         }
         var dir = targetPosition.sub(sheep.position).normalize();
         sheep.position = sheep.position.add(dir.mul(speed * dt));
-        return false;
+        return distance <= TILE_SIZE * .25;
     }
     return true;
 }
 
 function sheep_update(sheep, dt)
 {
+    sheep.hunger -= dt * SHEEP_HUNGER_SPEED;
     switch (sheep.state)
     {
         case SHEEP_STATE_IDLE:
-            if (Random.randBool())
+            if (sheep.hunger < SHEEP_HUNGER_THRESHOLD)
+            {
+                // Must find grass, no more time to wander
+                sheep_findGrass(sheep);
+            }
+            else if (Random.randBool(.25)) // 25% chances to go eat grass
             {
                 sheep_findGrass(sheep);
             }
-            else if (Random.randBool())
+            else if (Random.randBool()) // 50% chances to wander (50% of 75%)
             {
                 sheep_wander(sheep);
             }
-            else
+            else // 50% chances to just wait (50% of 75%)
             {
                 sheep_wait(sheep);
             }
@@ -115,6 +155,30 @@ function sheep_update(sheep, dt)
             if (sheep.waitTime <= 0)
             {
                 sheep.state = SHEEP_STATE_IDLE;
+            }
+            break;
+        case SHEEP_STATE_GO_EAT:
+            if (sheep_moveToward(sheep, sheep.targetPosition, SHEEP_WANDER_SPEED, dt))
+            {
+                sheep.state = SHEEP_STATE_EATING;
+            }
+            break;
+        case SHEEP_STATE_EATING:
+            var sheepMapPos = worldToMap(sheep.position);
+            grassValue = map_getGrassAt(sheepMapPos);
+            if (grassValue <= 0)
+            {
+                // No more grass here, go back idle
+                sheep.state = SHEEP_STATE_IDLE;
+            }
+            else
+            {
+                var eatValue = Math.min(grassValue, SHEEP_EAT_SPEED * dt);
+                eatValue = Math.min(eatValue, (1 - sheep.hunger) * SHEEP_EAT_VALUE);
+                grassValue -= eatValue;
+                if (grassValue < 0) grassValue = 0;
+                sheep.hunger += eatValue / SHEEP_EAT_VALUE;
+                map_setGrassAt(sheepMapPos, grassValue);
             }
             break;
     }

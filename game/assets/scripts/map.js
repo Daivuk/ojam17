@@ -42,3 +42,19 @@ function mapToWorld(map)
 {
     return new Vector2(map.x * TILE_SIZE + HALF_TILE_SIZE, map.y * TILE_SIZE + HALF_TILE_SIZE);
 }
+
+function map_getGrassAt(mapPos)
+{
+    if (mapPos.x < 0 || mapPos.y < 0 || mapPos.x >= MAP_SIZE || mapPos.y >= MAP_SIZE) return 0;
+    return grassLevel[mapPos.y][mapPos.x];
+}
+
+function map_setGrassAt(mapPos, value)
+{
+    if (mapPos.x < 0 || mapPos.y < 0 || mapPos.x >= MAP_SIZE || mapPos.y >= MAP_SIZE) return;
+    grassLevel[mapPos.y][mapPos.x] = value;
+    if (value <= 0) tiledMap.setTileAt(GROUND_LAYER, mapPos.x, mapPos.y, TILE_GRASS0);
+    else if (value <= 1) tiledMap.setTileAt(GROUND_LAYER, mapPos.x, mapPos.y, TILE_GRASS1);
+    else if (value <= 2) tiledMap.setTileAt(GROUND_LAYER, mapPos.x, mapPos.y, TILE_GRASS2);
+    else if (value <= 3) tiledMap.setTileAt(GROUND_LAYER, mapPos.x, mapPos.y, TILE_GRASS3);
+}
