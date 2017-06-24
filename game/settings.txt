@@ -1,5 +1,5 @@
 resolution = 1024x720
-gameName = Ottawa Game Jam 2017
+gameName = Sheep Dog Heroes
 resizableWindow = true
 fullscreen = false
 fixedStep = false
