@@ -59,7 +59,7 @@ function dog_update(dog, dt) {
 
     if (!dog.barking && barkingButtonState && !dog.barkingButtonState)
     {
-        //playSound("dog_bark_" + i + "_" + Random.randInt(3) + ".wav", .5);
+        playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
         dog.barking = true;
         print("Dog " + dog.index + ": Woof!");
         setTimeout(function() {
