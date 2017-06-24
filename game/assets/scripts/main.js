@@ -1,36 +1,26 @@
 var resolution;
 
-var TILE_SIZE = 36;
-var MAP_SIZE = 64;
-
-var sheeps = [];
 var dogs = [];
-var tiledMap = TiledMap.create(MAP_SIZE, MAP_SIZE, TILE_SIZE);
 
-var cameraPos = new Vector2(MAP_SIZE * TILE_SIZE / 2, MAP_SIZE * TILE_SIZE / 2);
-var cameraZoom = 2;
-var cameraMatrix = new Matrix();
-var invCameraMatrix = new Matrix();
-var targetCameraPos = new Vector2(cameraPos);
+var renderables = [];
 
 map_init();
-
-function updateCamera(dt)
-{
-    cameraMatrix = new Matrix();
-    cameraMatrix = cameraMatrix.mul(Matrix.createTranslation(new Vector3(resolution.x / 2, resolution.y / 2)));
-    cameraMatrix = cameraMatrix.mul(Matrix.createScale(cameraZoom));
-    cameraMatrix = cameraMatrix.mul(Matrix.createTranslation(new Vector3(-cameraPos.x, -cameraPos.y, 0)));
-    invCameraMatrix = cameraMatrix.invert();
-}
+camera_init();
+sheep_init();
 
 function update(dt)
 {
     // Cache latest resolution each frame
     resolution = Renderer.getResolution();
 
+    for (var i = 0; i < sheeps.length; ++i)
+    {
+        var sheep = sheeps[i];
+        sheep_update(sheep, dt);
+    }
+
     // Update camera matrices
-    updateCamera(dt);
+    camera_update(dt);
 }
 
 function render()
@@ -42,6 +32,13 @@ function render()
 
     // Draw ground and grass first
     tiledMap.renderLayer(GROUND_LAYER);
+
+    // TEMP TEMP TEMP, draw sheeps
+    for (var i = 0; i < sheeps.length; ++i)
+    {
+        var sheep = sheeps[i];
+        SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
+    }
 
     SpriteBatch.end();
 }
