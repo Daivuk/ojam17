@@ -28,8 +28,15 @@ function map_init()
         grassLevel[y] = [];
         for (var x = 0; x < MAP_SIZE; ++x)
         {
-            if (tiledMap.getTileAt(GROUND_LAYER, x, y) == TILE_GRASS3)
-                grassLevel[y][x] = GRASS_MAX;
+            var val = tiledMap.getTileAt(GROUND_LAYER, x, y);
+            if (val == TILE_GRASS0)
+                grassLevel[y][x] = 0;
+            else if (val == TILE_GRASS1)
+                grassLevel[y][x] = 1;
+            else if (val == TILE_GRASS3)
+                grassLevel[y][x] = 2;
+            else if (val == TILE_GRASS2)
+                grassLevel[y][x] = 3;
             else
                 grassLevel[y][x] = 0;
         }

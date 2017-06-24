@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="ground" width="48" height="48">
   <data encoding="base64" compression="zlib">
-   eJztzsEJADAIBDCF7j+zMxRa5CCP/NNV1fDACeHv7+/v7+/v7+/v77/98s/g7+/v7+/v7+/v7++//fLP4O//4w+3BpaiHa0=
+   eJztWMuOxDAI66T9/2/ey1RCXtuYtMc5IHW3DRhweMznOI7PT37ygpxfub6yvn+v8nzB+/u5nj3Ju4voWOXcEvYRx2nwM5uIdx3/MeEZ57Pyv55jPtVnhZ/FDn1Zxr7KBfON4e503OLirzC5uCkMC94xPMqesuHwu1zjO8Uvd1bdixrvjrdd/JnOzhfGE7x7Sa4Sbk75w/QoLqSSnHExcvzpOJAKxtLpnthaA/zpPVV86+qx4mh3T1z9XMQ22jrJd6z/uP93HHc1Ko2/qgmsLiq+sniw3pfyyPFnHfwOO16r93jHU+47nV38k/6l+IVnu17i9HQ5cPxPuDnNueJN6i/6nfTftF4ms0ySP3eu3rdkfks4uZsrzMGkr9wcTfC7eo3x2KkjzJ9kruv4n2LBnjqpMYxLbl5C+zv41Sw8lXTGUtgd/l1MCkfHh2nOEv53tYPlfBfLNF5P9hely8U03ecSW1VXsr88taviq/KU7q3d/LOL3815U5zq+6R/dXqSvpP4MeVpzZvj/9MZhdl1nJ7wMJl/WL7czOzywfYqlC4/zF5aP+udV7X8/qbLjds5p3U3nd+mMWJ56ub51P/KoZQ/0zgm36WcdzFK64+KSbp7ububcmhSP7HPTTiJeN74vYfxMan/ne2K72mfTmoy5sD130SvqqnuHk44pXaKrn89ieOUYwqz4mKNzxv71wU63/aV9Z2d/T3F5vb+nR3F8WyXP6iXzZwT/qgYOL1P+MNmQffNBd9X6fLkampSf7o4JveE/TbCcshyrO57Vz8xVog5rfsVv5qhpnvCZP990p8UT5DXjOcn0VHFxf8nP5nKHyVDGpU=
   </data>
  </layer>
  <layer name="collisions" width="48" height="48" visible="0" opacity="0.67">
