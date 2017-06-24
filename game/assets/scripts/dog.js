@@ -67,3 +67,12 @@ function dog_update(dt)
         dog.position = newPosition;
     }
 }
+
+function dog_render()
+{
+    for (var i = 0; i < dogs.length; ++i)
+    {
+        var dog = dogs[i];
+        SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
+    }
+}

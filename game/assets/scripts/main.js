@@ -44,6 +44,7 @@ function render()
     }
 
     // TEMP TEMP TEMP, draw dogs
+    //dog_render();
     for (var i = 0; i < dogs.length; ++i)
     {
         var dog = dogs[i];
