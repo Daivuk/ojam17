@@ -83,6 +83,7 @@ function sheep_spawn()
 
 function sheeps_update(dt)
 {
+    beeeeeCoolDown -= dt;
     for (var i = 0; i < sheeps.length; ++i)
     {
         var sheep = sheeps[i];
@@ -125,12 +126,20 @@ function sheep_findGrass(sheep)
     }
 }
 
-function sheep_wander(sheep)
-{
+var beeeeeCoolDown = 0;
+
+function sheep_wander(sheep, dt)
+{   
     var distance = Random.randNumber(TILE_SIZE / 2, TILE_SIZE);
     sheep.targetPosition = Random.randCircleEdge(sheep.position, distance);
     sheep.state = SHEEP_STATE_WANDERING;
     sheep.moveTimeout = SHEEP_MOVE_TIMEOUT;
+
+    if (beeeeeCoolDown < 0)
+    {
+        playSound("SFX_sheep_bleat_" + Random.randInt(1, 13) + ".wav", .15);
+        beeeeeCoolDown = 1;
+    }
 }
 
 function sheep_wait(sheep)
@@ -220,6 +229,12 @@ function sheep_update(sheep, dt)
             if (sheep.stress > SHEEP_STRESS_THRESHOLD)
             {
                 sheep.targetPosition = sheep.position.add(sheep.position.sub(dog.position));
+
+                if (beeeeeCoolDown < 0)
+                {
+                    playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
+                    beeeeeCoolDown = 1;
+                }
             }
         }
     }

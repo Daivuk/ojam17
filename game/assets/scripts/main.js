@@ -54,4 +54,8 @@ function render()
     }
 
     SpriteBatch.end();
+
+    SpriteBatch.begin();
+    SpriteBatch.drawText(getFont("main.fntempty.fnt"), "Hello World", new Vector2(0, 0), Vector2.TOP_LEFT);
+    SpriteBatch.end();
 }

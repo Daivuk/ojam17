@@ -2,7 +2,7 @@ var DOG_MAX = 4;
 var DOG_MOV_SPEED = 150; 
 var DOG_SIZE;
 var DOG_BARK_COOLDOWN = 100;
-var DOG_FEAR_FACTOR_MIN = 1.0;
+var DOG_FEAR_FACTOR_MIN = 0.0;
 var DOG_FEAR_FACTOR_MAX = 10.0;
 var DOG_BARK_FEAR_CONTRIB_INSTANT = 10;
 var DOG_RUN_FEAR_CONTRIB_PER_SECOND = 2.5;
@@ -15,12 +15,13 @@ var dogs = [];
 
 var dogTexture = getTexture("dog.png", false);
 var dogOverlayTexture = getTexture("dogOverlay.png", false);
+var dogBarkTexture = getTexture("dogBark.png", false);
 var barkTexture = getTexture("bark.png");
 
 var DOG_COLORS = [
     new Color(1, 0, 0, 1),
-    new Color(.2, .2, 1, 1),
-    new Color(0, .8, 1, 1),
+    new Color(.25, .25, 1, 1),
+    new Color(0, .8, 0, 1),
     new Color(1, 1, 0, 1)
 ];
 
@@ -139,7 +140,14 @@ function dog_render(dog)
     // TEMP TEMP TEMP testing fear range
     //SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
 
-    SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
+    if (dog.barkSoundCoolDown > .15)
+    {
+        SpriteBatch.drawSpriteWithUVs(dogBarkTexture, dog.position, dog.spriteAnim.getUVs(), Color.WHITE, 0, 1, dog.spriteAnim.getOrigin());
+    }
+    else
+    {
+        SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
+    }
 
     SpriteBatch.drawSpriteWithUVs(dogOverlayTexture, dog.position, dog.spriteAnim.getUVs(), DOG_COLORS[dog.index], 0, 1, dog.spriteAnim.getOrigin());
 
