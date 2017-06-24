@@ -1,10 +1,10 @@
 var DOG_MAX = 4;
 var DOG_MOV_SPEED = 150; 
 var DOG_SIZE;
-var DOG_BARK_COOLDOWN = 250;
+var DOG_BARK_COOLDOWN = 100;
 var DOG_FEAR_FACTOR_MIN = 1.0;
 var DOG_FEAR_FACTOR_MAX = 10.0;
-var DOG_BARK_FEAR_CONTRIB_INSTANT = 2.5;
+var DOG_BARK_FEAR_CONTRIB_INSTANT = 10;
 var DOG_RUN_FEAR_CONTRIB_PER_SECOND = 2.5;
 var DOG_FEAR_COOLDOWN_PER_SECOND = 2.0;
 
@@ -44,7 +44,8 @@ function dog_init()
                 pushBackVel: new Vector2(0, 0),
                 fearFactor: DOG_FEAR_FACTOR_MIN,
                 renderFn: dog_render,
-                barkAnim: new NumberAnim(0)
+                barkAnim: new NumberAnim(0),
+                barkSoundCoolDown: 0
             }
 
             dog.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_e");
@@ -76,9 +77,15 @@ function dog_update(dog, dt) {
         GamePad.isDown(dog.index, Button.X) ||
         GamePad.isDown(dog.index, Button.Y);
 
+    dog.barkSoundCoolDown -= dt;
+
     if (!dog.barking && barkingButtonState && !dog.barkingButtonState)
     {
-        playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+        if (dog.barkSoundCoolDown < 0)
+        {
+            playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+            dog.barkSoundCoolDown = .4;
+        }
         dog.barking = true;
         setTimeout(function() {
             dog.barking = false;

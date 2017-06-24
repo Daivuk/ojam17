@@ -7,16 +7,12 @@
     <frame id="0" flipH="true"/>
     <frame id="1" flipH="true"/>
   </anim>
-  <anim name="run_e" fps="15" loop="true">
-    <frame id="0" flipH="false"/>
-    <frame id="0" flipH="false" offsetY="-1"/>
-    <frame id="1" flipH="false" offsetY="-2"/>
-    <frame id="1" flipH="false" offsetY="-1"/>
+  <anim name="run_e" fps="13" loop="true">
+    <frame id="8" flipH="false"/>
+    <frame id="9" flipH="false"/>
   </anim>
-  <anim name="run_w" fps="15" loop="true">
-    <frame id="0" flipH="true"/>
-    <frame id="0" flipH="true" offsetY="-1"/>
-    <frame id="1" flipH="true" offsetY="-2"/>
-    <frame id="1" flipH="true" offsetY="-1"/>
+  <anim name="run_w" fps="13" loop="true">
+    <frame id="8" flipH="true"/>
+    <frame id="9" flipH="true"/>
   </anim>
 </sheet>
