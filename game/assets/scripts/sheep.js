@@ -200,7 +200,12 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
 
 function sheep_kill(sheep)
 {
+    if (sheep.dead) {
+        return; 
+    }
     sheep.dead = true;
+
+    print("focusable count = " + focussables.length + ", removing ", focussables.indexOf(sheep));
 
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
