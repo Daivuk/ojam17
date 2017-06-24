@@ -15,7 +15,7 @@ function update(dt)
     // Update entities
 
     // update dogs first so we can herb them the same frame
-    dog_update(dt);
+    dogs_update(dt);
 
     sheeps_update(dt);
 
