@@ -1,12 +1,4 @@
-<sheet texture="dog.png" spriteWidth="36" spriteHeight="36" originX="18" originY="24">
-  <anim name="idle_e" fps="6" loop="true">
-    <frame id="0" />
-    <frame id="1"/>
-  </anim>
-  <anim name="idle_w" fps="6" loop="true">
-    <frame id="0" flipH="true"/>
-    <frame id="1" flipH="true"/>
-  </anim>
+<sheet texture="wolf.png" spriteWidth="36" spriteHeight="36" originX="18" originY="24">
   <anim name="run_e" fps="13" loop="true">
     <frame id="0" flipH="false"/>
     <frame id="1" flipH="false"/>
