@@ -34,30 +34,11 @@ function sheep_create(pos)
 function sheep_spawn()
 {
     // Find a spot in the middle
-    while (true)
-    {
-        var tryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * 1);
-
-        // Loop other sheeps to make sure none in the way
-     /*   for (var i = 0; i < sheeps.length; ++i)
-        {
-            var otherSheep = sheeps[i];
-            var distance = Vector2.distanceSquared(tryPos, otherSheep.position);
-            if (distance <= 16 * 16)
-            {
-                break;
-            }
-        }
-
-        if (i == sheeps.length)
-        {*/
-            // Good
-            var sheep = sheep_create(tryPos);
-            sheeps.push(sheep);
-            pushers.push(sheep);
-            break;
-     //   }
-    }
+    var tryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * 1);
+    var sheep = sheep_create(tryPos);
+    sheeps.push(sheep);
+    pushers.push(sheep);
+    focussables.push(sheep);
 }
 
 function sheeps_update(dt)
