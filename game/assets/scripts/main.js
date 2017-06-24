@@ -12,6 +12,7 @@ var menuDogs = [
 var activeDogs = [false, false, false, false];
 var menuBarkTimeouts = [0, 0, 0, 0];
 var startIn = 0;
+var menuSheeps = [];
 
 function startGame()
 {
@@ -32,6 +33,15 @@ function startGame()
 
 var APrevStates = [false, false, false, false];
 
+var MENU_SHEEP_COUNT = 8
+for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+{
+    menuSheeps[i] = {
+        spriteAnim: playSpriteAnim("sheep.spriteanim", "run_e", i),
+        xPos: -i * 100
+    };
+}
+
 function update(dt)
 {
     // Cache latest resolution each frame
@@ -48,6 +58,15 @@ function update(dt)
                 {
                     startGame();
                     break;
+                }
+            }
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+            {
+                var menuSheep = menuSheeps[i];
+                menuSheep.xPos += dt * 100;
+                if (menuSheep.xPos > resolution.x + 100)
+                {
+                    menuSheep.xPos -= resolution.x + 200;
                 }
             }
             for (var i = 0; i < 4; ++i)
@@ -140,6 +159,15 @@ function render()
             drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4), 1);
             drawMenuDog(new Vector2(resolution.x / 4, resolution.y / 4 * 3), 2);
             drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4 * 3), 3);
+
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+            {
+                var menuSheep = menuSheeps[i];
+                SpriteBatch.drawSpriteAnim(
+                    menuSheep.spriteAnim, 
+                    new Vector2(menuSheep.xPos, resolution.y - 24), Color.WHITE, 0, 2);
+            }
+
             SpriteBatch.end();
             break;
         }
