@@ -14,6 +14,13 @@ var SHEEP_HUNGER_SPEED = 1 / 30;
 var SHEEP_HUNGER_THRESHOLD = .5;
 var SHEEP_EAT_SPEED = .25;
 var SHEEP_EAT_VALUE = 3;
+var SHEEP_MOVE_TIMEOUT = 10;
+var SHEEP_STRESS_MIN = 1;
+var SHEEP_STRESS_MAX = 5;
+var SHEEP_STRESS_THRESHOLD = 2.0;
+var SHEEP_STRESS_RUN_SPEED = 2.0;
+var SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND = 5.0;
+var SHEEP_STRESS_COOLDOWN_PER_SECOND = SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * 0.75;
 
 var sheeps = [];
 
@@ -32,7 +39,9 @@ function sheep_create(pos)
         state: SHEEP_STATE_IDLE,
         size: SHEEP_SIZE,
         hunger: 1,
-        renderFn: sheep_render
+        stress: SHEEP_STRESS_MIN,
+        renderFn: sheep_render,
+        bounceAnim: new NumberAnim(0)
     };
 
     return sheep;
@@ -40,15 +49,25 @@ function sheep_create(pos)
 
 function sheep_render(sheep)
 {
+    var renderPos = new Vector2(sheep.position.x, sheep.position.y - sheep.bounceAnim.get());
+    var color = Color.WHITE;
     if (sheep.dead)
     {
-        SpriteBatch.drawSprite(null, sheep.position, new Color(1, 1, 1, sheep.deadAlpha.get()), 0, 20);
+        var alpha = sheep.deadAlpha.get();
+        color = new Color(alpha, alpha, alpha, alpha);
     }
-    else
-    {
-        SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
-        SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
-    }
+
+    SpriteBatch.drawSprite(null, renderPos, new Color(color.r * .9, color.g * .9, color.b * .9, color.a), 0, 20);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), color, 0, 14);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), new Color(1, .8, .5), 0, 10);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6 - 2)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6 - 2)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(- 5, 10)), Color.BLACK, 0, 4);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(+ 5, 10)), Color.BLACK, 0, 4);
+
+    SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
 }
 
 function sheep_spawn()
@@ -81,11 +100,13 @@ function sheep_findGrass(sheep)
         var searchTiles = [];
         for (var i = -depth; i <= depth; ++i)
         {
-            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y));
+            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y - depth));
+            searchTiles.push(new Vector2(mapPos.x + i, mapPos.y + depth));
         }
         for (var i = -depth + 1; i <= depth - 1; ++i)
         {
-            searchTiles.push(new Vector2(mapPos.x, mapPos.y + i));
+            searchTiles.push(new Vector2(mapPos.x - depth, mapPos.y + i));
+            searchTiles.push(new Vector2(mapPos.x + depth, mapPos.y + i));
         }
         while (searchTiles.length)
         {
@@ -96,6 +117,7 @@ function sheep_findGrass(sheep)
             {
                 sheep.targetPosition = mapToWorld(tilePos);
                 sheep.state = SHEEP_STATE_GO_EAT;
+                sheep.moveTimeout = SHEEP_MOVE_TIMEOUT;
                 return;
             }
             searchTiles.splice(i, 1);
@@ -108,6 +130,7 @@ function sheep_wander(sheep)
     var distance = Random.randNumber(TILE_SIZE / 2, TILE_SIZE);
     sheep.targetPosition = Random.randCircleEdge(sheep.position, distance);
     sheep.state = SHEEP_STATE_WANDERING;
+    sheep.moveTimeout = SHEEP_MOVE_TIMEOUT;
 }
 
 function sheep_wait(sheep)
@@ -118,6 +141,24 @@ function sheep_wait(sheep)
 
 function sheep_moveToward(sheep, targetPosition, speed, dt)
 {
+    if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+    {
+        speed*=SHEEP_STRESS_RUN_SPEED;
+    }
+    sheep.moveTimeout -= dt;
+    if (sheep.moveTimeout < 0)
+    {
+        sheep.state = SHEEP_STATE_IDLE;
+        return false;
+    }
+
+    if (!sheep.bounceAnim.isPlaying())
+    {
+        sheep.bounceAnim.queue(5, .15, Tween.EASE_OUT);
+        sheep.bounceAnim.queue(0, .15, Tween.EASE_IN);
+        sheep.bounceAnim.play();
+    }
+
     var distance = Vector2.distance(targetPosition, sheep.position);
     if (distance > 0)
     {
@@ -138,8 +179,11 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
 function sheep_kill(sheep)
 {
     sheep.dead = true;
+
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
+    renderables.splice(renderables.indexOf(sheep), 1);
+
     sheep.deadAlpha = new NumberAnim(1);
     sheep.deadAlpha.queue(0, 1, Tween.NONE);
     sheep.deadAlpha.queue(1, .15, Tween.NONE);
@@ -166,6 +210,27 @@ function sheep_update(sheep, dt)
         sheep_kill(sheep);
         return;
     }
+
+    for (var i = 0; i < dogs.length; ++i) {
+        var dog = dogs[i];
+
+        var distance = Vector2.distance(sheep.position, dog.position);
+        if (distance < TILE_SIZE) {
+            sheep.stress = Math.min(sheep.stress + (dog.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
+            if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+            {
+                sheep.targetPosition = sheep.position.add(sheep.position.sub(dog.position));
+            }
+        }
+    }
+
+    if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+    {
+        //print("SHEEP IS STRESSED OUT!!! " + sheep.stress);
+        sheep.state = SHEEP_STATE_WANDERING;
+    }
+    sheep.stress = Math.max(sheep.stress-(SHEEP_STRESS_COOLDOWN_PER_SECOND*dt), SHEEP_STRESS_MIN);
+
     switch (sheep.state)
     {
         case SHEEP_STATE_IDLE:

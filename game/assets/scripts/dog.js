@@ -13,7 +13,16 @@ var DOG_STATE_RUNNING = 1;
 
 var dogs = [];
 
+var dogTexture = getTexture("dog.png", false);
+var dogOverlayTexture = getTexture("dogOverlay.png", false);
 var barkTexture = getTexture("bark.png");
+
+var DOG_COLORS = [
+    new Color(1, 0, 0, 1),
+    new Color(.2, .2, 1, 1),
+    new Color(0, .8, 1, 1),
+    new Color(1, 1, 0, 1)
+];
 
 function dog_init()
 {
@@ -96,10 +105,8 @@ function dog_update(dog, dt) {
     }
     else {
         dir = dir.normalize();
-        if (dir.y > .7) dog.dir = 's';
-        else if (dir.x > .7) dog.dir = 'e';
-        else if (dir.x < .7) dog.dir = 'w';
-        else dog.dir = 'n';
+        if (dir.x > .1) dog.dir = 'e';
+        else if (dir.x < .1) dog.dir = 'w';
         dog.state = DOG_STATE_RUNNING;
         newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
 
@@ -126,6 +133,8 @@ function dog_render(dog)
     //SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
 
     SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
+
+    SpriteBatch.drawSpriteWithUVs(dogOverlayTexture, dog.position, dog.spriteAnim.getUVs(), DOG_COLORS[dog.index], 0, 1, dog.spriteAnim.getOrigin());
 
     if (dog.barkAnim.isPlaying())
     {

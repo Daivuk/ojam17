@@ -19,8 +19,8 @@ function pushers_update(dt)
                 var percent = 1 - (distance / (entity1.size + entity2.size));
                 var dir = entity2.position.sub(entity1.position);
                 dir = dir.normalize().mul(PUSH_SPEED * dt);
-                entity1.position = entity1.position.sub(dir.mul(percent));
-                entity2.position = entity2.position.add(dir.mul(percent));
+                entity1.position = tiledMap.collision(entity1.position, entity1.position.sub(dir.mul(percent)));
+                entity2.position = tiledMap.collision(entity2.position, entity2.position.add(dir.mul(percent)));
             }
         }
     }

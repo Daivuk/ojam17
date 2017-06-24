@@ -18,20 +18,17 @@ function update(dt)
     // Cache latest resolution each frame
     resolution = Renderer.getResolution();
 
-    // Update entities
+    //for (var i = 0; i < 30; ++i) // Turbo mode
+    {
+        // update dogs first so we can herb them the same frame
+        dogs_update(dt);
+        sheeps_update(dt);
 
-    // update dogs first so we can herb them the same frame
-    dogs_update(dt);
-
-    sheeps_update(dt);
+        // Overlapping entities push each others again
+        pushers_update(dt);
 
     wolfs_update(dt)
-
-    // Overlapping entities push each others again
-    pushers_update(dt);
-
-    // Update camera matrices
-    camera_update(dt);
+        camera_update(dt);
 }
 
 function render()
@@ -40,6 +37,7 @@ function render()
     Renderer.clear(Color.BLACK);
 
     SpriteBatch.begin(cameraMatrix);
+    SpriteBatch.setFilter(FilterMode.NEAREST);
 
     // Draw ground and grass first
     SpriteBatch.setBlend(BlendMode.OPAQUE);
