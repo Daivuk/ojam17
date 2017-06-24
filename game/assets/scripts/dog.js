@@ -1,5 +1,6 @@
 var DOG_MAX = 4;
-var DOG_MOV_SPEED = 64; 
+var DOG_MOV_SPEED = 225; 
+var DOG_SIZE;
 
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_ATTACKING = 1;
@@ -10,15 +11,18 @@ var dogs = [];
 
 function dog_init()
 {
+    DOG_SIZE = TILE_SIZE * 0.25; 
+
     for(var i = 0; i < DOG_MAX; ++i)
     {
         // MC: TODO Looks like this is too soon to Call. Gamepad connects later.
-        //if (GamePad.isConnected(index))
+        //if (GamePad.isConnected(index))  
         {
             var dog = {
                 position: new Vector2(Random.randCircle(MAP_CENTER, TILE_SIZE * 3)),
                 dir: "s", // we start facing south.
                 state: DOG_STATE_IDLE,
+                size: DOG_SIZE,
                 pushBackVel: new Vector2(0, 0)
             }
 
@@ -26,6 +30,8 @@ function dog_init()
             //dog.spriteAnim = playSpriteAnim("anims/dog.spriteanim", "idle_s"),
 
             dogs.push(dog);
+            pushers.push(dog);
+            focussables.push(dog);
         }
     }
 }
