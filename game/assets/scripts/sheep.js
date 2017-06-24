@@ -31,10 +31,24 @@ function sheep_create(pos)
         position: new Vector2(pos),
         state: SHEEP_STATE_IDLE,
         size: SHEEP_SIZE,
-        hunger: 1
+        hunger: 1,
+        renderFn: sheep_render
     };
 
     return sheep;
+}
+
+function sheep_render(sheep)
+{
+    if (sheep.dead)
+    {
+        SpriteBatch.drawSprite(null, sheep.position, new Color(1, 1, 1, sheep.deadAlpha.get()), 0, 20);
+    }
+    else
+    {
+        SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
+        SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
+    }
 }
 
 function sheep_spawn()
@@ -45,6 +59,7 @@ function sheep_spawn()
     sheeps.push(sheep);
     pushers.push(sheep);
     focussables.push(sheep);
+    renderables.push(sheep);
 }
 
 function sheeps_update(dt)
@@ -207,6 +222,12 @@ function sheep_update(sheep, dt)
                 if (grassValue < 0) grassValue = 0;
                 sheep.hunger += eatValue / SHEEP_EAT_VALUE;
                 map_setGrassAt(sheepMapPos, grassValue);
+                if (sheep.hunger >= .9)
+                {
+                    // Ate enough
+                    sheep.state = SHEEP_STATE_IDLE;
+                    break;
+                }
             }
             break;
     }
