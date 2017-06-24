@@ -7,6 +7,11 @@ camera_init();
 sheep_init();
 dog_init();
 
+var ambSound = createSoundInstance("amb_medow_01.wav");
+ambSound.setLoop(true);
+ambSound.setVolume(.35);
+ambSound.play();
+
 function update(dt)
 {
     // Cache latest resolution each frame
@@ -36,7 +41,7 @@ function render()
     // Draw ground and grass first
     SpriteBatch.setBlend(BlendMode.OPAQUE);
     tiledMap.renderLayer(GROUND_LAYER);
-    SpriteBatch.setBlend(BlendMode.ALPHA);
+    SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
     // Draw entities
     renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});

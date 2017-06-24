@@ -13,6 +13,8 @@ var DOG_STATE_RUNNING = 1;
 
 var dogs = [];
 
+var barkTexture = getTexture("bark.png");
+
 function dog_init()
 {
     DOG_SIZE = TILE_SIZE * 0.25; 
@@ -32,7 +34,8 @@ function dog_init()
                 barkingButtonState: false,
                 pushBackVel: new Vector2(0, 0),
                 renderFn: dog_render,
-                fearFactor: DOG_INITIAL_FEAR_FACTOR
+                fearFactor: DOG_INITIAL_FEAR_FACTOR,
+                barkAnim: new NumberAnim(0)
             }
 
             // MC: TODO Figure out why this is doing a segfault.
@@ -72,9 +75,10 @@ function dog_update(dog, dt) {
         print("Dog " + dog.index + ": Woof!");
         setTimeout(function() {
             print("done barking");
-            dog.barking = false;        
+            dog.barking = false;
         }, DOG_BARK_COOLDOWN);
         dog.fearFactor = Math.min(dog.fearFactor+DOG_INITIAL_BARK_FEAR_CONTRIB, DOG_INITIAL_FEAR_FACTOR_MAX);
+        dog.barkAnim.playSingle(0, dog.fearFactor, .15, Tween.EASE_OUT);
     }
     else
     {
@@ -119,7 +123,13 @@ function dog_update(dog, dt) {
 function dog_render(dog)
 {
     // TEMP TEMP TEMP testing fear range
-    SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
+    //SpriteBatch.drawSprite(null, dog.position, Color.WHITE, 0, 20*dog.fearFactor);
 
     SpriteBatch.drawSpriteAnim(dog.spriteAnim, dog.position);
+
+    if (dog.barkAnim.isPlaying())
+    {
+        var barkVal = dog.barkAnim.get();
+        SpriteBatch.drawSprite(barkTexture, dog.position, new Color(0, 1, 1, .15).mul(.25), 0, barkVal * 20 / barkTexture.getSize().x);
+    }
 }
