@@ -37,6 +37,7 @@ function render()
     Renderer.clear(Color.BLACK);
 
     SpriteBatch.begin(cameraMatrix);
+    SpriteBatch.setFilter(FilterMode.NEAREST);
 
     // Draw ground and grass first
     SpriteBatch.setBlend(BlendMode.OPAQUE);
