@@ -53,13 +53,8 @@ function render()
         }
     }
 
-    // TEMP TEMP TEMP, draw dogs
-    //dog_render();
-    for (var i = 0; i < dogs.length; ++i)
-    {
-        var dog = dogs[i];
-        SpriteBatch.drawSprite(null, dog.position, Color.BLACK, 0, 20);
-    }
+    // dog draw
+    dog_render();
 
     SpriteBatch.end();
 }

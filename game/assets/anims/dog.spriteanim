@@ -1,4 +1,4 @@
-<sheet texture="dog.png" spriteWidth="36" spriteHeight="36" originX="8" originY="20">
+<sheet texture="dog.png" spriteWidth="36" spriteHeight="36" originX="18" originY="24">
   <anim name="idle_s" fps="6" loop="true">
     <frame id="0" repeat="8"/>
     <frame id="1"/>
@@ -10,21 +10,13 @@
   <anim name="idle_n" fps="6" loop="true">
     <frame id="8"/>
   </anim>
-  <anim name="idle_w" fps="6" loop="true">
-    <frame id="16" repeat="8"/>
-    <frame id="17"/>
-    <frame id="16" repeat="3"/>
-    <frame id="17"/>
-    <frame id="16" repeat="6"/>
-    <frame id="17"/>
-  </anim>
   <anim name="idle_e" fps="6" loop="true">
-    <frame id="16" repeat="8" flipH="true"/>
-    <frame id="17" flipH="true"/>
-    <frame id="16" repeat="3" flipH="true"/>
-    <frame id="17" flipH="true"/>
-    <frame id="16" repeat="6" flipH="true"/>
-    <frame id="17" flipH="true"/>
+    <frame id="0" />
+    <frame id="1"/>
+  </anim>
+  <anim name="idle_w" fps="6" loop="true">
+    <frame id="0" flipH="true"/>
+    <frame id="1" flipH="true"/>
   </anim>
   <anim name="walk_s" fps="12" loop="true">
     <frame id="5"/>

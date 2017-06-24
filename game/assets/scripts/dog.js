@@ -1,5 +1,5 @@
 var DOG_MAX = 4;
-var DOG_MOV_SPEED = 225; 
+var DOG_MOV_SPEED = 150; 
 var DOG_SIZE;
 var DOG_BARK_COOLDOWN = 250;
 
@@ -20,7 +20,7 @@ function dog_init()
             var dog = {
                 index: i,
                 position: new Vector2(Random.randCircleEdge(MAP_CENTER, TILE_SIZE * 3)),
-                dir: "s", // we start facing south.
+                dir: "e", // we start facing east.
                 state: DOG_STATE_IDLE,
                 size: DOG_SIZE,
                 barking: false,
@@ -29,7 +29,7 @@ function dog_init()
             }
 
             // MC: TODO Figure out why this is doing a segfault.
-            //dog.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_s"),
+            dog.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_e");
 
             dogs.push(dog);
             pushers.push(dog);
@@ -91,11 +91,11 @@ function dog_update(dog, dt) {
 
     switch (dog.state) {
         case DOG_STATE_RUNNING:
-            //dog.spriteAnim.play("run_" + dog.dir);
+            dog.spriteAnim.play("run_" + dog.dir);
             break;
         default:
         case DOG_STATE_IDLE:
-            //dog.spriteAnim.play("idle_" + dog.dir);
+            dog.spriteAnim.play("idle_" + dog.dir);
             break;
     }
 
