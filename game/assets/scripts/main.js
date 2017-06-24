@@ -6,6 +6,7 @@ map_init();
 camera_init();
 sheep_init();
 dog_init();
+wolf_init(); 
 
 var ambSound = createSoundInstance("amb_medow_01.wav");
 ambSound.setLoop(true);
@@ -18,17 +19,17 @@ function update(dt)
     resolution = Renderer.getResolution();
 
     //for (var i = 0; i < 30; ++i) // Turbo mode
-    {
+
         // update dogs first so we can herb them the same frame
         dogs_update(dt);
         sheeps_update(dt);
+        wolfs_update(dt);
 
         // Overlapping entities push each others again
         pushers_update(dt);
 
-        // Update camera matrices
+  
         camera_update(dt);
-    }
 }
 
 function render()
