@@ -44,15 +44,18 @@ function sheep_create(pos)
         hunger: 1,
         stress: SHEEP_STRESS_MIN,
         renderFn: sheep_render,
-        bounceAnim: new NumberAnim(0)
+        bounceAnim: new NumberAnim(0),
+        dir: "e"
     };
+
+    sheep.spriteAnim = playSpriteAnim("sheep.spriteanim", "idle_e");
 
     return sheep;
 }
 
 function sheep_render(sheep)
 {
-    var renderPos = new Vector2(sheep.position.x, sheep.position.y - sheep.bounceAnim.get());
+    var renderPos = new Vector2(sheep.position.x, sheep.position.y/* - sheep.bounceAnim.get()*/);
     var color = Color.WHITE;
     if (sheep.dead)
     {
@@ -60,6 +63,8 @@ function sheep_render(sheep)
         color = new Color(alpha, alpha, alpha, alpha);
     }
 
+    SpriteBatch.drawSpriteAnim(sheep.spriteAnim, renderPos);
+/*
     SpriteBatch.drawSprite(null, renderPos, new Color(color.r * .9, color.g * .9, color.b * .9, color.a), 0, 20);
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), color, 0, 14);
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), new Color(1, .8, .5), 0, 10);
@@ -69,7 +74,7 @@ function sheep_render(sheep)
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6)), Color.BLACK, 0, 2);
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(- 5, 10)), Color.BLACK, 0, 4);
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(+ 5, 10)), Color.BLACK, 0, 4);
-
+*/
     SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
 }
 
@@ -153,6 +158,11 @@ function sheep_wait(sheep)
 
 function sheep_moveToward(sheep, targetPosition, speed, dt)
 {
+    sheep.running = true;
+
+    if (sheep.position.x < targetPosition.x) sheep.dir = 'e';
+    else if (sheep.position.x > targetPosition.x) sheep.dir = 'w';
+
     if (sheep.stress > SHEEP_STRESS_THRESHOLD)
     {
         speed*=SHEEP_STRESS_RUN_SPEED;
@@ -216,6 +226,7 @@ function sheep_update(sheep, dt)
     {
         return;
     }
+    sheep.running = false;
     sheep.hunger -= dt * SHEEP_HUNGER_SPEED;
     if (sheep.hunger <= 0)
     {
@@ -313,5 +324,14 @@ function sheep_update(sheep, dt)
                 }
             }
             break;
+    }
+
+    if (sheep.running)
+    {
+        sheep.spriteAnim.play("run_" + sheep.dir);
+    }
+    else
+    {
+        sheep.spriteAnim.play("idle_" + sheep.dir);
     }
 }
