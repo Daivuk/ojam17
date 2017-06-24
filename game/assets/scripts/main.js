@@ -2,6 +2,12 @@ var resolution;
 var renderables = [];
 var gameState = "startMenu";
 var menuFont = getFont("main.fntempty.fnt");
+var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
+var ambSound = createSoundInstance("amb_medow_01.wav");
+menuMusic.setLoop(true);
+menuMusic.setVolume(.35);
+ambSound.setLoop(true);
+ambSound.setVolume(.35);
 
 var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 0),
@@ -25,9 +31,7 @@ function startGame()
     wolf_init();
     pusher_init();
 
-    var ambSound = createSoundInstance("amb_medow_01.wav");
-    ambSound.setLoop(true);
-    ambSound.setVolume(.35);
+    menuMusic.stop();
     ambSound.play();
 }
 
@@ -40,6 +44,9 @@ for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
         spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
         xPos: -i * 100
     };
+
+    menuMusic.play();
+    
 }
 
 function update(dt)
