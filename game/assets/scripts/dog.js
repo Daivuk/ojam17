@@ -4,6 +4,7 @@ var DOG_MOV_SPEED = 64;
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_ATTACKING = 1;
 var DOG_STATE_RUNNING = 2;
+var DOG_STATE_BARKING = 3;
 
 var dogs = [];
 
@@ -26,7 +27,6 @@ function dog_init()
 
             dogs.push(dog);
         }
-
     }
 }
 
@@ -48,7 +48,6 @@ function dog_update(dt)
 
         if (dir.lengthSquared() == 0)
         {
-            //dog.spriteAnim.play("idle_" + dog.dir);
             dog.state = DOG_STATE_IDLE;
         }
         else
@@ -62,6 +61,34 @@ function dog_update(dt)
             dog.state = DOG_STATE_RUNNING;
 
             newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
+        }
+
+        //MC TODO. Still not sure what sound file we're going to have, but
+        // it might be a good idea to have a few samples of 4 different dogs
+        // We don't want all the bark sounds to sound all the same. for example
+        // if player 1 presses "X", it would play dog_bark_0_[0-3].wav while
+        // player 2 would play  dog_bark_1_[0-3].wav
+
+        if(GamePad.isJustDown(i, Button.A))
+        {
+            //playSound("dog_growl_" + i + "_" + Random.randInt(3) + ".wav", .5);
+            dog.state = DOG_STATE_ATTACKING;
+        }
+
+        if(GamePad.isJustDown(i, Button.X))
+        {
+            //playSound("dog_bark_" + i + "_" + Random.randInt(3) + ".wav", .5);
+            print("Dog " + i + ": Woof!");
+            dog.state = DOG_STATE_RUNNING;
+        }
+
+        switch(dog.state)
+        {
+            case DOG_STATE_IDLE:
+                //dog.spriteAnim.play("idle_" + dog.dir);
+                break;
+
+
         }
 
         dog.position = newPosition;
