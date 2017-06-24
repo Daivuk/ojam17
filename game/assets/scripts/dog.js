@@ -2,11 +2,11 @@ var DOG_MAX = 4;
 var DOG_MOV_SPEED = 150; 
 var DOG_SIZE;
 var DOG_BARK_COOLDOWN = 250;
-var DOG_INITIAL_FEAR_FACTOR_MIN = 1.0;
-var DOG_INITIAL_FEAR_FACTOR_MAX = 10.0;
-var DOG_INITIAL_FEAR_FACTOR = DOG_INITIAL_FEAR_FACTOR_MIN;
-var DOG_INITIAL_BARK_FEAR_CONTRIB = 2.5;
-var DOG_INITIAL_FEAR_COOLDOWN_SPEED = 2.0;
+var DOG_FEAR_FACTOR_MIN = 1.0;
+var DOG_FEAR_FACTOR_MAX = 10.0;
+var DOG_BARK_FEAR_CONTRIB_INSTANT = 2.5;
+var DOG_RUN_FEAR_CONTRIB_PER_SECOND = 2.5;
+var DOG_FEAR_COOLDOWN_PER_SECOND = 2.0;
 
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_RUNNING = 1;
@@ -31,7 +31,7 @@ function dog_init()
                 barking: false,
                 barkingButtonState: false,
                 pushBackVel: new Vector2(0, 0),
-                fearFactor: DOG_INITIAL_FEAR_FACTOR
+                fearFactor: DOG_FEAR_FACTOR_MIN
             }
 
             // MC: TODO Figure out why this is doing a segfault.
@@ -67,17 +67,15 @@ function dog_update(dog, dt) {
     {
         playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
         dog.barking = true;
-        print("Dog " + dog.index + ": Woof!");
         setTimeout(function() {
-            print("done barking");
             dog.barking = false;        
         }, DOG_BARK_COOLDOWN);
-        dog.fearFactor = Math.min(dog.fearFactor+DOG_INITIAL_BARK_FEAR_CONTRIB, DOG_INITIAL_FEAR_FACTOR_MAX);
+        dog.fearFactor = Math.min(dog.fearFactor+DOG_BARK_FEAR_CONTRIB_INSTANT, DOG_FEAR_FACTOR_MAX);
     }
     else
     {
         // since we're not barking on this frame, let's cool down the fear factor here.
-        dog.fearFactor = Math.max(dog.fearFactor-(DOG_INITIAL_FEAR_COOLDOWN_SPEED*dt), DOG_INITIAL_FEAR_FACTOR_MIN);
+        dog.fearFactor = Math.max(dog.fearFactor-(DOG_FEAR_COOLDOWN_PER_SECOND*dt), DOG_FEAR_FACTOR_MIN);
     }
     dog.barkingButtonState = barkingButtonState;
 
@@ -99,6 +97,9 @@ function dog_update(dog, dt) {
         else dog.dir = 'n';
         dog.state = DOG_STATE_RUNNING;
         newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
+
+        dog.fearFactor = Math.min(dog.fearFactor+(DOG_RUN_FEAR_CONTRIB_PER_SECOND*dt), DOG_FEAR_FACTOR_MAX);
+
     }
 
     switch (dog.state) {
