@@ -17,7 +17,7 @@ var barkTexture = getTexture("bark.png");
 
 function dog_init()
 {
-    DOG_SIZE = TILE_SIZE * 0.25; 
+    DOG_SIZE = TILE_SIZE * 0.5; 
 
     for(var i = 0; i < DOG_MAX; ++i)
     {
@@ -38,7 +38,6 @@ function dog_init()
                 barkAnim: new NumberAnim(0)
             }
 
-            // MC: TODO Figure out why this is doing a segfault.
             dog.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_e");
 
             dogs.push(dog);

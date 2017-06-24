@@ -6,6 +6,7 @@ map_init();
 camera_init();
 sheep_init();
 dog_init();
+wolf_init(); 
 
 var ambSound = createSoundInstance("amb_medow_01.wav");
 ambSound.setLoop(true);
@@ -23,6 +24,8 @@ function update(dt)
     dogs_update(dt);
 
     sheeps_update(dt);
+
+    wolfs_update(dt)
 
     // Overlapping entities push each others again
     pushers_update(dt);
