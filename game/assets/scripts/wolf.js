@@ -161,7 +161,7 @@ function wolf_update(wolf, dt)
     {
         wolf.wimperCoolDown -= dt;
         var dir = wolf.targetPosition.sub(wolf.position).normalize();
-        wolf.position = wolf.position.add(dir.mul(WOLF_SPEED * dt));
+        wolf.position = wolf.position.add(dir.mul(WOLF_SPEED * WOLF_STRESS_RUN_SPEED * dt));
         // print("Wolf is stressed!"); 
     }
     wolf.stress = Math.max(wolf.stress-(WOLF_STRESS_COOLDOWN_PER_SECOND*dt), WOLF_STRESS_MIN);
