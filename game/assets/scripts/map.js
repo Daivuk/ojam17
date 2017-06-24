@@ -7,24 +7,26 @@ var TILE_GRASS2 = 3;
 var TILE_GRASS3 = 4;
 
 var TILE_SIZE = 36;
-var MAP_SIZE = 64;
+var MAP_SIZE = 32;
 
 var GROW_SPEED = 10;
+var GRASS_MAX = 3;
 
 var MAP_CENTER = new Vector2(MAP_SIZE * TILE_SIZE / 2, MAP_SIZE * TILE_SIZE / 2);
 
-var tiledMap = TiledMap.create(MAP_SIZE, MAP_SIZE, TILE_SIZE);
+var tilesetTexture = getTexture("tileset.png", false);
+var tiledMap = getTiledMap("map.tmx");
+var grassLevel = [];
 
 function map_init()
 {
-    tiledMap.addTileSet(getTexture("tileset.png", false));
-    tiledMap.addLayer("ground");
-
     for (var y = 0; y < MAP_SIZE; ++y)
     {
+        grassLevel[y] = [];
         for (var x = 0; x < MAP_SIZE; ++x)
         {
             tiledMap.setTileAt(GROUND_LAYER, x, y, TILE_GRASS3);
+            grassLevel[y][x] = GRASS_MAX;
         }
     }
 }
