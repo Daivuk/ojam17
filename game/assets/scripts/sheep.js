@@ -75,7 +75,7 @@ function sheep_render(sheep)
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(- 5, 10)), Color.BLACK, 0, 4);
     SpriteBatch.drawSprite(null, renderPos.add(new Vector2(+ 5, 10)), Color.BLACK, 0, 4);
 */
-    SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
+    //SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
 }
 
 function sheep_spawn()
