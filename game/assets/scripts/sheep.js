@@ -14,6 +14,7 @@ var SHEEP_HUNGER_SPEED = 1 / 30;
 var SHEEP_HUNGER_THRESHOLD = .5;
 var SHEEP_EAT_SPEED = .25;
 var SHEEP_EAT_VALUE = 3;
+var SHEEP_MOVE_TIMEOUT = 5;
 
 var sheeps = [];
 
@@ -42,7 +43,8 @@ function sheep_render(sheep)
 {
     if (sheep.dead)
     {
-        SpriteBatch.drawSprite(null, sheep.position, new Color(1, 1, 1, sheep.deadAlpha.get()), 0, 20);
+        var alpha = sheep.deadAlpha.get();
+        SpriteBatch.drawSprite(null, sheep.position, new Color(alpha, alpha, alpha, alpha), 0, 20);
     }
     else
     {
@@ -96,6 +98,7 @@ function sheep_findGrass(sheep)
             {
                 sheep.targetPosition = mapToWorld(tilePos);
                 sheep.state = SHEEP_STATE_GO_EAT;
+                sheep.moveTimeout = SHEEP_MOVE_TIMEOUT;
                 return;
             }
             searchTiles.splice(i, 1);
@@ -108,6 +111,7 @@ function sheep_wander(sheep)
     var distance = Random.randNumber(TILE_SIZE / 2, TILE_SIZE);
     sheep.targetPosition = Random.randCircleEdge(sheep.position, distance);
     sheep.state = SHEEP_STATE_WANDERING;
+    sheep.moveTimeout = SHEEP_MOVE_TIMEOUT;
 }
 
 function sheep_wait(sheep)
@@ -118,6 +122,12 @@ function sheep_wait(sheep)
 
 function sheep_moveToward(sheep, targetPosition, speed, dt)
 {
+    sheep.moveTimeout -= dt;
+    if (sheep.moveTimeout < 0)
+    {
+        sheep.state = SHEEP_STATE_IDLE;
+        return false;
+    }
     var distance = Vector2.distance(targetPosition, sheep.position);
     if (distance > 0)
     {
@@ -138,8 +148,11 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
 function sheep_kill(sheep)
 {
     sheep.dead = true;
+
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
+    renderables.splice(renderables.indexOf(sheep), 1);
+
     sheep.deadAlpha = new NumberAnim(1);
     sheep.deadAlpha.queue(0, 1, Tween.NONE);
     sheep.deadAlpha.queue(1, .15, Tween.NONE);

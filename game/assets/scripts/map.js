@@ -28,7 +28,10 @@ function map_init()
         grassLevel[y] = [];
         for (var x = 0; x < MAP_SIZE; ++x)
         {
-            grassLevel[y][x] = GRASS_MAX;
+            if (tiledMap.getTileAt(GROUND_LAYER, x, y) == TILE_GRASS3)
+                grassLevel[y][x] = GRASS_MAX;
+            else
+                grassLevel[y][x] = 0;
         }
     }
 }
