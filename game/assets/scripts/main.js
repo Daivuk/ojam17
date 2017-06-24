@@ -1,12 +1,11 @@
 var resolution;
 
-var dogs = [];
-
 var renderables = [];
 
 map_init();
 camera_init();
 sheep_init();
+dog_init();
 
 function update(dt)
 {
@@ -14,7 +13,10 @@ function update(dt)
     resolution = Renderer.getResolution();
 
     // Update entities
-    // ... update dogs first so we can herb them the same frame
+
+    // update dogs first so we can herb them the same frame
+    dog_update(dt);
+
     sheeps_update(dt);
 
     // Overlapping entities push each others again
@@ -39,6 +41,14 @@ function render()
     {
         var sheep = sheeps[i];
         SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
+    }
+
+    // TEMP TEMP TEMP, draw dogs
+    //dog_render();
+    for (var i = 0; i < dogs.length; ++i)
+    {
+        var dog = dogs[i];
+        SpriteBatch.drawSprite(null, dog.position, Color.BLACK, 0, 20);
     }
 
     SpriteBatch.end();
