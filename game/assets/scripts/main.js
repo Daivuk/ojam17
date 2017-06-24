@@ -14,6 +14,8 @@ var menuBarkTimeouts = [0, 0, 0, 0];
 var startIn = 0;
 var menuSheeps = [];
 
+var ambSound;
+
 function startGame()
 {
     gameState = "game";
@@ -25,7 +27,7 @@ function startGame()
     wolf_init();
     pusher_init();
 
-    var ambSound = createSoundInstance("amb_medow_01.wav");
+    ambSound = createSoundInstance("amb_medow_01.wav");
     ambSound.setLoop(true);
     ambSound.setVolume(.35);
     ambSound.play();
