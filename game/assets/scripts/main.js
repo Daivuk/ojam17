@@ -20,6 +20,12 @@ function update(dt)
     // Overlapping entities push each others again
     pushers_update(dt);
 
+    for (var i = 0; i < dogs.length; ++i)
+    {
+        var dog = dogs[i];
+        dog_update(dog, dt);
+    }
+
     // Update camera matrices
     camera_update(dt);
 }
