@@ -215,7 +215,7 @@ function sheep_update(sheep, dt)
         var dog = dogs[i];
 
         var distance = Vector2.distance(sheep.position, dog.position);
-        if (distance < TILE_SIZE) {
+        if (distance < TILE_SIZE * 1.6) {
             sheep.stress = Math.min(sheep.stress + (dog.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
             if (sheep.stress > SHEEP_STRESS_THRESHOLD)
             {
