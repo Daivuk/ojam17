@@ -13,11 +13,12 @@ function update(dt)
     // Cache latest resolution each frame
     resolution = Renderer.getResolution();
 
-    for (var i = 0; i < sheeps.length; ++i)
-    {
-        var sheep = sheeps[i];
-        sheep_update(sheep, dt);
-    }
+    // Update entities
+    // ... update dogs first so we can herb them the same frame
+    sheeps_update(dt);
+
+    // Overlapping entities push each others again
+    pushers_update(dt);
 
     // Update camera matrices
     camera_update(dt);

@@ -1,10 +1,14 @@
 var START_SHEEP = 20;
 
-var SHEEP_STATE_IDLE = 0;
-var SHEEP_STATE_EATING = 1;
-var SHEEP_STATE_WANDERING = 2;
+var SHEEP_SIZE = TILE_SIZE * 0.25;
 
-var SHEEP_WANDER_SPEED = TILE_SIZE * 0.5;
+var SHEEP_STATE_IDLE = 0;
+var SHEEP_STATE_WAIT = 1;
+var SHEEP_STATE_EATING = 2;
+var SHEEP_STATE_WANDERING = 3;
+
+var SHEEP_WANDER_SPEED = TILE_SIZE * 1;
+var SHEEP_WAIT_TIMES = [1, 3];
 
 var sheeps = [];
 
@@ -21,7 +25,7 @@ function sheep_create(pos)
     var sheep = {
         position: new Vector2(pos),
         state: SHEEP_STATE_IDLE,
-        eatingTime: 0
+        size: SHEEP_SIZE
     };
 
     return sheep;
@@ -48,9 +52,20 @@ function sheep_spawn()
         if (i == sheeps.length)
         {
             // Good
-            sheeps.push(sheep_create(tryPos));
+            var sheep = sheep_create(tryPos);
+            sheeps.push(sheep);
+            pushers.push(sheep);
             break;
         }
+    }
+}
+
+function sheeps_update(dt)
+{
+    for (var i = 0; i < sheeps.length; ++i)
+    {
+        var sheep = sheeps[i];
+        sheep_update(sheep, dt);
     }
 }
 
@@ -65,22 +80,61 @@ function sheep_wander(sheep)
     sheep.state = SHEEP_STATE_WANDERING;
 }
 
+function sheep_wait(sheep)
+{
+    sheep.waitTime = Random.randNumber(SHEEP_WAIT_TIMES[0], SHEEP_WAIT_TIMES[1]);
+    sheep.state = SHEEP_STATE_WAIT;
+}
+
+function sheep_moveToward(sheep, targetPosition, speed, dt)
+{
+    var distance = Vector2.distance(targetPosition, sheep.position);
+    if (distance > 0)
+    {
+        distance -= speed * dt;
+        if (distance < 0) 
+        {
+            distance = 0;
+            sheep.position = new Vector2(targetPosition);
+            return true;
+        }
+        var dir = targetPosition.sub(sheep.position).normalize();
+        sheep.position = sheep.position.add(dir.mul(speed * dt));
+        return false;
+    }
+    return true;
+}
+
 function sheep_update(sheep, dt)
 {
     switch (sheep.state)
     {
         case SHEEP_STATE_IDLE:
-         /*   if (Random.randBool())
+            if (Random.randBool())
             {
                 sheep_findGrass(sheep);
             }
-            else*/
+            else if (Random.randBool())
             {
                 sheep_wander(sheep);
             }
+            else
+            {
+                sheep_wait(sheep);
+            }
             break;
         case SHEEP_STATE_WANDERING:
-            sheep_moveToward(sheep, sheep.targetPosition);
+            if (sheep_moveToward(sheep, sheep.targetPosition, SHEEP_WANDER_SPEED, dt))
+            {
+                sheep.state = SHEEP_STATE_IDLE;
+            }
+            break;
+        case SHEEP_STATE_WAIT:
+            sheep.waitTime -= dt;
+            if (sheep.waitTime <= 0)
+            {
+                sheep.state = SHEEP_STATE_IDLE;
+            }
             break;
     }
 }
