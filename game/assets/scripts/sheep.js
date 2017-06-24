@@ -33,7 +33,8 @@ function sheep_create(pos)
         state: SHEEP_STATE_IDLE,
         size: SHEEP_SIZE,
         hunger: 1,
-        renderFn: sheep_render
+        renderFn: sheep_render,
+        bounceAnim: new NumberAnim(0)
     };
 
     return sheep;
@@ -41,16 +42,25 @@ function sheep_create(pos)
 
 function sheep_render(sheep)
 {
+    var renderPos = new Vector2(sheep.position.x, sheep.position.y - sheep.bounceAnim.get());
+    var color = Color.WHITE;
     if (sheep.dead)
     {
         var alpha = sheep.deadAlpha.get();
-        SpriteBatch.drawSprite(null, sheep.position, new Color(alpha, alpha, alpha, alpha), 0, 20);
+        color = new Color(alpha, alpha, alpha, alpha);
     }
-    else
-    {
-        SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
-        SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
-    }
+
+    SpriteBatch.drawSprite(null, renderPos, new Color(color.r * .9, color.g * .9, color.b * .9, color.a), 0, 20);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), color, 0, 14);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), new Color(1, .8, .5), 0, 10);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6 - 2)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6 - 2)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6)), Color.BLACK, 0, 2);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(- 5, 10)), Color.BLACK, 0, 4);
+    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(+ 5, 10)), Color.BLACK, 0, 4);
+
+    SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
 }
 
 function sheep_spawn()
@@ -130,6 +140,14 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
         sheep.state = SHEEP_STATE_IDLE;
         return false;
     }
+
+    if (!sheep.bounceAnim.isPlaying())
+    {
+        sheep.bounceAnim.queue(5, .15, Tween.EASE_OUT);
+        sheep.bounceAnim.queue(0, .15, Tween.EASE_IN);
+        sheep.bounceAnim.play();
+    }
+
     var distance = Vector2.distance(targetPosition, sheep.position);
     if (distance > 0)
     {
