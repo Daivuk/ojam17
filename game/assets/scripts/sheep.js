@@ -36,10 +36,10 @@ function sheep_spawn()
     // Find a spot in the middle
     while (true)
     {
-        var tryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * 3);
+        var tryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * 1);
 
         // Loop other sheeps to make sure none in the way
-        for (var i = 0; i < sheeps.length; ++i)
+     /*   for (var i = 0; i < sheeps.length; ++i)
         {
             var otherSheep = sheeps[i];
             var distance = Vector2.distanceSquared(tryPos, otherSheep.position);
@@ -50,13 +50,13 @@ function sheep_spawn()
         }
 
         if (i == sheeps.length)
-        {
+        {*/
             // Good
             var sheep = sheep_create(tryPos);
             sheeps.push(sheep);
             pushers.push(sheep);
             break;
-        }
+     //   }
     }
 }
 
