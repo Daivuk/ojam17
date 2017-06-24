@@ -120,9 +120,37 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
     return true;
 }
 
+function sheep_kill(sheep)
+{
+    sheep.dead = true;
+    pushers.splice(pushers.indexOf(sheep), 1);
+    focussables.splice(focussables.indexOf(sheep), 1);
+    sheep.deadAlpha = new NumberAnim(1);
+    sheep.deadAlpha.queue(0, 1, Tween.NONE);
+    sheep.deadAlpha.queue(1, .15, Tween.NONE);
+    sheep.deadAlpha.queue(0, .15, Tween.NONE);
+    sheep.deadAlpha.queue(1, .15, Tween.NONE);
+    sheep.deadAlpha.queue(0, .15, Tween.NONE);
+    sheep.deadAlpha.queue(1, .15, Tween.NONE);
+    sheep.deadAlpha.queue(0, .15, Tween.NONE, function()
+    {
+        sheeps.splice(sheeps.indexOf(sheep), 1);
+    });
+    sheep.deadAlpha.play();
+}
+
 function sheep_update(sheep, dt)
 {
+    if (sheep.dead)
+    {
+        return;
+    }
     sheep.hunger -= dt * SHEEP_HUNGER_SPEED;
+    if (sheep.hunger <= 0)
+    {
+        sheep_kill(sheep);
+        return;
+    }
     switch (sheep.state)
     {
         case SHEEP_STATE_IDLE:

@@ -34,14 +34,23 @@ function render()
     SpriteBatch.begin(cameraMatrix);
 
     // Draw ground and grass first
+    SpriteBatch.setBlend(BlendMode.OPAQUE);
     tiledMap.renderLayer(GROUND_LAYER);
+    SpriteBatch.setBlend(BlendMode.ALPHA);
 
     // TEMP TEMP TEMP, draw sheeps
     for (var i = 0; i < sheeps.length; ++i)
     {
         var sheep = sheeps[i];
-        SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
-        SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
+        if (sheep.dead)
+        {
+            SpriteBatch.drawSprite(null, sheep.position, new Color(1, 1, 1, sheep.deadAlpha.get()), 0, 20);
+        }
+        else
+        {
+            SpriteBatch.drawSprite(null, sheep.position, Color.WHITE, 0, 20);
+            SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
+        }
     }
 
     // TEMP TEMP TEMP, draw dogs

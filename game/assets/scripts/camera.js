@@ -23,19 +23,22 @@ function camera_init()
 function camera_update(dt)
 {
     // Focus the camera in a way that everything fits in the screen + ~2 tiles around
-    var min = new Vector2(MAP_SIZE * TILE_SIZE);
-    var max = new Vector2(0);
-    for (var i = 0; i < focussables.length; ++i)
+    if (focussables.length)
     {
-        var entity = focussables[i];
-        min = Vector2.min(entity.position, min);
-        max = Vector2.max(entity.position, max);
+        var min = new Vector2(MAP_SIZE * TILE_SIZE);
+        var max = new Vector2(0);
+        for (var i = 0; i < focussables.length; ++i)
+        {
+            var entity = focussables[i];
+            min = Vector2.min(entity.position, min);
+            max = Vector2.max(entity.position, max);
+        }
+        min.x -= TILE_SIZE * 2;
+        min.y -= TILE_SIZE * 2;
+        max.x += TILE_SIZE * 2;
+        max.y += TILE_SIZE * 2;
+        targetCameraPos = min.add(max).div(2);
     }
-    min.x -= TILE_SIZE * 2;
-    min.y -= TILE_SIZE * 2;
-    max.x += TILE_SIZE * 2;
-    max.y += TILE_SIZE * 2;
-    targetCameraPos = min.add(max).div(2);
 
     // Determine the zoom based on that rect
     var zoomH = resolution.x / (max.x - min.x);
