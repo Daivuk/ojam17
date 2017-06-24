@@ -3,7 +3,7 @@ var DOG_MOV_SPEED = 150;
 var DOG_SIZE;
 var DOG_BARK_COOLDOWN = 100;
 var DOG_FEAR_FACTOR_MIN = 0.0;
-var DOG_FEAR_FACTOR_MAX = 10.0;
+var DOG_FEAR_FACTOR_MAX = 5.0;
 var DOG_BARK_FEAR_CONTRIB_INSTANT = 10;
 var DOG_RUN_FEAR_CONTRIB_PER_SECOND = 1.5;
 var DOG_FEAR_COOLDOWN_PER_SECOND = 2.0;
@@ -47,7 +47,8 @@ function dog_init()
                 fearFactor: DOG_FEAR_FACTOR_MIN,
                 renderFn: dog_render,
                 barkAnim: new NumberAnim(0),
-                barkSoundCoolDown: 0
+                barkSoundCoolDown: 0,
+                dead: false, 
             }
 
             dog.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_e");

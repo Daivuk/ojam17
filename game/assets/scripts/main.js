@@ -32,14 +32,8 @@ function startGame()
     dog_init();
     wolf_init();
     pusher_init();
-
-<<<<<<< HEAD
-    ambSound = createSoundInstance("amb_medow_01.wav");
-    ambSound.setLoop(true);
-    ambSound.setVolume(.35);
-=======
+    
     menuMusic.stop();
->>>>>>> 10717651dfaeb9254db020b609c14b99737913ee
     ambSound.play();
 }
 

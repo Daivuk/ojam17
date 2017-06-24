@@ -1,10 +1,10 @@
 <sheet texture="wolf.png" spriteWidth="36" spriteHeight="36" originX="18" originY="24">
   <anim name="run_e" fps="13" loop="true">
-    <frame id="0" flipH="false"/>
-    <frame id="1" flipH="false"/>
+    <frame id="8" flipH="false"/>
+    <frame id="9" flipH="false"/>
   </anim>
   <anim name="run_w" fps="13" loop="true">
-    <frame id="0" flipH="true"/>
-    <frame id="1" flipH="true"/>
+    <frame id="8" flipH="true"/>
+    <frame id="9" flipH="true"/>
   </anim>
 </sheet>
