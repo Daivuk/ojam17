@@ -1,4 +1,4 @@
-var WOLF_AMOUNT = 1; 
+var WOLF_AMOUNT = 3; 
 var WOLF_SIZE;
 var WOLF_SPEED = 75; 
 
@@ -6,6 +6,7 @@ var WOLF_STATE_ATTACKING = 1;
 var WOLF_STATE_HUNTING = 2;
 
 var WOLF_WAIT_TIME = 3000;
+var WOLF_SPAWN = 0; 
 var KILL_DISTANCE;
 
 var WOLF_WIMP_COOLDOWN_RESET = 2;
@@ -40,6 +41,7 @@ function wolf_create(wolfPos)
         target: sheeps[0],
         wimperCoolDown: 0,
         renderFn: wolf_render,
+        fearFactor: 10
     };
 
     wolf.spriteAnim = playSpriteAnim("wolf.spriteanim", "run_e");
@@ -76,6 +78,10 @@ function wolf_targetAcquisition(wolf, sheep)
     if (!sheep.dead && wolf.target.dead)
     {
         wolf.target = sheep; 
+        return; 
+    }
+    if (wolf.target == null)
+    {
         return; 
     }
     var distance = Vector2.distance(sheep.position, wolf.position);
@@ -132,6 +138,8 @@ function wolf_update(wolf, dt)
          }
     }
 
+    var dir; 
+
     if (wolf.stress < WOLF_STRESS_THRESHOLD)
     {
         switch (wolf.state) 
@@ -155,19 +163,20 @@ function wolf_update(wolf, dt)
                 wolf.state = WOLF_STATE_HUNTING;
                 break;
         }
+        dir = wolf.target.position.sub(wolf.position).normalize()
     }
 
     else
     {
         wolf.wimperCoolDown -= dt;
-        var dir = wolf.targetPosition.sub(wolf.position).normalize();
+        dir = wolf.targetPosition.sub(wolf.position).normalize();
         wolf.position = wolf.position.add(dir.mul(WOLF_SPEED * WOLF_STRESS_RUN_SPEED * dt));
         // print("Wolf is stressed!"); 
     }
     wolf.stress = Math.max(wolf.stress-(WOLF_STRESS_COOLDOWN_PER_SECOND*dt), WOLF_STRESS_MIN);
 
-    if (wolf.position.x < wolf.target.position.x) wolf.dir = 'e';
-    else if (wolf.position.x > wolf.target.position.x) wolf.dir = 'w';
+    if (dir.x > .1) wolf.dir = 'e';
+    else if (dir.x < .1) wolf.dir = 'w';
 
     wolf.spriteAnim.play("run_" + wolf.dir);
 }
