@@ -14,7 +14,13 @@ var SHEEP_HUNGER_SPEED = 1 / 30;
 var SHEEP_HUNGER_THRESHOLD = .5;
 var SHEEP_EAT_SPEED = .25;
 var SHEEP_EAT_VALUE = 3;
-var SHEEP_MOVE_TIMEOUT = 5;
+var SHEEP_MOVE_TIMEOUT = 10;
+var SHEEP_STRESS_MIN = 1;
+var SHEEP_STRESS_MAX = 5;
+var SHEEP_STRESS_THRESHOLD = 2.0;
+var SHEEP_STRESS_RUN_SPEED = 2.0;
+var SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND = 5.0;
+var SHEEP_STRESS_COOLDOWN_PER_SECOND = SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * 0.75;
 
 var sheeps = [];
 
@@ -33,6 +39,7 @@ function sheep_create(pos)
         state: SHEEP_STATE_IDLE,
         size: SHEEP_SIZE,
         hunger: 1,
+        stress: SHEEP_STRESS_MIN,
         renderFn: sheep_render
     };
 
@@ -122,6 +129,10 @@ function sheep_wait(sheep)
 
 function sheep_moveToward(sheep, targetPosition, speed, dt)
 {
+    if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+    {
+        speed*=SHEEP_STRESS_RUN_SPEED;
+    }
     sheep.moveTimeout -= dt;
     if (sheep.moveTimeout < 0)
     {
@@ -179,6 +190,27 @@ function sheep_update(sheep, dt)
         sheep_kill(sheep);
         return;
     }
+
+    for (var i = 0; i < dogs.length; ++i) {
+        var dog = dogs[i];
+
+        var distance = Vector2.distance(sheep.position, dog.position);
+        if (distance < TILE_SIZE) {
+            sheep.stress = Math.min(sheep.stress + (dog.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
+            if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+            {
+                sheep.targetPosition = sheep.position.add(sheep.position.sub(dog.position));
+            }
+        }
+    }
+
+    if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+    {
+        //print("SHEEP IS STRESSED OUT!!! " + sheep.stress);
+        sheep.state = SHEEP_STATE_WANDERING;
+    }
+    sheep.stress = Math.max(sheep.stress-(SHEEP_STRESS_COOLDOWN_PER_SECOND*dt), SHEEP_STRESS_MIN);
+
     switch (sheep.state)
     {
         case SHEEP_STATE_IDLE:
