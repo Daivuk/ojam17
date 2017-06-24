@@ -1,46 +1,69 @@
+var DOG_MAX = 4;
 var DOG_MOV_SPEED = 64; 
 
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_ATTACKING = 1;
 var DOG_STATE_RUNNING = 2;
 
-function dog_init(entity)
+var dogs = [];
+
+function dog_init()
 {
-    entity.spriteAnim = playSpriteAnim("dog.spriteanim", "idle_s");
+    for(var i = 0; i < DOG_MAX; ++i)
+    {
+        // MC: TODO Looks like this is too soon to Call. Gamepad connects later.
+        //if (GamePad.isConnected(index))
+        {
+            var dog = {
+                position: new Vector2(Random.randCircle(MAP_CENTER, TILE_SIZE * 3)),
+                dir: "s", // we start facing south.
+                state: DOG_STATE_IDLE,
+                pushBackVel: new Vector2(0, 0)
+            }
 
-    entity.position = new Vector2(Random.randCircle(MAP_CENTER, TILE_SIZE * 3))
-    entity.dir = "s";
-    entity.state = DOG_STATE_IDLE;
-    entity.pushBackVel = Vector2.ZERO; 
+            // MC: TODO Figure out why this is doing a segfault.
+            //dog.spriteAnim = playSpriteAnim("anims/dog.spriteanim", "idle_s"),
 
-    dog = entity; 
+            dogs.push(dog);
+        }
+
+    }
 }
 
-function dog_update(entity, dt)
+function dog_update(dt)
 {
-    var previousPosition = entity.position;
-    var newPosition = entity.position.add(entity.pushBackVel.mul(dt));
-
-    var dir = new Vector2.ZERO;
-
-    if (GamePad.isDown(index, Button.LEFT_THUMBSTICK_RIGHT)) dir.x += 1;
-    if (GamePad.isDown(index, Button.LEFT_THUMBSTICK_LEFT)) dir.x -= 1;
-    if (GamePad.isDown(index, Button.LEFT_THUMBSTICK_UP)) dir.y -= 1;
-    if (GamePad.isDown(index, Button.LEFT_THUMBSTICK_DOWN)) dir.y += 1;
-
-    if (dir.lengthSquared() == 0)
+    for (var i = 0; i < dogs.length; ++i)
     {
-        entity.spriteAnim.play("idle_" + entity.dir);
-    }
-    else
-    {
-        dir = dir.normalize();
-        if (dir.y > .7) entity.dir = 's';
-        else if (dir.x > .7) entity.dir = 'e';
-        else if (dir.x < .7) entity.dir = 'w';
-        else entity.dir = 'n';
-        entity.spriteAnim.play("run_" + entity.dir);
+        var dog = dogs[i];
 
-        newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
+        var previousPosition = dog.position;
+        var newPosition = dog.position.add(dog.pushBackVel.mul(dt));
+
+        var dir = GamePad.getLeftThumb(i);
+
+        if (GamePad.isDown(i, Button.DPAD_RIGHT)) dir.x += 1;
+        if (GamePad.isDown(i, Button.DPAD_LEFT))  dir.x -= 1;
+        if (GamePad.isDown(i, Button.DPAD_UP))    dir.y -= 1;
+        if (GamePad.isDown(i, Button.DPAD_DOWN))  dir.y += 1;
+
+        if (dir.lengthSquared() == 0)
+        {
+            //dog.spriteAnim.play("idle_" + dog.dir);
+            dog.state = DOG_STATE_IDLE;
+        }
+        else
+        {
+            dir = dir.normalize();
+            if (dir.y > .7) dog.dir = 's';
+            else if (dir.x > .7) dog.dir = 'e';
+            else if (dir.x < .7) dog.dir = 'w';
+            else dog.dir = 'n';
+            //dog.spriteAnim.play("run_" + dog.dir);
+            dog.state = DOG_STATE_RUNNING;
+
+            newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
+        }
+
+        dog.position = newPosition;
     }
 }
