@@ -205,8 +205,6 @@ function sheep_kill(sheep)
     }
     sheep.dead = true;
 
-    print("focusable count = " + focussables.length + ", removing ", focussables.indexOf(sheep));
-
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
     renderables.splice(renderables.indexOf(sheep), 1);
