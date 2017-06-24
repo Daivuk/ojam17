@@ -24,7 +24,7 @@ function wolf_create(wolfPos)
         position: new Vector2(wolfPos),
         state: WOLF_STATE_IDLE,
         size: WOLF_SIZE,
-        target: null,
+        target: sheeps[0],
         renderFn: wolf_render,
     };
 
@@ -40,8 +40,9 @@ function wolf_spawn()
 {
     var wolfTryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * 15)
     var wolf = wolf_create(wolfTryPos)
+    wolfs.push(wolf);
+    pushers.push(wolf);
     renderables.push(wolf);
-
 }
 
 function wolfs_update(dt)
@@ -56,34 +57,32 @@ function wolfs_update(dt)
 function wolf_targetAcquisition(wolf, sheep)
 {
     var distance = Vector2.distance(sheep.position, wolf.position);
-    if (wolf.target == null)
+    var currentTargetDistance = Vector2.distance(wolf.target.position, wolf.position);
+    if (currentTargetDistance > distance)
     {
         wolf.target = sheep;
-        wolf.targetPosition = wolf.position.add(wolf.position.add(sheep.position));
-    }
-    var currentTargetDistance = Vector2.distance(wolf.target, wolf.position);
-    if (currentTargetDistance < distance)
-    {
-        wolf.target = sheep;
-        wolf.targetPosition = wolf.position.add(wolf.position.add(sheep.position));
     }
 }
 
 function wolf_moveToward(wolf, speed, dt)
 {
-    var distance = Vector2.distance(wolf.targetPosition, wolf.position);
+    var distance = Vector2.distance(wolf.target.position, wolf.position);
     if (distance > 0)
     {
-        distance -= speed * dt;
-        if (distance < 0) 
-        {
-            distance = 0;
-            wolf.position = tiledMap.collision(wolf.position, wolf.targetPosition, wolf.size);
-            return true;
-        }
-        var dir = wolf.targetPosition.sub(wolf.position).normalize();
-        wolf.position = tiledMap.collision(wolf.position, wolf.position.add(dir.mul(speed * dt)), wolf.size);
-        return distance <= TILE_SIZE * .25;
+        // use this block instead if you want collision on the wolves
+        // distance -= speed * dt;
+        // if (distance < 0) 
+        // {
+        //     distance = 0;
+        //     wolf.position = tiledMap.collision(wolf.position, wolf.target.position, wolf.size);
+        //     return true;
+        // }
+        // var dir = wolf.target.position.sub(wolf.position).normalize();
+        // wolf.position = tiledMap.collision(wolf.position, wolf.position.add(dir.mul(speed * dt)), wolf.size);
+        // return distance <= TILE_SIZE * .25;
+
+        var dir = wolf.target.position.sub(wolf.position).normalize();
+        wolf.position = wolf.position.add(dir.mul(speed * dt));
     }
     return true;
 }
@@ -94,6 +93,5 @@ function wolf_update(wolf, dt)
     {
         wolf_targetAcquisition(wolf, sheeps[i]);
     }    
-    print("Wolf Target " + wolf.targetPosition);
     wolf_moveToward(wolf, WOLF_SPEED, dt);
 }
