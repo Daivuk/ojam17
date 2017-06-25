@@ -17,9 +17,9 @@ ambSound.setVolume(.35);
 
 var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 0),
-    playSpriteAnim("dog.spriteanim", "idle_e", 1),
+    playSpriteAnim("dog.spriteanim", "idle_w", 1),
     playSpriteAnim("dog.spriteanim", "idle_e", 2),
-    playSpriteAnim("dog.spriteanim", "idle_e", 3)
+    playSpriteAnim("dog.spriteanim", "idle_w", 3)
 ];
 var gameOverWolfs = [
     playSpriteAnim("wolf.spriteanim", "eat_e", 0),
