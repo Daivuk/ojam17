@@ -177,6 +177,10 @@ function wolf_update(wolf, dt)
                             emitter.setRenderEnabled(false);
                             particles.push(emitter);
                             playSound("SFX_Dog_Growl_" + Random.randInt(1, 11) + ".wav");
+                            splat_spawn(
+                                Random.randVector2(
+                                    new Vector2(wolf.position.x - TILE_SIZE / 2, wolf.position.y - TILE_SIZE / 2),
+                                    new Vector2(wolf.position.x + TILE_SIZE / 2, wolf.position.y + TILE_SIZE / 2)));
                         }, 500 * (i + 1));
                     }
                     // print("Wolf is in attack mode!")

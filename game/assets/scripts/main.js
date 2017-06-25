@@ -35,6 +35,7 @@ function startGame()
     pusher_init();
     cloud_init();
     butterfly_init();
+    splat_init();
 
     menuMusic.stop();
     ambSound.play();
@@ -126,6 +127,7 @@ function update(dt)
                 // Non-important stuff update
                 clouds_update(dt);
                 butterflies_update(dt);
+                splat_update(dt);
             }
             break;
         }
@@ -244,7 +246,9 @@ function render()
             // Draw ground and grass first
             SpriteBatch.setBlend(BlendMode.OPAQUE);
             tiledMap.renderLayer(GROUND_LAYER);
+            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
             tiledMap.renderLayer(1);
+            splat_render();
             tiledMap.renderLayer(2);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
