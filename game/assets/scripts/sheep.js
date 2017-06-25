@@ -198,6 +198,23 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
     return true;
 }
 
+function sheep_kill_instantly(sheep)
+{
+    if (sheep.dead) {
+        return; 
+    }
+    sheep.dead = true;
+
+    pushers.splice(pushers.indexOf(sheep), 1);
+    focussables.splice(focussables.indexOf(sheep), 1);
+    renderables.splice(renderables.indexOf(sheep), 1);
+
+    defer(function()
+    {
+        sheeps.splice(sheeps.indexOf(sheep), 1);
+    });
+}
+
 function sheep_kill(sheep)
 {
     if (sheep.dead) {

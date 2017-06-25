@@ -151,7 +151,8 @@ function wolf_update(wolf, dt)
 
     var dir; 
 
-    if (wolf.stress < WOLF_STRESS_THRESHOLD)
+    if (wolf.stress < WOLF_STRESS_THRESHOLD ||
+        wolf.state == WOLF_STATE_ATTACKING)
     {
         switch (wolf.state) 
         {
@@ -166,17 +167,23 @@ function wolf_update(wolf, dt)
                 if (targetDistance <= KILL_DISTANCE)
                 {
                     wolf.state = WOLF_STATE_ATTACKING;
+                    wolf.spriteAnim.play("eat_" + wolf.dir);
+                    wolf.attackTime = 2;
                     // print("Wolf is in attack mode!")
                 }
                 break;
             case WOLF_STATE_ATTACKING:
-                sheep_kill(wolf.target);
-                wolf.state = WOLF_STATE_HUNTING;
+                wolf.attackTime -= dt;
+                if (wolf.attackTime <= 0)
+                {
+                    sheep_kill_instantly(wolf.target);
+                    wolf.state = WOLF_STATE_HUNTING;
+                    wolf.spriteAnim.play("run_" + wolf.dir);
+                }
                 break;
         }
         dir = wolf.target.position.sub(wolf.position).normalize()
     }
-
     else
     {
         wolf.wimperCoolDown -= dt;
@@ -186,8 +193,11 @@ function wolf_update(wolf, dt)
     }
     wolf.stress = Math.max(wolf.stress-(WOLF_STRESS_COOLDOWN_PER_SECOND*dt), WOLF_STRESS_MIN);
 
-    if (dir.x > .1) wolf.dir = 'e';
-    else if (dir.x < .1) wolf.dir = 'w';
+    if (wolf.state != WOLF_STATE_ATTACKING)
+    {
+        if (dir.x > .1) wolf.dir = 'e';
+        else if (dir.x < .1) wolf.dir = 'w';
 
-    wolf.spriteAnim.play("run_" + wolf.dir);
+        wolf.spriteAnim.play("run_" + wolf.dir);
+    }
 }
