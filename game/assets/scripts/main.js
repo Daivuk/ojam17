@@ -18,6 +18,10 @@ var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 2),
     playSpriteAnim("dog.spriteanim", "idle_e", 3)
 ];
+var gameOverWolfs = [
+    playSpriteAnim("wolf.spriteanim", "eat_e", 0),
+    playSpriteAnim("wolf.spriteanim", "eat_w", 1)
+];
 var activeDogs = [false, false, false, false];
 var menuBarkTimeouts = [0, 0, 0, 0];
 var startIn = 0;
@@ -96,6 +100,8 @@ function update(dt)
                         menuBarkTimeouts[i] = .4;
                     }
                 }
+                var buttonPressed = false;
+
                 APrevStates[i] = downState;
                 menuBarkTimeouts[i] -= dt;
                 if (GamePad.isDown(i, Button.START) && startIn == 0)
@@ -106,9 +112,14 @@ function update(dt)
                 if (GamePad.isDown(i, Button.B) && startIn == 0 && activeDogs[i] == true) 
                 {
                     activeDogs[i] = false;
+                    buttonPressed = true;
                 } 
-                if (GamePad.isDown(i, Button.X)) gameState = "settings"
-                if (GamePad.isDown(i, Button.B) && activeDogs[i] != true); //do something to quit game (i dunno how do)
+                // if (GamePad.isDown(i, Button.X)) gameState = "settings"
+                // if (GamePad.isDown(i, Button.B) && !activeDogs[i] && !buttonPressed) 
+                // {
+                //     gameState = "quitMenu";
+                //     // quit();
+                // }
             } 
             break;
         }
@@ -131,6 +142,9 @@ function update(dt)
                 butterflies_update(dt);
                 splat_update(dt);
             }
+                if (sheeps.length == 0) {
+                    gameState = "gameOver";
+                }
             break;
         }
         case "settings":
@@ -147,29 +161,88 @@ function update(dt)
 
             for (var i = 0; i < 4; i++)
             {
+                var leftThumbLeft = GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT);
+                var leftThumbRight = GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT);
+
+                var thumbPressed = false; 
                 //Seems awfully inefficient, not sure if it can be done better though. 
                 switch (difficultySettings) 
+                {
+                    case "normal":
+                    if (leftThumbRight && !thumbPressed) 
+                    {
+                        difficultySettings = "hard";
+                        thumbPressed = true; 
+                    }
+                    break;
+
+                    case "hard":
+                    if (leftThumbLeft && !thumbPressed) 
+                    {
+                        difficultySettings = "normal";
+                        thumbPressed = true; 
+                    }
+                    else if (leftThumbRight && !thumbPressed) 
+                    {
+                        difficultySettings = "insane";
+                        thumbPressed = true; 
+                    }
+                    break;
+
+                    case "insane":
+                    if (leftThumbLeft && !thumbPressed) 
+                    {
+                        difficultySettings = "hard";
+                        thumbPressed = true; 
+                    }
+                    else if (leftThumbRight && !thumbPressed) 
+                    {
+                        difficultySettings = "nope";
+                        thumbPressed = true; 
+                    }
+                    break;
+
+                    case "nope":
+                    if (leftThumbLeft && !thumbPressed) 
+                    {
+                        difficultySettings = "insane";
+                        thumbPressed = true; 
+                    }
+                    break;
+                }
+
+                // setTimeout(function() {
+                //     thumbPressed = false; 
+                // }, 3000);
+
+                if (GamePad.isDown(i, Button.B)) 
+                {
+                    gameState = "startMenu";
+                    buttonPressed = true; 
+                }
+            }
+            break; 
+        }
+        case "quitMenu":
+        {
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
             {
-                case "normal":
-                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "hard";
-                break;
-
-                case "hard":
-                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "normal";
-                else if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "insane";
-                break;
-
-                case "insane":
-                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "hard";
-                else if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "nope";
-                break;
-
-                case "nope":
-                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "insane";
-                break; 
+                var menuSheep = menuSheeps[i];
+                menuSheep.xPos += dt * 100;
+                if (menuSheep.xPos > resolution.x + 100)
+                {
+                    menuSheep.xPos -= resolution.x + 200;
+                }
             }
-                if (GamePad.isDown(i, Button.B)) gameState = "startMenu";
-            }
+
+            if (GamePad.isDown(i, Button.A)) quit();
+            if (GamePad.isDown(i, Button.Y)) gameState = "startMenu";
+
+            break;
+        }
+        case "gameOver":
+        {
+            break; 
         }
     }
 }
@@ -191,6 +264,15 @@ function drawMenuDog(position, index)
         SpriteBatch.drawSpriteAnim(spriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
     }
     SpriteBatch.drawSpriteWithUVs(dogOverlayTexture, position, spriteAnim.getUVs(), DOG_COLORS[index].mul(multiplier), 0, scale, spriteAnim.getOrigin());
+}
+
+function drawGameOverWolf(position, index)
+{
+    var wolfSpriteAnim = gameOverWolfs[index];
+    var scale = 10;
+
+    SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
+
 }
 
 function render()
@@ -316,6 +398,50 @@ function render()
             }
             
             SpriteBatch.end();
+            break;
+        }
+        case "quitMenu":
+        {
+            SpriteBatch.begin();
+            SpriteBatch.setFilter(FilterMode.NEAREST);
+            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
+
+            SpriteBatch.drawText(menuFont, "^666Are you sure you want to quit", 
+            new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
+            SpriteBatch.drawText(menuFont, "^090A ^666yes ^880Y ^666no", 
+            new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
+
+            drawMenuDog(resolution.div(4), 0);
+            drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4), 1);
+            drawMenuDog(new Vector2(resolution.x / 4, resolution.y / 4 * 3), 2);
+            drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4 * 3), 3);
+
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+            {
+                var menuSheep = menuSheeps[i];
+                SpriteBatch.drawSpriteAnim(
+                    menuSheep.spriteAnim, 
+                    new Vector2(menuSheep.xPos, resolution.y - 24), Color.WHITE, 0, 2);
+            }
+
+            SpriteBatch.end();
+            break;  
+        }
+        case "gameOver":
+        {
+            SpriteBatch.begin();
+            SpriteBatch.setFilter(FilterMode.NEAREST);
+            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
+
+             SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
+                new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
+            SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
+                new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
+
+            drawGameOverWolf(new Vector2(resolution.x / 4, resolution.y / 4 * 3), 0);
+            drawGameOverWolf(new Vector2(resolution.x / 4 * 3, resolution.y / 4 * 3), 1);
+
+            SpriteBatch.end(); 
             break;
         }
     }
