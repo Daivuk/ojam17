@@ -185,7 +185,8 @@ function update(dt)
                     activeDogs[i] = true;
                     if (menuBarkTimeouts[i] <= 0)
                     {
-                        playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+                        //playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+                        playSound("bark.wav", 1, 0, 1);
                         menuBarkTimeouts[i] = .4;
                     }
                 }

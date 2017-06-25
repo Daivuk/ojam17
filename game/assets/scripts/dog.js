@@ -92,7 +92,8 @@ function dog_update(dog, dt) {
     {
         if (dog.barkSoundCoolDown < 0)
         {
-            playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+            //playSound("bark.wav", 1, 0, 1 + Random.randNumber(-.1, .1));
+            playSound("bark.wav", 1, 0, 1);
             dog.barkSoundCoolDown = .4;
         /*    var emitter = emitParticles(getParticleSystem("blood.pfx"), new Vector3(dog.position.x, dog.position.y, 0));
             emitter.setRenderEnabled(false);
