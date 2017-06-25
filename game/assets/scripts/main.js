@@ -6,6 +6,7 @@ var gameState = "startMenu";
 var difficultySettings = "normal";
 var menuFont = getFont("main.fntempty.fnt");
 var menuFontBig = getFont("mainBig.fntempty.fnt");
+var menuFontSml = getFont("mainSmall.fntempty.fnt");
 var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
 var ambSound = createSoundInstance("amb_medow_01.wav");
 var sheepIconTexture = getTexture("sheepIcon.png", false);
@@ -16,9 +17,9 @@ ambSound.setVolume(.35);
 
 var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 0),
-    playSpriteAnim("dog.spriteanim", "idle_e", 1),
+    playSpriteAnim("dog.spriteanim", "idle_w", 1),
     playSpriteAnim("dog.spriteanim", "idle_e", 2),
-    playSpriteAnim("dog.spriteanim", "idle_e", 3)
+    playSpriteAnim("dog.spriteanim", "idle_w", 3)
 ];
 var gameOverWolfs = [
     playSpriteAnim("wolf.spriteanim", "eat_e", 0),
@@ -122,6 +123,7 @@ function goStartMenu()
 }
 
 goStartMenu();
+//goGameOver();
 
 function update(dt)
 {
@@ -337,7 +339,7 @@ function drawMenuDog(position, index)
 function drawGameOverWolf(position, index)
 {
     var wolfSpriteAnim = gameOverWolfs[index];
-    var scale = 8;
+    var scale = 6;
     var multiplier = 1; 
 
     SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
@@ -426,14 +428,13 @@ function render()
 
             SpriteBatch.end();
 
-        //    SpriteBatch.begin(); 
-       /*     SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
-            new Vector2(0, 10), Vector2.TOP_LEFT);*/
-       /*     for (var i = 0; i < sheeps.length; ++i)
-            {
-                SpriteBatch.drawSprite(sheepIconTexture, new Vector2(i * 36 + 18, 18));
-            }
-            SpriteBatch.end();*/
+            SpriteBatch.begin(); 
+            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, new Vector2(0, 10), Vector2.TOP_LEFT);
+            // for (var i = 0; i < sheeps.length; ++i)
+            // {
+            //     SpriteBatch.drawSprite(sheepIconTexture, new Vector2(i * 36 + 18, 18));
+            // }
+            SpriteBatch.end();
             break; 
         }
         case "settings":
@@ -509,13 +510,58 @@ function render()
             SpriteBatch.setFilter(FilterMode.NEAREST);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
-            SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
-                new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
-            SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
-                new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
+            drawGameOverWolf(new Vector2(resolution.x / 8, resolution.y / 8 * 7), 0);
+            drawGameOverWolf(new Vector2(resolution.x / 8 * 7, resolution.y / 8 * 7), 1);
 
-            drawGameOverWolf(new Vector2(resolution.x / 4, resolution.y / 4 * 3), 0);
-            drawGameOverWolf(new Vector2(resolution.x / 4 * 3, resolution.y / 4 * 3), 1);
+            SpriteBatch.drawText(menuFont, "^600What is done cannot be undone!", 
+                new Vector2(resolution.x / 2, 10), Vector2.TOP);
+
+            SpriteBatch.drawText(menuFontBig, "^900GAME OVER!", 
+                new Vector2(resolution.x / 2, 60), Vector2.TOP);
+
+            SpriteBatch.drawText(menuFont, "^999credits", 
+                new Vector2(resolution.x / 2, 180), Vector2.TOP);
+
+            SpriteBatch.drawText(menuFont, "^999Programmers", 
+                new Vector2(resolution.x / 16 * 7.8, 240), Vector2.TOP_RIGHT);
+
+            SpriteBatch.drawText(menuFontSml, "^777Mathieu Andre Chiasson", 
+                new Vector2(resolution.x / 16 * 7.8, 280), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Isaac Neumann", 
+                new Vector2(resolution.x / 16 * 7.8, 300), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777David St Louis", 
+                new Vector2(resolution.x / 16 * 7.8, 320), Vector2.TOP_RIGHT);
+
+            SpriteBatch.drawText(menuFont, "^999Pixel Art", 
+                new Vector2(resolution.x / 16 * 7.8, 360), Vector2.TOP_RIGHT);
+
+            SpriteBatch.drawText(menuFontSml, "^777Don Dimanlig", 
+                new Vector2(resolution.x / 16 * 7.8, 400), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Alice de Lemos", 
+                new Vector2(resolution.x / 16 * 7.8, 420), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Gio Manning", 
+                new Vector2(resolution.x / 16 * 7.8, 440), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Meng Ting Ma", 
+                new Vector2(resolution.x / 16 * 7.8, 460), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Megan Winters", 
+                new Vector2(resolution.x / 16 * 7.8, 480), Vector2.TOP_RIGHT);
+            SpriteBatch.drawText(menuFontSml, "^777Matt Winters", 
+                new Vector2(resolution.x / 16 * 7.8, 500), Vector2.TOP_RIGHT);
+
+            SpriteBatch.drawText(menuFont, "^999Sound Design", 
+                new Vector2(resolution.x / 16 * 8.2, 240), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^777Nathaniel Vasconcelos", 
+                new Vector2(resolution.x / 16 * 8.2, 280), Vector2.TOP_LEFT);
+                
+
+            SpriteBatch.drawText(menuFont, "^999Music", 
+                new Vector2(resolution.x / 16 * 8.2, 360), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^777Joel Heidinger", 
+                new Vector2(resolution.x / 16 * 8.2, 400), Vector2.TOP_LEFT);
+
+            SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
+                new Vector2(resolution.x / 2, resolution.y - 10), Vector2.BOTTOM);
+
 
             SpriteBatch.end(); 
             break;

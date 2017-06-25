@@ -16,6 +16,7 @@ Ottawa Game Jam 2017
 - Matt Winters
 
 ## Audio
-
+- Nathaniel Vasconcelos
 
 ## Music
+- Joel Heidinger
