@@ -10,7 +10,7 @@ var WOLF_EATING_TIME = 3000;
 var KILL_DISTANCE;
 
 var WOLF_SPAWN_DISTANCE;
-var WOLF_SPAWN_TIME = 15;
+var WOLF_SPAWN_TIME = 10;
 var WOLF_WIMP_COOLDOWN_RESET = 2;
 var WOLF_STRESS_MIN = 0;
 var WOLF_STRESS_MAX = 15;
@@ -80,7 +80,7 @@ function wolfs_update(dt)
         if (wolfNextRespawn < 0)
         {
             wolf_spawn();
-            wolfNextRespawn = WOLF_SPAWN_TIME;
+            wolfNextRespawn = WOLF_SPAWN_TIME; 
         }
     }
     for (var i = 0; i < wolfs.length; ++i)
@@ -159,6 +159,7 @@ function wolf_calculateStress(wolf, dt)
 
 function wolf_update(wolf, dt)
 {
+    WOLF_SPAWN_TIME = Math.max(10 - ((20 - sheeps.length)/2), 1);
     wolf_calculateStress(wolf, dt);
 
     if (wolf.stress > WOLF_STRESS_THRESHOLD &&

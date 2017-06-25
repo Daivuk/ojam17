@@ -86,7 +86,7 @@ function sheep_spawn()
     var sheep = sheep_create(tryPos);
     sheeps.push(sheep);
     pushers.push(sheep);
-    focussables.push(sheep);
+    // focussables.push(sheep);
     renderables.push(sheep);
 }
 
