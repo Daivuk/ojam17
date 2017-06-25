@@ -1,6 +1,6 @@
 var CLOUD_COUNT = 20;
 var WIND_DIRECTION = new Vector2(1, -.7);
-var CLOUD_COLOR = new Color(.15);
+var CLOUD_COLOR = new Color(.25);
 var CLOUD_SPEED = 0;
 
 var cloudTexture = getTexture("cloud.png");

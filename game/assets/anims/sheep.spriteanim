@@ -37,4 +37,10 @@
     <frame id="24" flipH="true"/>
     <frame id="25" flipH="true"/>
   </anim>
+  <anim name="dead_e" fps="1" loop="true">
+    <frame id="26" flipH="false"/>
+  </anim>
+  <anim name="dead_w" fps="1" loop="true">
+    <frame id="26" flipH="true"/>
+  </anim>
 </sheet>

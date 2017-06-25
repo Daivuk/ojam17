@@ -12,6 +12,7 @@ var SHEEP_WANDER_SPEED;
 var SHEEP_WAIT_TIMES = [1, 3];
 var SHEEP_HUNGER_SPEED = 1 / 30;
 var SHEEP_HUNGER_THRESHOLD = .5;
+var SHEEP_HUNGER_BUBBLE_THRESHOLD = .4;
 var SHEEP_EAT_SPEED = .25;
 var SHEEP_EAT_VALUE = 3;
 var SHEEP_MOVE_TIMEOUT = 10;
@@ -23,6 +24,8 @@ var SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND = 5.0;
 var SHEEP_STRESS_COOLDOWN_PER_SECOND = SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * 0.75;
 
 var sheeps = [];
+
+var hungryBubbleTexture = getTexture("hungryBubble.png", false);
 
 function sheep_init()
 {
@@ -55,26 +58,16 @@ function sheep_create(pos)
 
 function sheep_render(sheep)
 {
-    var renderPos = new Vector2(sheep.position.x, sheep.position.y/* - sheep.bounceAnim.get()*/);
-    var color = Color.WHITE;
-    if (sheep.dead)
+    SpriteBatch.drawSpriteAnim(sheep.spriteAnim, sheep.position);
+
+    if (sheep.hunger < SHEEP_HUNGER_BUBBLE_THRESHOLD &&
+        sheep.state != SHEEP_STATE_EATING &&
+        !sheep.dead)
     {
-        var alpha = sheep.deadAlpha.get();
-        color = new Color(alpha, alpha, alpha, alpha);
+        SpriteBatch.drawSprite(hungryBubbleTexture, new Vector2(
+            sheep.position.x, sheep.position.y - 40));
     }
 
-    SpriteBatch.drawSpriteAnim(sheep.spriteAnim, renderPos);
-/*
-    SpriteBatch.drawSprite(null, renderPos, new Color(color.r * .9, color.g * .9, color.b * .9, color.a), 0, 20);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), color, 0, 14);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6, -6)), new Color(1, .8, .5), 0, 10);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6 - 2)), Color.BLACK, 0, 2);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6 - 2)), Color.BLACK, 0, 2);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 - 2, -6)), Color.BLACK, 0, 2);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(-6 + 2, -6)), Color.BLACK, 0, 2);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(- 5, 10)), Color.BLACK, 0, 4);
-    SpriteBatch.drawSprite(null, renderPos.add(new Vector2(+ 5, 10)), Color.BLACK, 0, 4);
-*/
     //SpriteBatch.drawRect(null, new Rect(sheep.position.x - 10, sheep.position.y + 14, 20 * sheep.hunger, 3), new Color(1 - sheep.hunger, sheep.hunger, 0));
 }
 
