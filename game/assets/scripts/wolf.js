@@ -162,7 +162,7 @@ function wolf_calculateStress(wolf, dt)
 function wolf_update(wolf, dt)
 {
     WOLF_SPAWN_TIME = Math.max(3 - ((20 - sheeps.length)/5), 0.5);
-    WOLF_SPEED = 75 + ((20 - sheeps.length)*5);
+    WOLF_SPEED = 75 + ((START_SHEEP - sheeps.length)*5);
     wolf_calculateStress(wolf, dt);
 
     if (wolf.stress > WOLF_STRESS_THRESHOLD &&
