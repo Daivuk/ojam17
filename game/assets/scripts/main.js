@@ -16,6 +16,8 @@ menuMusic.setVolume(.35);
 ambSound.setLoop(true);
 ambSound.setVolume(.35);
 
+var gameOverExitAvailabilityTimer;
+
 var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 0),
     playSpriteAnim("dog.spriteanim", "idle_w", 1),
@@ -81,6 +83,7 @@ var startMenuAnims = [];
 function goGameOver()
 {
     gameState = "gameOver";
+    gameOverExitAvailabilityTimer = 3;
 
     sheeps = [];
     dogs = [];
@@ -140,8 +143,8 @@ function goStartMenu()
     }
 }
 
-goStartMenu();
-//goGameOver();
+//goStartMenu();
+goGameOver();
 
 function update(dt)
 {
@@ -328,9 +331,13 @@ function update(dt)
         }
         case "gameOver":
         {
-            for (var i = 0; i < 4; i++)
+            gameOverExitAvailabilityTimer -= dt;
+            if (gameOverExitAvailabilityTimer < 0)
             {
-                if (GamePad.isDown(i, Button.A)) goStartMenu();
+                for (var i = 0; i < 4; i++)
+                {
+                    if (GamePad.isDown(i, Button.A)) goStartMenu();
+                }
             }
             break; 
         }
@@ -640,9 +647,11 @@ function render()
             SpriteBatch.drawText(menuFont, "^990" + timeString, 
                 new Vector2(resolution.x / 2, resolution.y - 100), Vector2.BOTTOM);
 
-            SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
-                new Vector2(resolution.x / 2, resolution.y - 10), Vector2.BOTTOM);
-
+            if (gameOverExitAvailabilityTimer < 0)
+            {
+                SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
+                    new Vector2(resolution.x / 2, resolution.y - 10), Vector2.BOTTOM);
+            }
 
             SpriteBatch.end(); 
             break;
