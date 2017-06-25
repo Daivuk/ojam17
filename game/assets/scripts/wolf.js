@@ -29,7 +29,7 @@ function wolf_init()
     WOLF_SIZE = TILE_SIZE * 0.25; 
     KILL_DISTANCE = SHEEP_SIZE * 3.0; 
     WOLF_SPAWN_DISTANCE = TILE_SIZE * MAP_SIZE * 0.5;
-    WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 4.0;
+    WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 8.0;
 
     for (var i = 0; i < WOLF_AMOUNT; i++)
     {
