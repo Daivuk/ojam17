@@ -66,9 +66,9 @@ function sheep_render(sheep)
 {
     SpriteBatch.drawSpriteAnim(sheep.spriteAnim, sheep.position);
 
-    if (sheep.hunger < SHEEP_HUNGER_BUBBLE_THRESHOLD &&
-        sheep.state != SHEEP_STATE_EATING &&
-        sheep.state != SHEEP_STATE_DEAD) 
+    if (sheep_isAlive(sheep) &&
+        sheep.hunger < SHEEP_HUNGER_BUBBLE_THRESHOLD &&
+        sheep.state != SHEEP_STATE_EATING) 
     {
         SpriteBatch.drawSprite(hungryBubbleTexture, new Vector2(
             sheep.position.x, sheep.position.y - 40));
