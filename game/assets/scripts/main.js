@@ -33,6 +33,7 @@ function startGame()
     dog_init();
     wolf_init();
     pusher_init();
+    cloud_init();
 
     menuMusic.stop();
     ambSound.play();
@@ -120,6 +121,9 @@ function update(dt)
                 pushers_update(dt);
         
                 camera_update(dt);
+
+                // Non-important stuff update
+                clouds_update(dt);
             }
             break;
         }
@@ -249,6 +253,11 @@ function render()
                 var entity = renderables[i];
                 entity.renderFn(entity);
             }
+
+            // Clouds
+            SpriteBatch.setFilter(FilterMode.LINEAR);
+            clouds_render();
+            SpriteBatch.setFilter(FilterMode.NEAREST);
 
             SpriteBatch.end();
 
