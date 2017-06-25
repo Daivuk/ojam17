@@ -429,7 +429,8 @@ function render()
             SpriteBatch.end();
 
             SpriteBatch.begin(); 
-            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, new Vector2(0, 10), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^666 Sheep Remaining " + sheeps.length, new Vector2(0, 10), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^666 Wolf Count " + wolfs.length, new Vector2(700, 10), Vector2.TOP_LEFT);
             // for (var i = 0; i < sheeps.length; ++i)
             // {
             //     SpriteBatch.drawSprite(sheepIconTexture, new Vector2(i * 36 + 18, 18));
