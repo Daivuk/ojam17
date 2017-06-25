@@ -44,7 +44,7 @@ function wolf_create(wolfPos)
         size: WOLF_SIZE,
         stress: WOLF_STRESS_MIN,
         target: sheeps[0],
-        retreatPosition: MAP_CENTER,
+        retreatPosition: new Vector2(0,0),
         wimperCoolDown: 0,
         renderFn: wolf_render,
         fearFactor: 10
@@ -63,7 +63,7 @@ function wolf_render(wolf)
 
 function wolf_spawn() 
 {
-    var wolfTryPos = Random.randCircleEdge(MAP_CENTER, TILE_SIZE * MAP_SIZE)
+    var wolfTryPos = Random.randCircleEdge(MAP_CENTER, TILE_SIZE * MAP_SIZE *0.5)
     var wolf = wolf_create(wolfTryPos)
     wolfs.push(wolf);
     pushers.push(wolf);
@@ -115,11 +115,13 @@ function wolf_moveToward(wolf, targetPosition, speed, dt)
         if (distance < 0) 
         {
             distance = 0;
-            wolf.position = tiledMap.collision(wolf.position, targetPosition, wolf.size);
+            wolf.position = targetPosition;
             return true;
         }
         var dir = targetPosition.sub(wolf.position).normalize();
         wolf.position = wolf.position.add(dir.mul(speed * dt));
+        if (dir.x > .1) wolf.spriteAnim.play("run_e");
+        else if (dir.x < -.1) wolf.spriteAnim.play("run_w");
     }
     return true;
 }
@@ -139,8 +141,10 @@ function wolf_calculateStress(wolf, dt)
 
             // running away 1000 miles away from the dog. Wolf will most likely never reach this destination because the wolf
             // will turn around as soon as the wolf's stress level comes back to normal.
-            var factor = new Vector2(MAP_SIZE * TILE_SIZE);
-            wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position))); 
+            var factor = new Vector2(TILE_SIZE);
+            wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
+
+            print("retreat:" + wolf.retreatPosition.x + "," + wolf.retreatPosition.y);
         }
     }
 }
@@ -184,9 +188,6 @@ function wolf_update(wolf, dt)
                     }, 500 * (i + 1));
                 }
             }
-            var dir = wolf.target.position.sub(wolf.position).normalize();
-            if (dir.x > .1) wolf.spriteAnim.play("run_e");
-            else if (dir.x < -.1) wolf.spriteAnim.play("run_w");
             break;
         case WOLF_STATE_ATTACKING:
             wolf.attackTime -= dt;
@@ -205,9 +206,6 @@ function wolf_update(wolf, dt)
             }
             wolf.wimperCoolDown -= dt;
             wolf_moveToward(wolf, wolf.retreatPosition, WOLF_STRESS_RUN_SPEED, dt);
-            var dir = wolf.retreatPosition.sub(wolf.position).normalize();
-            if (dir.x > 0.7) wolf.spriteAnim.play("run_e");
-            if (dir.x < 0.7) wolf.spriteAnim.play("run_w");
             if (wolf.stress <= WOLF_STRESS_THRESHOLD && sheeps.length > 0)
             {
                 wolf.state = WOLF_STATE_HUNTING;
