@@ -9,6 +9,7 @@ var WOLF_STATE_HUNTING = 2;
 var WOLF_WAIT_TIME = 3000;
 var KILL_DISTANCE;
 
+var WOLF_SPAWN_TIME = 15;
 var WOLF_WIMP_COOLDOWN_RESET = 2;
 var WOLF_STRESS_MIN = 0;
 var WOLF_STRESS_MAX = 15;
@@ -18,6 +19,7 @@ var WOLF_STRESS_RANGE_CONTRIB_PER_SECOND = 2.0;
 var WOLF_STRESS_COOLDOWN_PER_SECOND = WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * 0.15
 
 var wolfs = [];
+var wolfNextRespawn = WOLF_SPAWN_TIME;
 
 function wolf_init() 
 {
@@ -66,6 +68,15 @@ function wolf_spawn()
 
 function wolfs_update(dt)
 {
+    if (sheeps.length > 0)
+    {
+        wolfNextRespawn -= dt;
+        if (wolfNextRespawn < 0)
+        {
+            wolf_spawn();
+            wolfNextRespawn = WOLF_SPAWN_TIME;
+        }
+    }
     for (var i = 0; i < wolfs.length; ++i)
     {
         var wolf = wolfs[i];
