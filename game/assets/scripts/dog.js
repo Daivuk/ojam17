@@ -39,7 +39,11 @@ function dog_init()
         {
             var dog = {
                 index: i,
-                position: new Vector2(Random.randCircleEdge(MAP_CENTER, TILE_SIZE * 3)),
+                position: 
+                    i == 0 ? MAP_CENTER.add(new Vector2(-TILE_SIZE * 2, -TILE_SIZE * 2)) :
+                    i == 1 ? MAP_CENTER.add(new Vector2(TILE_SIZE * 2, -TILE_SIZE * 2)) :
+                    i == 2 ? MAP_CENTER.add(new Vector2(-TILE_SIZE * 2, TILE_SIZE * 2)) :
+                    MAP_CENTER.add(new Vector2(TILE_SIZE * 2, TILE_SIZE * 2)),
                 dir: "e", // we start facing east.
                 state: DOG_STATE_IDLE,
                 size: DOG_SIZE,
