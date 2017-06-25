@@ -92,12 +92,11 @@ function wolfs_update(dt)
 
 function wolf_targetAcquisition(wolf, sheep)
 {
-    if (!sheep_isAlive(sheep)) return; // Shoudln't happen, but just in case.
-  
-    if (wolf.target == null || sheep_isAlive(wolf.target)) // if the target was killed by another sheep.
+    if (!sheep || !sheep_isAlive(sheep)) return;
+    if (!wolf.target)
     {
-        wolf.target = sheep; 
-        return; 
+        wolf.target = sheep;
+        return;
     }
 
     var distance = Vector2.distance(sheep.position, wolf.position);
@@ -170,10 +169,16 @@ function wolf_update(wolf, dt)
     switch (wolf.state) 
     {
         case WOLF_STATE_HUNTING:
+            if (wolf.target && !sheep_isAlive(wolf.target)) // If the target was killed by another wolf
+            {
+                wolf.target = null; // We need to redo the aquisition
+            }
+            // Make sure we have to closest sheep
             for (var i = 0; i < sheeps.length; i++) 
             {
                 wolf_targetAcquisition(wolf, sheeps[i]);
             }
+            if (!wolf.target) break;
             wolf_moveToward(wolf, wolf.target.position, WOLF_SPEED, dt);
             var targetDistance = +Vector2.distance(wolf.target.position, wolf.position);
             if (targetDistance <= KILL_DISTANCE) 
@@ -195,7 +200,7 @@ function wolf_update(wolf, dt)
                             Random.randVector2(
                                 new Vector2(wolf.position.x - TILE_SIZE / 2, wolf.position.y - TILE_SIZE / 2),
                                 new Vector2(wolf.position.x + TILE_SIZE / 2, wolf.position.y + TILE_SIZE / 2)));
-                    }, 500 * (i + 1));
+                    }, 500 * (i));
                 }
             }
             break;
@@ -203,7 +208,7 @@ function wolf_update(wolf, dt)
             wolf.attackTime -= dt;
             if (wolf.attackTime <= 0) 
             {
-                sheep_kill_instantly(wolf.target);
+                if (wolf.target) sheep_kill_instantly(wolf.target);
                 wolf.state = WOLF_STATE_HUNTING;
                 wolf.spriteAnim.play("run_" + wolf.dir);
             }
