@@ -1,5 +1,4 @@
 var WOLF_AMOUNT = 1;
-var WOLF_AMOUNT = 3;
 var WOLF_SIZE;
 var WOLF_SPEED = 75; 
 
@@ -10,12 +9,13 @@ var WOLF_STATE_RETREAT = 3;
 var WOLF_EATING_TIME = 3000;
 var KILL_DISTANCE;
 
-var WOLF_SPAWN_TIME = 15;
+var WOLF_SPAWN_DISTANCE;
+var WOLF_SPAWN_TIME = 150;
 var WOLF_WIMP_COOLDOWN_RESET = 2;
 var WOLF_STRESS_MIN = 0;
 var WOLF_STRESS_MAX = 15;
 var WOLF_STRESS_THRESHOLD = 10.0;
-var WOLF_STRESS_RUN_SPEED = 2.0;
+var WOLF_STRESS_RUN_SPEED = 150;
 var WOLF_STRESS_DOG_PROXIMITY_RANGE;
 var WOLF_STRESS_RANGE_CONTRIB_PER_SECOND = 2.0;
 var WOLF_STRESS_COOLDOWN_PER_SECOND = WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * 0.15
@@ -27,6 +27,7 @@ function wolf_init()
 {
     WOLF_SIZE = TILE_SIZE * 0.25; 
     KILL_DISTANCE = SHEEP_SIZE * 3.0; 
+    WOLF_SPAWN_DISTANCE = TILE_SIZE * MAP_SIZE * 0.5;
     WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 4.0;
 
     for (var i = 0; i < WOLF_AMOUNT; i++)
@@ -63,7 +64,7 @@ function wolf_render(wolf)
 
 function wolf_spawn() 
 {
-    var wolfTryPos = Random.randCircleEdge(MAP_CENTER, TILE_SIZE * MAP_SIZE *0.5)
+    var wolfTryPos = Random.randCircleEdge(MAP_CENTER, WOLF_SPAWN_DISTANCE);
     var wolf = wolf_create(wolfTryPos)
     wolfs.push(wolf);
     pushers.push(wolf);
@@ -143,8 +144,6 @@ function wolf_calculateStress(wolf, dt)
             // will turn around as soon as the wolf's stress level comes back to normal.
             var factor = new Vector2(TILE_SIZE);
             wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
-
-            print("retreat:" + wolf.retreatPosition.x + "," + wolf.retreatPosition.y);
         }
     }
 }
