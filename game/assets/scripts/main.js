@@ -1,3 +1,5 @@
+var START_IN = 1; // TODO set this value to 3 when we're done.
+
 var resolution;
 var renderables = [];
 var gameState = "startMenu";
@@ -98,7 +100,7 @@ function update(dt)
                 menuBarkTimeouts[i] -= dt;
                 if (GamePad.isDown(i, Button.START) && startIn == 0)
                 {
-                    startIn = 3;
+                    startIn = START_IN;
                 }
 
                 if (GamePad.isDown(i, Button.B) && startIn == 0 && activeDogs[i] == true) 
