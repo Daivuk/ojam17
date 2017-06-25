@@ -26,7 +26,7 @@ var wolfNextRespawn = WOLF_SPAWN_TIME;
 function wolf_init() 
 {
     WOLF_SIZE = TILE_SIZE * 0.25; 
-    KILL_DISTANCE = SHEEP_SIZE * 1.5; 
+    KILL_DISTANCE = SHEEP_SIZE * 3.0; 
     WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 4.0;
 
     for (var i = 0; i < WOLF_AMOUNT; i++)
@@ -154,8 +154,6 @@ function wolf_update(wolf, dt)
         wolf.state = WOLF_STATE_RETREAT;
     }
 
-    var dir; 
-
     switch (wolf.state) 
     {
         case WOLF_STATE_HUNTING:
@@ -168,13 +166,27 @@ function wolf_update(wolf, dt)
             if (targetDistance <= KILL_DISTANCE) 
             {
                 wolf.state = WOLF_STATE_ATTACKING;
+                wolf.position = wolf.target.position;
                 wolf.spriteAnim.play("eat_" + wolf.dir);
                 wolf.attackTime = 2;
-                // print("Wolf is in attack mode!")
+                for (var i = 0; i < 3; ++i)
+                {
+                    setTimeout(function ()
+                    {
+                        var emitter = emitParticles(getParticleSystem("blood.pfx"), new Vector3(wolf.position.x, wolf.position.y, 0));
+                        emitter.setRenderEnabled(false);
+                        particles.push(emitter);
+                        playSound("SFX_Dog_Growl_" + Random.randInt(1, 11) + ".wav");
+                        splat_spawn(
+                            Random.randVector2(
+                                new Vector2(wolf.position.x - TILE_SIZE / 2, wolf.position.y - TILE_SIZE / 2),
+                                new Vector2(wolf.position.x + TILE_SIZE / 2, wolf.position.y + TILE_SIZE / 2)));
+                    }, 500 * (i + 1));
+                }
             }
-            dir = wolf.target.position.sub(wolf.position).normalize();
-            if (dir.x > 0.7) wolf.spriteAnim.play("run_e");
-            if (dir.x < 0.7) wolf.spriteAnim.play("run_w");
+            var dir = wolf.target.position.sub(wolf.position).normalize();
+            if (dir.x > .1) wolf.spriteAnim.play("run_e");
+            else if (dir.x < -.1) wolf.spriteAnim.play("run_w");
             break;
         case WOLF_STATE_ATTACKING:
             wolf.attackTime -= dt;
