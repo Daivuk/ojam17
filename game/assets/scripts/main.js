@@ -1,4 +1,4 @@
-var START_IN = 1; // TODO set this value to 3 when we're done.
+var START_IN = 3;
 
 var resolution;
 var renderables = [];
