@@ -53,6 +53,7 @@ function toHHMMSS(secondTotal) {
 
 function startGame()
 {
+    Random.randomizeSeed();
     gameState = "game";
 
     totalGameTime = 0;
