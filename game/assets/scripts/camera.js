@@ -8,8 +8,9 @@ var targetCameraZoom = 0;
 var focussables = [];
 
 var MAX_ZOOM = 3;
+var MIN_ZOOM = 1.5;
 var CAMERA_TRACK_SPEED = 2;
-var BORDER_SIZE = 1;
+var BORDER_SIZE = 2;
 
 function camera_init()
 {
@@ -46,6 +47,7 @@ function camera_update(dt)
     var zoomV = resolution.y / (max.y - min.y);
     targetCameraZoom = Math.min(zoomH, zoomV);
     targetCameraZoom = Math.min(MAX_ZOOM, targetCameraZoom);
+    targetCameraZoom = Math.max(MIN_ZOOM, targetCameraZoom);
 
     // Animate the camera toward target
     cameraPos = targetCameraPos.sub(cameraPos).mul(.3 + dt * CAMERA_TRACK_SPEED).add(cameraPos);

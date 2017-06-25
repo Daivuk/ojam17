@@ -41,7 +41,7 @@ function plane_update(dt)
     }
     else
     {
-        if (Random.randBool(dt * .01)) // 1 % chances per second, place every ~40 seconds
+        if (Random.randBool(dt * .005)) // 0.5 % chances per second, place every ~40 seconds
         {
             plane_spawn();
         }
@@ -52,6 +52,6 @@ function plane_render()
 {
     if (plane.active)
     {
-        SpriteBatch.drawSprite(planeTexture, plane.position, new Color(.25), 0, 3);
+        SpriteBatch.drawSprite(planeTexture, plane.position, new Color(.15), 0, 3);
     }
 }

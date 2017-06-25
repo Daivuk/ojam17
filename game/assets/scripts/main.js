@@ -10,6 +10,7 @@ var menuFontSml = getFont("mainSmall.fntempty.fnt");
 var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
 var ambSound = createSoundInstance("amb_medow_01.wav");
 var sheepIconTexture = getTexture("sheepIcon.png", false);
+var arrowTexture = getTexture("arrow.png", false);
 menuMusic.setLoop(true);
 menuMusic.setVolume(.35);
 ambSound.setLoop(true);
@@ -429,6 +430,60 @@ function render()
             SpriteBatch.end();
 
             SpriteBatch.begin(); 
+
+            // Dogs arrows
+            var EPSILON_SCREEN = 20;
+            for (var i = 0; i < dogs.length; ++i)
+            {
+                var dog = dogs[i];
+                if (!dog) continue;
+                var dogPos = new Vector3(dog.position).transform(cameraMatrix);
+                if (dogPos.x < EPSILON_SCREEN && dogPos.y < EPSILON_SCREEN)
+                {
+                    dogPos.x = EPSILON_SCREEN;
+                    dogPos.y = EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], -135, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.x > resolution.x - EPSILON_SCREEN && dogPos.y > resolution.y - EPSILON_SCREEN)
+                {
+                    dogPos.x = resolution.x - EPSILON_SCREEN;
+                    dogPos.y = resolution.y - EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], 45, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.x > resolution.x - EPSILON_SCREEN && dogPos.y < EPSILON_SCREEN)
+                {
+                    dogPos.x = resolution.x - EPSILON_SCREEN;
+                    dogPos.y = EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], -45, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.x < 0 && dogPos.y > resolution.y - EPSILON_SCREEN)
+                {
+                    dogPos.x = 0;
+                    dogPos.y = resolution.y - EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], 135, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.y < EPSILON_SCREEN)
+                {
+                    dogPos.y = EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], -90, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.x > resolution.x - EPSILON_SCREEN)
+                {
+                    dogPos.x = resolution.x - EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], 0, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.y > resolution.y - EPSILON_SCREEN)
+                {
+                    dogPos.y = resolution.y - EPSILON_SCREEN;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], 90, 3, new Vector2(1.25, 0.5));
+                }
+                else if (dogPos.x < 0)
+                {
+                    dogPos.x = 0;
+                    SpriteBatch.drawSprite(arrowTexture, dogPos, DOG_COLORS[i], 180, 3, new Vector2(1.25, 0.5));
+                }
+            }
+
             SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, new Vector2(0, 10), Vector2.TOP_LEFT);
             // for (var i = 0; i < sheeps.length; ++i)
             // {
