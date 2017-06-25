@@ -503,8 +503,8 @@ function render()
                 }
             }
 
-            SpriteBatch.drawText(menuFontSml, "^666 Sheep Remaining " + sheeps.length, new Vector2(0, 10), Vector2.TOP_LEFT);
-            SpriteBatch.drawText(menuFontSml, "^666 Wolf Count " + wolfs.length, new Vector2(700, 10), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^666 Sheep Remaining ^880" + sheeps.length, new Vector2(10, 10), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^666 Wolf Count ^880" + wolfs.length, new Vector2(resolution.x - 10, 10), Vector2.TOP_RIGHT);
 
             // for (var i = 0; i < sheeps.length; ++i)
             // {
