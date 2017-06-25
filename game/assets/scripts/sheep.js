@@ -221,7 +221,16 @@ function sheep_dyingFromHunger(sheep)
     index = pushers.indexOf(sheep);
     if (index >= 0) pushers.splice(index, 1);
 
+    index = focussables.indexOf(sheep);
+    if (index >= 0) focussables.splice(index, 1);
+
     sheep.spriteAnim.play("deadFromHunger_" + sheep.dir);
+
+    defer(function()
+    {
+        var index = sheeps.indexOf(sheep);
+        if (index >= 0) sheeps.splice(index, 1);
+    });
 }
 
 function sheep_kill_instantly(sheep)
