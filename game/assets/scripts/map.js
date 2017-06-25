@@ -5,6 +5,8 @@ var TILE_GRASS0 = 1;
 var TILE_GRASS1 = 2;
 var TILE_GRASS2 = 3;
 var TILE_GRASS3 = 4;
+var TILE_GRASS3_2 = 10;
+var TILE_GRASS3_3 = 11;
 
 var tiledMap;
 
@@ -46,7 +48,9 @@ function map_init()
                 grassLevel[y][x] = 1;
             else if (val == TILE_GRASS2)
                 grassLevel[y][x] = 2;
-            else if (val == TILE_GRASS3)
+            else if (val == TILE_GRASS3 ||
+                val == TILE_GRASS3_2 ||
+                val == TILE_GRASS3_3)
                 grassLevel[y][x] = 3;
             else
                 grassLevel[y][x] = 0;

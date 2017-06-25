@@ -145,7 +145,7 @@ function wolf_calculateStress(wolf, dt)
                 // running away 1000 miles away from the dog. Wolf will most likely never reach this destination because the wolf
                 // will turn around as soon as the wolf's stress level comes back to normal.
                 var factor = new Vector2(TILE_SIZE);
-                wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
+                wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(cameraPos)));
 
                 if (wolf.wimperCoolDown <= 0) 
                 {
