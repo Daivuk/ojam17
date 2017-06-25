@@ -29,12 +29,14 @@ var SHEEP_STRESS_RUN_SPEED = 2.0;
 var SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND = 5.0;
 var SHEEP_STRESS_COOLDOWN_PER_SECOND = SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * 0.75;
 
-var sheeps = [];
+var sheeps;
 
 var hungryBubbleTexture = getTexture("hungryBubble.png", false);
 
 function sheep_init()
 {
+    sheeps = []; 
+
     SHEEP_SIZE = TILE_SIZE * 0.25;
     SHEEP_WANDER_SPEED = TILE_SIZE * 1;
 
