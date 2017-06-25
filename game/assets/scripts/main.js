@@ -33,9 +33,26 @@ var menuSheeps = [];
 
 var ambSound;
 
+var totalGameTime;
+
+function toHHMMSS(secondTotal) {
+    var sec_num = parseInt(secondTotal, 10);
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    //return hours+':'+minutes+':'+seconds;
+    return +minutes + ' minutes ' + seconds + " seconds!";
+}
+
 function startGame()
 {
     gameState = "game";
+
+    totalGameTime = 0;
 
     renderables = [];
     focussables = []; 
@@ -193,6 +210,8 @@ function update(dt)
         {
             //for (var i = 0; i < 30; ++i) // Turbo mode
             {
+                totalGameTime += dt;
+
                 // update dogs first so we can herb them the same frame
                 dogs_update(dt);
                 sheeps_update(dt);
@@ -615,6 +634,11 @@ function render()
                 new Vector2(resolution.x / 16 * 8.2, 360), Vector2.TOP_LEFT);
             SpriteBatch.drawText(menuFontSml, "^777Joel Heidinger", 
                 new Vector2(resolution.x / 16 * 8.2, 400), Vector2.TOP_LEFT);
+
+            var timeString = toHHMMSS(totalGameTime);
+
+            SpriteBatch.drawText(menuFont, "^990" + timeString, 
+                new Vector2(resolution.x / 2, resolution.y - 100), Vector2.BOTTOM);
 
             SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
                 new Vector2(resolution.x / 2, resolution.y - 10), Vector2.BOTTOM);
