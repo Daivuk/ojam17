@@ -1,7 +1,21 @@
-# ojam17
+# Sheep Dog Heroes
 Ottawa Game Jam 2017
 
+# Credits
+## Coding and Design
+- Mathieu-Andre Chiasson
+- Isaac Neumann
+- David St-Louis
 
-Mathieu-Andre Chiasson was here.
+## Art
+- Don Dimanlig
+- Alice de Lemos
+- Gio Manning
+- Meng Ting Ma
+- Megan Winters
+- Matt Winters
 
-Isaac was here.
+## Audio
+
+
+## Music

@@ -41,7 +41,7 @@ function plane_update(dt)
     }
     else
     {
-        if (Random.randBool(dt * .025)) // 2,5 % chances per second, place every ~40 seconds
+        if (Random.randBool(dt * .01)) // 1 % chances per second, place every ~40 seconds
         {
             plane_spawn();
         }
