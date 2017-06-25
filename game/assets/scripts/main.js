@@ -342,7 +342,7 @@ function drawGameOverWolf(position, index)
     var scale = 6;
     var multiplier = 1; 
 
-    SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(0.3, 0.3, 0.3, 1).mul(multiplier), 0, scale);
+    SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
 
 }
 
@@ -523,46 +523,44 @@ function render()
                 new Vector2(resolution.x / 2, 180), Vector2.TOP);
 
             SpriteBatch.drawText(menuFont, "^999Programmers", 
-                new Vector2(resolution.x / 16, 240), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 240), Vector2.TOP_RIGHT);
 
             SpriteBatch.drawText(menuFontSml, "^777Mathieu Andre Chiasson", 
-                new Vector2(resolution.x / 16, 280), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 280), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Isaac Neumann", 
-                new Vector2(resolution.x / 16, 300), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 300), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777David St Louis", 
-                new Vector2(resolution.x / 16, 320), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 320), Vector2.TOP_RIGHT);
 
             SpriteBatch.drawText(menuFont, "^999Pixel Art", 
-                new Vector2(resolution.x / 16, 360), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 360), Vector2.TOP_RIGHT);
 
             SpriteBatch.drawText(menuFontSml, "^777Don Dimanlig", 
-                new Vector2(resolution.x / 16, 400), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 400), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Alice de Lemos", 
-                new Vector2(resolution.x / 16, 420), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 420), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Gio Manning", 
-                new Vector2(resolution.x / 16, 440), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 440), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Meng Ting Ma", 
-                new Vector2(resolution.x / 16, 460), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 460), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Megan Winters", 
-                new Vector2(resolution.x / 16, 480), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 480), Vector2.TOP_RIGHT);
             SpriteBatch.drawText(menuFontSml, "^777Matt Winters", 
-                new Vector2(resolution.x / 16, 500), Vector2.TOP_LEFT);
+                new Vector2(resolution.x / 16 * 7.8, 500), Vector2.TOP_RIGHT);
 
-            SpriteBatch.drawText(menuFont, "^999Audio Effects", 
-                new Vector2(resolution.x / 16 * 9, 240), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFont, "^999Sound Design", 
+                new Vector2(resolution.x / 16 * 8.2, 240), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^777Nathaniel Vasconcelos", 
+                new Vector2(resolution.x / 16 * 8.2, 280), Vector2.TOP_LEFT);
+                
 
             SpriteBatch.drawText(menuFont, "^999Music", 
-                new Vector2(resolution.x / 16 * 9, 360), Vector2.TOP_LEFT);
-
-
-
+                new Vector2(resolution.x / 16 * 8.2, 360), Vector2.TOP_LEFT);
+            SpriteBatch.drawText(menuFontSml, "^777Joel Heidinger", 
+                new Vector2(resolution.x / 16 * 8.2, 400), Vector2.TOP_LEFT);
 
             SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
                 new Vector2(resolution.x / 2, resolution.y - 10), Vector2.BOTTOM);
-
-
-
-
 
 
             SpriteBatch.end(); 
