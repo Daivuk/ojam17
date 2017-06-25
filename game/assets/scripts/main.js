@@ -34,6 +34,7 @@ function startGame()
     wolf_init();
     pusher_init();
     cloud_init();
+    butterfly_init();
 
     menuMusic.stop();
     ambSound.play();
@@ -124,6 +125,7 @@ function update(dt)
 
                 // Non-important stuff update
                 clouds_update(dt);
+                butterflies_update(dt);
             }
             break;
         }

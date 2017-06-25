@@ -1,0 +1,6 @@
+<sheet texture="butterfly.png" spriteWidth="5" spriteHeight="4" originX="2" originY="8">
+  <anim name="fly" fps="20" loop="true">
+    <frame id="0" />
+    <frame id="1"/>
+  </anim>
+</sheet>

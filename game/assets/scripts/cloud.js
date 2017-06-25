@@ -9,6 +9,7 @@ var clouds = [];
 
 function cloud_init()
 {
+    clouds = [];
     CLOUD_SPEED = TILE_SIZE;
     for (var i = 0; i < CLOUD_COUNT; ++i)
     {
