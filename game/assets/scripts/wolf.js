@@ -141,10 +141,19 @@ function wolf_calculateStress(wolf, dt)
         {
             wolf.stress = Math.min(wolf.stress + (dog.fearFactor * WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * dt), WOLF_STRESS_MAX);
 
-            // running away 1000 miles away from the dog. Wolf will most likely never reach this destination because the wolf
-            // will turn around as soon as the wolf's stress level comes back to normal.
-            var factor = new Vector2(TILE_SIZE);
-            wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
+            if (wolf.stress > WOLF_STRESS_THRESHOLD)
+            {
+                // running away 1000 miles away from the dog. Wolf will most likely never reach this destination because the wolf
+                // will turn around as soon as the wolf's stress level comes back to normal.
+                var factor = new Vector2(TILE_SIZE);
+                wolf.retreatPosition = wolf.position.add(factor.mul(wolf.position.sub(dog.position)));
+
+                if (wolf.wimperCoolDown <= 0) 
+                {
+                    playSound("SFX_dog_wimper_" + Random.randInt(1, 2) + ".wav", 0.5);
+                    wolf.wimperCoolDown = WOLF_WIMP_COOLDOWN_RESET;
+                }
+            }
         }
     }
 }
@@ -200,11 +209,6 @@ function wolf_update(wolf, dt)
             }
             break;
         case WOLF_STATE_RETREAT:
-            if (wolf.wimperCoolDown <= 0) 
-            {
-                playSound("SFX_dog_wimper_" + Random.randInt(1, 2) + ".wav", 0.5);
-                wolf.wimperCoolDown = WOLF_WIMP_COOLDOWN_RESET;
-            }
             wolf.wimperCoolDown -= dt;
             wolf_moveToward(wolf, wolf.retreatPosition, WOLF_STRESS_RUN_SPEED, dt);
             if (wolf.stress <= WOLF_STRESS_THRESHOLD && sheeps.length > 0)
