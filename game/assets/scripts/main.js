@@ -35,6 +35,10 @@ function startGame()
 {
     gameState = "game";
 
+    renderables = [];
+    focussables = []; 
+    pushers = [];
+    
     map_init();
     camera_init();
     sheep_init();
