@@ -41,7 +41,7 @@ function sheep_init()
     SHEEP_WANDER_SPEED = TILE_SIZE * 1;
 
     var playerCount = 0;
-    START_SHEEP = 20 + (dogs.length - 1) * 4;
+    START_SHEEP = 20;// + (dogs.length - 1) * 4;
 
     for (var i = 0; i < START_SHEEP; ++i)
     {
