@@ -43,4 +43,10 @@
   <anim name="dead_w" fps="1" loop="true">
     <frame id="26" flipH="true"/>
   </anim>
+  <anim name="deadFromHunger_e" fps="1" loop="true">
+    <frame id="27" flipH="false"/>
+  </anim>
+  <anim name="deadFromHunger_w" fps="1" loop="true">
+    <frame id="27" flipH="true"/>
+  </anim>
 </sheet>
