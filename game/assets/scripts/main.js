@@ -143,8 +143,8 @@ function goStartMenu()
     }
 }
 
-//goStartMenu();
-goGameOver();
+goStartMenu();
+//goGameOver();
 
 function update(dt)
 {
