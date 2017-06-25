@@ -256,6 +256,9 @@ function render()
                 entity.renderFn(entity);
             }
 
+            // Particles
+            particle_render();
+
             // Clouds
             SpriteBatch.setFilter(FilterMode.LINEAR);
             clouds_render();

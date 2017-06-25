@@ -169,6 +169,16 @@ function wolf_update(wolf, dt)
                     wolf.state = WOLF_STATE_ATTACKING;
                     wolf.spriteAnim.play("eat_" + wolf.dir);
                     wolf.attackTime = 2;
+                    for (var i = 0; i < 3; ++i)
+                    {
+                        setTimeout(function()
+                        {
+                            var emitter = emitParticles(getParticleSystem("blood.pfx"), new Vector3(wolf.position.x, wolf.position.y, 0));
+                            emitter.setRenderEnabled(false);
+                            particles.push(emitter);
+                            playSound("SFX_Dog_Growl_" + Random.randInt(1, 11) + ".wav");
+                        }, 500 * (i + 1));
+                    }
                     // print("Wolf is in attack mode!")
                 }
                 break;

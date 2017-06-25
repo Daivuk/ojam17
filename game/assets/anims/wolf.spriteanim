@@ -7,11 +7,11 @@
     <frame id="8" flipH="true"/>
     <frame id="9" flipH="true"/>
   </anim>
-  <anim name="eat_e" fps="4" loop="true">
+  <anim name="eat_e" fps="8" loop="true">
     <frame id="16" flipH="false"/>
     <frame id="17" flipH="false"/>
   </anim>
-  <anim name="eat_w" fps="4" loop="true">
+  <anim name="eat_w" fps="8" loop="true">
     <frame id="16" flipH="true"/>
     <frame id="17" flipH="true"/>
   </anim>
