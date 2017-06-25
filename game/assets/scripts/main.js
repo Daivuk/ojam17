@@ -8,6 +8,7 @@ var menuFont = getFont("main.fntempty.fnt");
 var menuFontBig = getFont("mainBig.fntempty.fnt");
 var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
 var ambSound = createSoundInstance("amb_medow_01.wav");
+var sheepIconTexture = getTexture("sheepIcon.png", false);
 menuMusic.setLoop(true);
 menuMusic.setVolume(.35);
 ambSound.setLoop(true);
@@ -56,7 +57,7 @@ var startMenuAnims = [];
 function goStartMenu()
 {
     resolution = Renderer.getResolution();
-    
+
     gameState = "startMenu";
 
     APrevStates = [false, false, false, false];
@@ -394,10 +395,14 @@ function render()
 
             SpriteBatch.end();
 
-            SpriteBatch.begin(); 
-            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
-            new Vector2(0, 10), Vector2.TOP_LEFT);
-            SpriteBatch.end();
+        //    SpriteBatch.begin(); 
+       /*     SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
+            new Vector2(0, 10), Vector2.TOP_LEFT);*/
+       /*     for (var i = 0; i < sheeps.length; ++i)
+            {
+                SpriteBatch.drawSprite(sheepIconTexture, new Vector2(i * 36 + 18, 18));
+            }
+            SpriteBatch.end();*/
             break; 
         }
         case "settings":
