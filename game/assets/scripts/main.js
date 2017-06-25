@@ -109,6 +109,7 @@ function update(dt)
                 if (startIn <= 0)
                 {
                     startGame();
+                    startIn = 0;  
                     break;
                 }
             }
@@ -277,7 +278,7 @@ function update(dt)
         {
             for (var i = 0; i < 4; i++)
             {
-                if (GamePad.isDown(i, Button.A)) gameState = "startMenu";
+                if (GamePad.isDown(i, Button.A)) goStartMenu();
             }
             break; 
         }
