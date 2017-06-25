@@ -40,5 +40,5 @@ function butterflies_update(dt)
 
 function butterfly_render(butterfly)
 {
-    SpriteBatch.drawSpriteAnim(butterfly.spriteAnim, butterfly.position);
+    SpriteBatch.drawSpriteAnim(butterfly.spriteAnim, butterfly.position, Color.WHITE, 0, 2);
 }

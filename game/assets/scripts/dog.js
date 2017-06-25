@@ -119,7 +119,7 @@ function dog_update(dog, dt) {
     else {
         dir = dir.normalize();
         if (dir.x > .1) dog.dir = 'e';
-        else if (dir.x < .1) dog.dir = 'w';
+        else if (dir.x < -.1) dog.dir = 'w';
         dog.state = DOG_STATE_RUNNING;
         newPosition = newPosition.add(dir.mul(DOG_MOV_SPEED * dt));
 
