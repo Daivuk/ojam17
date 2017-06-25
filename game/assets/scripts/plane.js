@@ -10,6 +10,7 @@ function plane_init()
     plane = {
         position: new Vector2(),
         active: false,
+        elapsed: 0
     };
 }
 
@@ -17,10 +18,7 @@ function plane_spawn()
 {
     plane.active = true;
     plane.position = cameraPos.add(new Vector2(-MAP_SIZE * TILE_SIZE, MAP_SIZE * TILE_SIZE));
-    setTimeout(function()
-    {
-        playSound("plane.wav");
-    }, 8000);
+    plane.elapsed = 0;
 }
 
 function plane_update(dt)
@@ -31,6 +29,14 @@ function plane_update(dt)
         if (plane.position.y < -MAP_SIZE * TILE_SIZE)
         {
             plane.active = false;
+        }
+        if (plane.elapsed < 8)
+        {
+            plane.elapsed += dt;
+            if (plane.elapsed >= 8)
+            {
+                playSound("plane.wav");
+            }
         }
     }
     else

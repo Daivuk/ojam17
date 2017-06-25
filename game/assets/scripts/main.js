@@ -59,6 +59,29 @@ var MENU_SHEEP_COUNT = 8;
 
 var startMenuAnims = [];
 
+function goGameOver()
+{
+    gameState = "gameOver";
+
+    sheeps = [];
+    dogs = [];
+    wolfs = [];
+    splats = [];
+    butterflies = [];
+    plane = {};
+    clouds = [];
+    for (var i = 0; i < particles.length; ++i)
+    {
+        var particle = particles[i];
+        particle.stop();
+    }
+    particles = [];
+    pushers = [];
+    renderables = [];
+    focussables = [];
+    ambSound.stop();
+}
+
 function goStartMenu()
 {
     resolution = Renderer.getResolution();
@@ -184,7 +207,7 @@ function update(dt)
                 plane_update(dt);
             }
             if (sheeps.length == 0) {
-                gameState = "gameOver";
+                goGameOver();
             }
             break;
         }
