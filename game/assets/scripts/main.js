@@ -17,6 +17,7 @@ ambSound.setLoop(true);
 ambSound.setVolume(.35);
 
 var gameOverExitAvailabilityTimer;
+var gameToGameOverTimeout;
 
 var menuDogs = [
     playSpriteAnim("dog.spriteanim", "idle_e", 0),
@@ -55,6 +56,7 @@ function startGame()
     gameState = "game";
 
     totalGameTime = 0;
+    gameToGameOverTimeout = 3;
 
     renderables = [];
     focussables = []; 
@@ -232,7 +234,11 @@ function update(dt)
                 plane_update(dt);
             }
             if (sheeps.length == 0) {
-                goGameOver();
+                if (gameToGameOverTimeout < 0)
+                {
+                    goGameOver();
+                }
+                gameToGameOverTimeout -= dt;
             }
             break;
         }
