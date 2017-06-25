@@ -207,55 +207,61 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
 function sheep_attackedByWolf(sheep)
 {
     sheep.state = SHEEP_STATE_DYING_FROM_WOLF;
+
+    index = pushers.indexOf(sheep);
+    if (index >= 0) pushers.splice(index, 1);
 }
 
 function sheep_dyingFromHunger(sheep)
 {
     sheep.state = SHEEP_STATE_DYING_FROM_HUNGER;
+
+    index = pushers.indexOf(sheep);
+    if (index >= 0) pushers.splice(index, 1);
 }
 
 function sheep_kill_instantly(sheep)
 {
-    if (sheep.state == SHEEP_STATE_DEAD) 
-    {
-        return; 
-    }
     sheep.state = SHEEP_STATE_DEAD;
 
-    pushers.splice(pushers.indexOf(sheep), 1);
-    focussables.splice(focussables.indexOf(sheep), 1);
-    renderables.splice(renderables.indexOf(sheep), 1);
+    var index;
+
+    index = pushers.indexOf(sheep);
+    if (index >= 0) pushers.splice(index, 1);
+
+    index = focussables.indexOf(sheep);
+    if (index >= 0) focussables.splice(index, 1);
+
+    index = renderables.indexOf(sheep);
+    if (index >= 0) renderables.splice(index, 1);
 
     defer(function()
     {
-        sheeps.splice(sheeps.indexOf(sheep), 1);
+        var index = sheeps.indexOf(sheep);
+        if (index >= 0) sheeps.splice(index, 1);
     });
 }
 
 function sheep_kill(sheep)
 {
-    if (sheep.state == SHEEP_STATE_DEAD) 
-    {
-        return; 
-    }
     sheep.state = SHEEP_STATE_DEAD;
 
-    pushers.splice(pushers.indexOf(sheep), 1);
-    focussables.splice(focussables.indexOf(sheep), 1);
-    renderables.splice(renderables.indexOf(sheep), 1);
+    var index;
 
-    sheep.deadAlpha = new NumberAnim(1);
-    sheep.deadAlpha.queue(0, 1, Tween.NONE);
-    sheep.deadAlpha.queue(1, .15, Tween.NONE);
-    sheep.deadAlpha.queue(0, .15, Tween.NONE);
-    sheep.deadAlpha.queue(1, .15, Tween.NONE);
-    sheep.deadAlpha.queue(0, .15, Tween.NONE);
-    sheep.deadAlpha.queue(1, .15, Tween.NONE);
-    sheep.deadAlpha.queue(0, .15, Tween.NONE, function()
+    index = pushers.indexOf(sheep);
+    if (index >= 0) pushers.splice(index, 1);
+
+    index = focussables.indexOf(sheep);
+    if (index >= 0) focussables.splice(index, 1);
+
+    index = renderables.indexOf(sheep);
+    if (index >= 0) renderables.splice(index, 1);
+
+    defer(function()
     {
-        sheeps.splice(sheeps.indexOf(sheep), 1);
+        var index = sheeps.indexOf(sheep);
+        if (index >= 0) sheeps.splice(index, 1);
     });
-    sheep.deadAlpha.play();
 }
 
 function sheep_calculateStress(sheep, canine, dt) 
@@ -278,7 +284,7 @@ function sheep_calculateStress(sheep, canine, dt)
 
 function sheep_update(sheep, dt)
 {
-    if (sheep.state == SHEEP_STATE_DEAD) 
+    if (!sheep_isAlive(sheep)) 
     {
         return;
     }
