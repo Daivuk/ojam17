@@ -1,4 +1,4 @@
-var WOLF_AMOUNT = 100;
+var WOLF_AMOUNT = 1;
 var WOLF_SIZE;
 var WOLF_SPEED = 75; 
 

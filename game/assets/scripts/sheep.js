@@ -282,7 +282,8 @@ function sheep_update(sheep, dt)
 
     for (var i = 0; i < wolfs.length; ++i) {
         var wolf = wolfs[i];
-        sheep_calculateStress(sheep, wolf, dt); 
+        if (wolf.state == WOLF_STATE_ATTACKING)
+            sheep_calculateStress(sheep, wolf, dt); 
     }
 
     if (sheep.stress > SHEEP_STRESS_THRESHOLD)
