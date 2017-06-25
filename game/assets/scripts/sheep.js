@@ -210,14 +210,18 @@ function sheep_attackedByWolf(sheep)
 
     index = pushers.indexOf(sheep);
     if (index >= 0) pushers.splice(index, 1);
+
+    sheep.spriteAnim.play("dying_" + sheep.dir);
 }
 
 function sheep_dyingFromHunger(sheep)
 {
-    sheep.state = SHEEP_STATE_DYING_FROM_HUNGER;
+    sheep.state = SHEEP_STATE_DEAD;
 
     index = pushers.indexOf(sheep);
     if (index >= 0) pushers.splice(index, 1);
+
+    sheep.spriteAnim.play("deadFromHunger_" + sheep.dir);
 }
 
 function sheep_kill_instantly(sheep)
@@ -231,15 +235,17 @@ function sheep_kill_instantly(sheep)
 
     index = focussables.indexOf(sheep);
     if (index >= 0) focussables.splice(index, 1);
-
+/*
     index = renderables.indexOf(sheep);
     if (index >= 0) renderables.splice(index, 1);
-
+*/
     defer(function()
     {
         var index = sheeps.indexOf(sheep);
         if (index >= 0) sheeps.splice(index, 1);
     });
+
+    sheep.spriteAnim.play("dead_" + sheep.dir);
 }
 
 function sheep_kill(sheep)
@@ -266,20 +272,20 @@ function sheep_kill(sheep)
 
 function sheep_calculateStress(sheep, canine, dt) 
 {
-      var distance = Vector2.distance(sheep.position, canine.position);
-        if (distance < TILE_SIZE * 1.6) {
-            sheep.stress = Math.min(sheep.stress + (canine.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
-            if (sheep.stress > SHEEP_STRESS_THRESHOLD)
-            {
-                sheep.targetPosition = sheep.position.add(sheep.position.sub(canine.position));
+    var distance = Vector2.distance(sheep.position, canine.position);
+    if (distance < TILE_SIZE * 1.6) {
+        sheep.stress = Math.min(sheep.stress + (canine.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
+        if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+        {
+            sheep.targetPosition = sheep.position.add(sheep.position.sub(canine.position));
 
-                if (beeeeeCoolDown < 0)
-                {
-                    playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
-                    beeeeeCoolDown = 1;
-                }
+            if (beeeeeCoolDown < 0)
+            {
+                playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
+                beeeeeCoolDown = 1;
             }
         }
+    }
 }
 
 function sheep_update(sheep, dt)
@@ -292,7 +298,7 @@ function sheep_update(sheep, dt)
     sheep.hunger -= dt * SHEEP_HUNGER_SPEED;
     if (sheep.hunger <= 0)
     {
-        sheep_kill(sheep);
+        sheep_dyingFromHunger(sheep);
         return;
     }
 
