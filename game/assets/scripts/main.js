@@ -267,12 +267,16 @@ function update(dt)
             }
 
             if (GamePad.isDown(i, Button.A)) quit();
-            if (GamePad.isDown(i, Button.Y)) gameState = "startMenu";
+            if (GamePad.isDown(i, Button.B)) gameState = "startMenu";
 
             break;
         }
         case "gameOver":
         {
+            for (var i = 0; i < 4; i++)
+            {
+                if (GamePad.isDown(i, Button.A)) gameState = "startMenu";
+            }
             break; 
         }
     }
@@ -300,7 +304,8 @@ function drawMenuDog(position, index)
 function drawGameOverWolf(position, index)
 {
     var wolfSpriteAnim = gameOverWolfs[index];
-    var scale = 10;
+    var scale = 8;
+    var multiplier = 1; 
 
     SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
 
@@ -466,7 +471,7 @@ function render()
             SpriteBatch.setFilter(FilterMode.NEAREST);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
-             SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
+            SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
                 new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
             SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
                 new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);

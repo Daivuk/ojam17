@@ -2,11 +2,16 @@ var START_SHEEP = 20;
 
 var SHEEP_SIZE;
 
+// alive states
 var SHEEP_STATE_IDLE = 0;
 var SHEEP_STATE_WAIT = 1;
 var SHEEP_STATE_EATING = 2;
 var SHEEP_STATE_WANDERING = 3;
 var SHEEP_STATE_GO_EAT = 4;
+
+// death states
+var SHEEP_STATE_DYING_FROM_WOLF = 100;
+var SHEEP_STATE_DYING_FROM_HUNGER = 101
 
 var SHEEP_WANDER_SPEED;
 var SHEEP_WAIT_TIMES = [1, 3];
@@ -141,6 +146,11 @@ function sheep_wander(sheep, dt)
         playSound("SFX_sheep_bleat_" + Random.randInt(1, 13) + ".wav", .15);
         beeeeeCoolDown = 1;
     }
+}
+
+function sheep_isAlive(sheep)
+{
+    return sheep.state < 100; // death range starts at 100
 }
 
 function sheep_wait(sheep)
