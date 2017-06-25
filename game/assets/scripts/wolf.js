@@ -91,9 +91,9 @@ function wolfs_update(dt)
 
 function wolf_targetAcquisition(wolf, sheep)
 {
-    if (sheep.dead) return; // Shoudln't happen, but just in case.
+    if (!sheep_isAlive(sheep)) return; // Shoudln't happen, but just in case.
 
-    if (wolf.target == null || wolf.target.dead) // if the target was killed by another sheep.
+    if (wolf.target == null || sheep_isAlive(wolf.target)) // if the target was killed by another sheep.
     {
         wolf.target = sheep; 
         return; 
@@ -170,6 +170,7 @@ function wolf_update(wolf, dt)
             {
                 wolf.state = WOLF_STATE_ATTACKING;
                 wolf.position = wolf.target.position;
+                sheep_attackedByWolf(wolf.target);
                 wolf.spriteAnim.play("eat_" + wolf.dir);
                 wolf.attackTime = 2;
                 for (var i = 0; i < 3; ++i)
