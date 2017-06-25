@@ -161,7 +161,8 @@ function wolf_update(wolf, dt)
 {
     wolf_calculateStress(wolf, dt);
 
-    if (wolf.stress > WOLF_STRESS_THRESHOLD) 
+    if (wolf.stress > WOLF_STRESS_THRESHOLD &&
+        wolf.state != WOLF_STATE_ATTACKING) 
     {
         wolf.state = WOLF_STATE_RETREAT;
     }
