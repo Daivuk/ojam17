@@ -205,8 +205,6 @@ function sheep_kill(sheep)
     }
     sheep.dead = true;
 
-    print("focusable count = " + focussables.length + ", removing ", focussables.indexOf(sheep));
-
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
     renderables.splice(renderables.indexOf(sheep), 1);
@@ -225,6 +223,24 @@ function sheep_kill(sheep)
     sheep.deadAlpha.play();
 }
 
+function sheep_calculateStress(sheep, canine, dt) 
+{
+      var distance = Vector2.distance(sheep.position, canine.position);
+        if (distance < TILE_SIZE * 1.6) {
+            sheep.stress = Math.min(sheep.stress + (canine.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
+            if (sheep.stress > SHEEP_STRESS_THRESHOLD)
+            {
+                sheep.targetPosition = sheep.position.add(sheep.position.sub(canine.position));
+
+                if (beeeeeCoolDown < 0)
+                {
+                    playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
+                    beeeeeCoolDown = 1;
+                }
+            }
+        }
+}
+
 function sheep_update(sheep, dt)
 {
     if (sheep.dead)
@@ -241,21 +257,12 @@ function sheep_update(sheep, dt)
 
     for (var i = 0; i < dogs.length; ++i) {
         var dog = dogs[i];
+        sheep_calculateStress(sheep, dog, dt); 
+    }
 
-        var distance = Vector2.distance(sheep.position, dog.position);
-        if (distance < TILE_SIZE * 1.6) {
-            sheep.stress = Math.min(sheep.stress + (dog.fearFactor * SHEEP_STRESS_RANGE_CONTRIB_PER_SECOND * dt), SHEEP_STRESS_MAX);
-            if (sheep.stress > SHEEP_STRESS_THRESHOLD)
-            {
-                sheep.targetPosition = sheep.position.add(sheep.position.sub(dog.position));
-
-                if (beeeeeCoolDown < 0)
-                {
-                    playSound("SFX_sheep_alarm_" + Random.randInt(1, 8) + ".wav", .25);
-                    beeeeeCoolDown = 1;
-                }
-            }
-        }
+    for (var i = 0; i < wolfs.length; ++i) {
+        var wolf = wolfs[i];
+        sheep_calculateStress(sheep, wolf, dt); 
     }
 
     if (sheep.stress > SHEEP_STRESS_THRESHOLD)
@@ -303,6 +310,7 @@ function sheep_update(sheep, dt)
             if (sheep_moveToward(sheep, sheep.targetPosition, SHEEP_WANDER_SPEED, dt))
             {
                 sheep.state = SHEEP_STATE_EATING;
+                playSound("SFX_sheep_chew_" + Random.randInt(2, 16) + ".wav", .15);
             }
             break;
         case SHEEP_STATE_EATING:

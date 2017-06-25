@@ -1,6 +1,7 @@
 var resolution;
 var renderables = [];
 var gameState = "startMenu";
+var difficultySettings = "normal";
 var menuFont = getFont("main.fntempty.fnt");
 var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
 var ambSound = createSoundInstance("amb_medow_01.wav");
@@ -33,9 +34,6 @@ function startGame()
     wolf_init();
     pusher_init();
 
-    ambSound = createSoundInstance("amb_medow_01.wav");
-    ambSound.setLoop(true);
-    ambSound.setVolume(.35);
     menuMusic.stop();
     ambSound.play();
 }
@@ -97,9 +95,16 @@ function update(dt)
                 menuBarkTimeouts[i] -= dt;
                 if (GamePad.isDown(i, Button.START) && startIn == 0)
                 {
-                    startIn = 1;
+                    startIn = 3;
                 }
-            }
+
+                if (GamePad.isDown(i, Button.B) && startIn == 0 && activeDogs[i] == true) 
+                {
+                    activeDogs[i] = false;
+                } 
+                if (GamePad.isDown(i, Button.X)) gameState = "settings"
+                if (GamePad.isDown(i, Button.B) && activeDogs[i] != true); //do something to quit game (i dunno how do)
+            } 
             break;
         }
         case "game":
@@ -117,6 +122,44 @@ function update(dt)
                 camera_update(dt);
             }
             break;
+        }
+        case "settings":
+        {
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+            {
+                var menuSheep = menuSheeps[i];
+                menuSheep.xPos += dt * 100;
+                if (menuSheep.xPos > resolution.x + 100)
+                {
+                    menuSheep.xPos -= resolution.x + 200;
+                }
+            }
+
+            for (var i = 0; i < 4; i++)
+            {
+                //Seems awfully inefficient, not sure if it can be done better though. 
+                switch (difficultySettings) 
+            {
+                case "normal":
+                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "hard";
+                break;
+
+                case "hard":
+                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "normal";
+                else if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "insane";
+                break;
+
+                case "insane":
+                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "hard";
+                else if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_RIGHT)) difficultySettings = "nope";
+                break;
+
+                case "nope":
+                if (GamePad.isDown(i, Button.LEFT_THUMBSTICK_LEFT)) difficultySettings = "insane";
+                break; 
+            }
+                if (GamePad.isDown(i, Button.B)) gameState = "startMenu";
+            }
         }
     }
 }
@@ -158,9 +201,13 @@ function render()
             if (startIn == 0)
             {
                 SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Join", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 - 8), Vector2.BOTTOM);
+                    new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
                 SpriteBatch.drawText(menuFont, "^666Press ^999Start^666 to Herd!", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 + 8), Vector2.TOP);
+                    new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
+                SpriteBatch.drawText(menuFont, "^666Press ^027X^666 for Settings", 
+                    new Vector2(resolution.x / 2, resolution.y / 2 - 12), Vector2.TOP);
+                SpriteBatch.drawText(menuFont, "^666Press ^800B^666 to Quit", 
+                    new Vector2(resolution.x / 2, resolution.y / 2 + 32), Vector2.TOP);
             }
             else
             {
@@ -204,6 +251,52 @@ function render()
             }
 
             SpriteBatch.end();
+
+            SpriteBatch.begin(); 
+            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
+            new Vector2(0, 10), Vector2.TOP_LEFT);
+            SpriteBatch.end();
+            break; 
+        }
+        case "settings":
+        {
+            SpriteBatch.begin();
+            SpriteBatch.setFilter(FilterMode.NEAREST);
+            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
+            
+            switch (difficultySettings)
+            {
+                case "normal":
+                SpriteBatch.drawText(menuFont, "^999Difficulty Normal ^666Hard Insane ^000Nope", 
+                new Vector2(30, 80), Vector2.TOP_LEFT);
+                break;
+                
+                case "hard":
+                SpriteBatch.drawText(menuFont, "^999Difficulty ^666Normal ^999Hard ^666Insane ^000Nope", 
+                new Vector2(30, 80), Vector2.TOP_LEFT);
+                break;
+
+                case "insane":
+                SpriteBatch.drawText(menuFont, "^999Difficulty ^666Normal ^666Hard ^999Insane ^000Nope", 
+                new Vector2(30, 80), Vector2.TOP_LEFT);
+                break;
+
+                case "nope":
+                SpriteBatch.drawText(menuFont, "^999Difficulty ^666Normal ^666Hard Insane ^999Nope", 
+                new Vector2(30, 80), Vector2.TOP_LEFT);
+                break;
+
+            }
+            for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+            {
+                var menuSheep = menuSheeps[i];
+                SpriteBatch.drawSpriteAnim(
+                    menuSheep.spriteAnim, 
+                    new Vector2(menuSheep.xPos, 50), Color.WHITE, 0, 2);
+            }
+            
+            SpriteBatch.end();
+            break;
         }
     }
 }
