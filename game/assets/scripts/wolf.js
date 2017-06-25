@@ -26,10 +26,11 @@ var wolfNextRespawn = WOLF_SPAWN_TIME;
 function wolf_init() 
 {
     wolfs = []; 
+    WOLF_SPEED = 75;
     WOLF_SIZE = TILE_SIZE * 0.25; 
     KILL_DISTANCE = SHEEP_SIZE * 3.0; 
     WOLF_SPAWN_DISTANCE = TILE_SIZE * MAP_SIZE * 0.5;
-    WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 8.0;
+    WOLF_STRESS_DOG_PROXIMITY_RANGE = DOG_SIZE * 4.0;
 
     for (var i = 0; i < WOLF_AMOUNT; i++)
     {
@@ -51,6 +52,7 @@ function wolf_create(wolfPos)
         renderFn: wolf_render,
         fearFactor: 10
     };
+    
 
     wolf.spriteAnim = playSpriteAnim("wolf.spriteanim", "run_e");
 
@@ -138,7 +140,7 @@ function wolf_calculateStress(wolf, dt)
         // barking dogs only stress the wolves if the dog is close enough.
         if (distance <= WOLF_STRESS_DOG_PROXIMITY_RANGE) 
         {
-            wolf.stress = Math.min(wolf.stress + (dog.fearFactor * WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * dt), WOLF_STRESS_MAX);
+            wolf.stress = Math.min(wolf.stress + (dog.fearFactor*3 * WOLF_STRESS_RANGE_CONTRIB_PER_SECOND * dt), WOLF_STRESS_MAX);
 
             if (wolf.stress > WOLF_STRESS_THRESHOLD)
             {
@@ -160,6 +162,7 @@ function wolf_calculateStress(wolf, dt)
 function wolf_update(wolf, dt)
 {
     WOLF_SPAWN_TIME = Math.max(3 - ((20 - sheeps.length)/5), 0.5);
+    WOLF_SPEED = 75 + ((20 - sheeps.length)*5);
     wolf_calculateStress(wolf, dt);
 
     if (wolf.stress > WOLF_STRESS_THRESHOLD &&
