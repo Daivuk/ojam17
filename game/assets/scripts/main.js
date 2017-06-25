@@ -44,6 +44,7 @@ function startGame()
     cloud_init();
     butterfly_init();
     splat_init();
+    plane_init();
 
     menuMusic.stop();
     ambSound.play();
@@ -176,10 +177,11 @@ function update(dt)
                 clouds_update(dt);
                 butterflies_update(dt);
                 splat_update(dt);
+                plane_update(dt);
             }
-                if (sheeps.length == 0) {
-                    gameState = "gameOver";
-                }
+            if (sheeps.length == 0) {
+                gameState = "gameOver";
+            }
             break;
         }
         case "settings":
@@ -389,9 +391,10 @@ function render()
             // Particles
             particle_render();
 
-            // Clouds
+            // Clouds n shit
             SpriteBatch.setFilter(FilterMode.LINEAR);
             clouds_render();
+            plane_render();
             SpriteBatch.setFilter(FilterMode.NEAREST);
 
             SpriteBatch.end();
