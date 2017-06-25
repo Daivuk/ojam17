@@ -10,8 +10,9 @@ var SHEEP_STATE_WANDERING = 3;
 var SHEEP_STATE_GO_EAT = 4;
 
 // death states
-var SHEEP_STATE_DYING_FROM_WOLF = 100;
-var SHEEP_STATE_DYING_FROM_HUNGER = 101
+var SHEEP_STATE_DEAD = 100;
+var SHEEP_STATE_DYING_FROM_WOLF = 101;
+var SHEEP_STATE_DYING_FROM_HUNGER = 102
 
 var SHEEP_WANDER_SPEED;
 var SHEEP_WAIT_TIMES = [1, 3];
@@ -67,7 +68,7 @@ function sheep_render(sheep)
 
     if (sheep.hunger < SHEEP_HUNGER_BUBBLE_THRESHOLD &&
         sheep.state != SHEEP_STATE_EATING &&
-        !sheep.dead)
+        sheep.state != SHEEP_STATE_DEAD) 
     {
         SpriteBatch.drawSprite(hungryBubbleTexture, new Vector2(
             sheep.position.x, sheep.position.y - 40));
@@ -201,12 +202,23 @@ function sheep_moveToward(sheep, targetPosition, speed, dt)
     return true;
 }
 
+function sheep_attackedByWolf(sheep)
+{
+    sheep.state = SHEEP_STATE_DYING_FROM_WOLF;
+}
+
+function sheep_dyingFromHunger(sheep)
+{
+    sheep.state = SHEEP_STATE_DYING_FROM_HUNGER;
+}
+
 function sheep_kill_instantly(sheep)
 {
-    if (sheep.dead) {
+    if (sheep.state == SHEEP_STATE_DEAD) 
+    {
         return; 
     }
-    sheep.dead = true;
+    sheep.state = SHEEP_STATE_DEAD;
 
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
@@ -220,10 +232,11 @@ function sheep_kill_instantly(sheep)
 
 function sheep_kill(sheep)
 {
-    if (sheep.dead) {
+    if (sheep.state == SHEEP_STATE_DEAD) 
+    {
         return; 
     }
-    sheep.dead = true;
+    sheep.state = SHEEP_STATE_DEAD;
 
     pushers.splice(pushers.indexOf(sheep), 1);
     focussables.splice(focussables.indexOf(sheep), 1);
@@ -263,7 +276,7 @@ function sheep_calculateStress(sheep, canine, dt)
 
 function sheep_update(sheep, dt)
 {
-    if (sheep.dead)
+    if (sheep.state == SHEEP_STATE_DEAD) 
     {
         return;
     }
