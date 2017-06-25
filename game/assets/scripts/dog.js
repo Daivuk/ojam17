@@ -11,7 +11,7 @@ var DOG_FEAR_COOLDOWN_PER_SECOND = 2.0;
 var DOG_STATE_IDLE = 0; 
 var DOG_STATE_RUNNING = 1;
 
-var dogs = [];
+var dogs;
 
 var dogTexture = getTexture("dog.png", false);
 var dogOverlayTexture = getTexture("dogOverlay.png", false);
@@ -27,6 +27,8 @@ var DOG_COLORS = [
 
 function dog_init()
 {
+    dogs = [];
+
     DOG_SIZE = TILE_SIZE * 0.5; 
 
     for(var i = 0; i < DOG_MAX; ++i)

@@ -5,8 +5,10 @@ var renderables = [];
 var gameState = "startMenu";
 var difficultySettings = "normal";
 var menuFont = getFont("main.fntempty.fnt");
+var menuFontBig = getFont("mainBig.fntempty.fnt");
 var menuMusic = createSoundInstance("Farmers.Menu Loop.wav");
 var ambSound = createSoundInstance("amb_medow_01.wav");
+var sheepIconTexture = getTexture("sheepIcon.png", false);
 menuMusic.setLoop(true);
 menuMusic.setVolume(.35);
 ambSound.setLoop(true);
@@ -33,6 +35,10 @@ function startGame()
 {
     gameState = "game";
 
+    renderables = [];
+    focussables = []; 
+    pushers = [];
+    
     map_init();
     camera_init();
     sheep_init();
@@ -48,18 +54,50 @@ function startGame()
 }
 
 var APrevStates = [false, false, false, false];
+var MENU_SHEEP_COUNT = 8;
 
-var MENU_SHEEP_COUNT = 8
-for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+var startMenuAnims = [];
+
+function goStartMenu()
 {
-    menuSheeps[i] = {
-        spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
-        xPos: -i * 100
-    };
+    resolution = Renderer.getResolution();
 
-    menuMusic.play();
-    
+    gameState = "startMenu";
+
+    APrevStates = [false, false, false, false];
+
+    for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+    {
+        menuSheeps[i] = {
+            spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
+            xPos: -i * 100
+        };
+
+        menuMusic.play();
+    }
+
+    startMenuAnims = [
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim()
+    ];
+
+    for (var i = 0; i < startMenuAnims.length; ++i)
+    {
+        var anim = startMenuAnims[i];
+        anim.set(-resolution.x);
+        anim.queue(-resolution.x, i * .15, Tween.NONE);
+        anim.queue(0, .5, Tween.EASE_OUT);
+        anim.play();
+    }
 }
+
+goStartMenu();
 
 function update(dt)
 {
@@ -76,6 +114,7 @@ function update(dt)
                 if (startIn <= 0)
                 {
                     startGame();
+                    startIn = 0;  
                     break;
                 }
             }
@@ -236,12 +275,16 @@ function update(dt)
             }
 
             if (GamePad.isDown(i, Button.A)) quit();
-            if (GamePad.isDown(i, Button.Y)) gameState = "startMenu";
+            if (GamePad.isDown(i, Button.B)) gameState = "startMenu";
 
             break;
         }
         case "gameOver":
         {
+            for (var i = 0; i < 4; i++)
+            {
+                if (GamePad.isDown(i, Button.A)) goStartMenu();
+            }
             break; 
         }
     }
@@ -269,7 +312,8 @@ function drawMenuDog(position, index)
 function drawGameOverWolf(position, index)
 {
     var wolfSpriteAnim = gameOverWolfs[index];
-    var scale = 10;
+    var scale = 8;
+    var multiplier = 1; 
 
     SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
 
@@ -290,26 +334,28 @@ function render()
             SpriteBatch.begin();
             SpriteBatch.setFilter(FilterMode.NEAREST);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
+            SpriteBatch.drawText(menuFontBig, "Sheep Dog Heroes", 
+                new Vector2(resolution.x / 2 + startMenuAnims[0].get(), 30), Vector2.TOP);
             if (startIn == 0)
             {
                 SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Join", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
-                SpriteBatch.drawText(menuFont, "^666Press ^999Start^666 to Herd!", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
-                SpriteBatch.drawText(menuFont, "^666Press ^027X^666 for Settings", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 - 12), Vector2.TOP);
+                    new Vector2(resolution.x / 2 + startMenuAnims[5].get(), resolution.y / 2 - 30), Vector2.TOP);
                 SpriteBatch.drawText(menuFont, "^666Press ^800B^666 to Quit", 
-                    new Vector2(resolution.x / 2, resolution.y / 2 + 32), Vector2.TOP);
+                    new Vector2(resolution.x / 2 + startMenuAnims[6].get(), resolution.y / 2 + 10), Vector2.TOP);
+                SpriteBatch.drawText(menuFont, "^666Press ^999Start^666 to Herd!", 
+                    new Vector2(resolution.x / 2 + startMenuAnims[7].get(), resolution.y / 2 + 50), Vector2.TOP);
+            /*    SpriteBatch.drawText(menuFont, "^666Press ^027X^666 for Settings", 
+                    new Vector2(resolution.x / 2, resolution.y / 2 - 12), Vector2.TOP);*/
             }
             else
             {
                 SpriteBatch.drawText(menuFont, "^666Starting in ^090" + Math.round(startIn) + "^666", 
                     new Vector2(resolution.x / 2, resolution.y / 2 - 8), Vector2.BOTTOM);
             }
-            drawMenuDog(resolution.div(4), 0);
-            drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4), 1);
-            drawMenuDog(new Vector2(resolution.x / 4, resolution.y / 4 * 3), 2);
-            drawMenuDog(new Vector2(resolution.x / 4 * 3, resolution.y / 4 * 3), 3);
+            drawMenuDog(new Vector2(resolution.x / 4 + startMenuAnims[1].get(), resolution.y / 4 + 70), 0);
+            drawMenuDog(new Vector2(resolution.x / 4 * 3 + startMenuAnims[2].get(), resolution.y / 4 + 70), 1);
+            drawMenuDog(new Vector2(resolution.x / 4 + startMenuAnims[3].get(), resolution.y / 4 * 3 + 25), 2);
+            drawMenuDog(new Vector2(resolution.x / 4 * 3 + startMenuAnims[4].get(), resolution.y / 4 * 3 + 25), 3);
 
             for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
             {
@@ -354,10 +400,14 @@ function render()
 
             SpriteBatch.end();
 
-            SpriteBatch.begin(); 
-            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
-            new Vector2(0, 10), Vector2.TOP_LEFT);
-            SpriteBatch.end();
+        //    SpriteBatch.begin(); 
+       /*     SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
+            new Vector2(0, 10), Vector2.TOP_LEFT);*/
+       /*     for (var i = 0; i < sheeps.length; ++i)
+            {
+                SpriteBatch.drawSprite(sheepIconTexture, new Vector2(i * 36 + 18, 18));
+            }
+            SpriteBatch.end();*/
             break; 
         }
         case "settings":
@@ -433,7 +483,7 @@ function render()
             SpriteBatch.setFilter(FilterMode.NEAREST);
             SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
-             SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
+            SpriteBatch.drawText(menuFont, "^900GAME OVER!", 
                 new Vector2(resolution.x / 2, resolution.y / 2 - 72), Vector2.BOTTOM);
             SpriteBatch.drawText(menuFont, "^666Press ^090A^666 to Replay!", 
                 new Vector2(resolution.x / 2, resolution.y / 2 - 56), Vector2.TOP);
