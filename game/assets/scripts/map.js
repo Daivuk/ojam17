@@ -17,12 +17,14 @@ var MAP_CENTER;
 var GROW_SPEED = 10;
 var GRASS_MAX = 3;
 
-var grassLevel = [];
+var grassLevel;
 
 function map_init()
 {
     // Load map
-    tiledMap = getTiledMap("map.tmx");
+    tiledMap = getFreshTiledMap("map.tmx");
+
+    grassLevel = [];
 
     // Set constants
     TILE_SIZE = tiledMap.getTileSize();
