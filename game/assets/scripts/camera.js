@@ -12,6 +12,8 @@ var MIN_ZOOM = 1.5;
 var CAMERA_TRACK_SPEED = 2;
 var BORDER_SIZE = 2;
 
+var DEFAULT_RATIO = Math.sqrt(1024 * 1024 + 720 * 720);
+
 function camera_init()
 {
     cameraPos = new Vector2(MAP_CENTER);
@@ -24,6 +26,9 @@ function camera_init()
 
 function camera_update(dt)
 {
+    var camRatio = Math.sqrt(resolution.x * resolution.x + resolution.y * resolution.y);
+    var zoomRatio = camRatio / DEFAULT_RATIO;
+
     // Focus the camera in a way that everything fits in the screen + ~2 tiles around
     if (focussables.length)
     {
@@ -46,8 +51,8 @@ function camera_update(dt)
     var zoomH = resolution.x / (max.x - min.x);
     var zoomV = resolution.y / (max.y - min.y);
     targetCameraZoom = Math.min(zoomH, zoomV);
-    targetCameraZoom = Math.min(MAX_ZOOM, targetCameraZoom);
-    targetCameraZoom = Math.max(MIN_ZOOM, targetCameraZoom);
+    targetCameraZoom = Math.min(MAX_ZOOM * zoomRatio, targetCameraZoom);
+    targetCameraZoom = Math.max(MIN_ZOOM * zoomRatio, targetCameraZoom);
 
     // Animate the camera toward target
     cameraPos = targetCameraPos.sub(cameraPos).mul(.3 + dt * CAMERA_TRACK_SPEED).add(cameraPos);
