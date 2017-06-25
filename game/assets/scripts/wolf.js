@@ -6,7 +6,6 @@ var WOLF_STATE_ATTACKING = 1;
 var WOLF_STATE_HUNTING = 2;
 
 var WOLF_WAIT_TIME = 3000;
-var WOLF_SPAWN = 0; 
 var KILL_DISTANCE;
 
 var WOLF_WIMP_COOLDOWN_RESET = 2;
@@ -57,7 +56,7 @@ function wolf_render(wolf)
 
 function wolf_spawn() 
 {
-    var wolfTryPos = Random.randCircle(MAP_CENTER, TILE_SIZE * MAP_SIZE)
+    var wolfTryPos = Random.randCircleEdge(MAP_CENTER, TILE_SIZE * MAP_SIZE)
     var wolf = wolf_create(wolfTryPos)
     wolfs.push(wolf);
     pushers.push(wolf);

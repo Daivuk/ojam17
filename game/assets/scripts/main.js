@@ -94,7 +94,7 @@ function update(dt)
                 menuBarkTimeouts[i] -= dt;
                 if (GamePad.isDown(i, Button.START) && startIn == 0)
                 {
-                    startIn = 1;
+                    startIn = 3;
                 }
             }
             break;
@@ -201,6 +201,11 @@ function render()
             }
 
             SpriteBatch.end();
+
+            SpriteBatch.begin(); 
+            SpriteBatch.drawText(menuFont, "^666 Sheep Remaining " + sheeps.length, 
+            new Vector2(0, 10), Vector2.TOP_LEFT);
+            SpriteBatch.end(); 
         }
     }
 }
