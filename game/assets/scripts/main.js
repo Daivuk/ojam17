@@ -64,8 +64,8 @@ function startGame()
     
     map_init();
     camera_init();
-    sheep_init();
     dog_init();
+    sheep_init();
     wolf_init();
     pusher_init();
     cloud_init();
