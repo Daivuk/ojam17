@@ -1,3 +1,106 @@
+function toHHMMSS(secondTotal) {
+    var sec_num = parseInt(secondTotal, 10);
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    //return hours+':'+minutes+':'+seconds;
+    return +minutes + ' minutes ' + seconds + " seconds!";
+}
+
+function startGame()
+{
+    Random.randomizeSeed();
+    gameState = "game";
+
+    totalGameTime = 0;
+    gameToGameOverTimeout = 3;
+
+    renderables = [];
+    focussables = []; 
+    pushers = [];
+    
+    map_init();
+    dog_init();
+    camera_init();
+    sheep_init();
+    wolf_init();
+    pusher_init();
+    cloud_init();
+    butterfly_init();
+    splat_init();
+    plane_init();
+
+    menuMusic.stop();
+    ambSound.play();
+}
+
+function goGameOver()
+{
+    gameState = "gameOver";
+    gameOverExitAvailabilityTimer = 3;
+
+    sheeps = [];
+    dogs = [];
+    wolfs = [];
+    splats = [];
+    butterflies = [];
+    plane = {};
+    clouds = [];
+    for (var i = 0; i < particles.length; ++i)
+    {
+        var particle = particles[i];
+        particle.stop();
+    }
+    particles = [];
+    pushers = [];
+    renderables = [];
+    focussables = [];
+    ambSound.stop();
+}
+
+function goStartMenu()
+{
+    resolution = Renderer.getResolution();
+
+    gameState = "startMenu";
+
+    APrevStates = [false, false, false, false];
+
+    for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
+    {
+        menuSheeps[i] = {
+            spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
+            xPos: -i * 100
+        };
+
+        menuMusic.play();
+    }
+
+    startMenuAnims = [
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim(),
+        new NumberAnim()
+    ];
+
+    for (var i = 0; i < startMenuAnims.length; ++i)
+    {
+        var anim = startMenuAnims[i];
+        anim.set(-resolution.x);
+        anim.queue(-resolution.x, i * .15, Tween.NONE);
+        anim.queue(0, .5, Tween.EASE_OUT);
+        anim.play();
+    }
+}
+
 function startMenu_update(dt)
 {
     for (var i = 0; i < MENU_SHEEP_COUNT; ++i)

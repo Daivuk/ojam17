@@ -1,3 +1,32 @@
+function drawMenuDog(position, index)
+{
+    var spriteAnim = menuDogs[index];
+    var scale = 6;
+    var multiplier = .35;
+
+    if (activeDogs[index]) multiplier = 1;
+
+    if (menuBarkTimeouts[index] > .1)
+    {
+        SpriteBatch.drawSpriteWithUVs(dogBarkTexture, position, spriteAnim.getUVs(), new Color(1, 1, 1, 1).mul(multiplier), 0, scale, spriteAnim.getOrigin());
+    }
+    else
+    {
+        SpriteBatch.drawSpriteAnim(spriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
+    }
+    SpriteBatch.drawSpriteWithUVs(dogOverlayTexture, position, spriteAnim.getUVs(), DOG_COLORS[index].mul(multiplier), 0, scale, spriteAnim.getOrigin());
+}
+
+function drawGameOverWolf(position, index)
+{
+    var wolfSpriteAnim = gameOverWolfs[index];
+    var scale = 6;
+    var multiplier = 1; 
+
+    SpriteBatch.drawSpriteAnim(wolfSpriteAnim, position, new Color(1, 1, 1, 1).mul(multiplier), 0, scale);
+
+}
+
 function startMenu_render() 
 {
     SpriteBatch.begin();
