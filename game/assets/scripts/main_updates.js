@@ -104,18 +104,18 @@ function goStartMenu()
 function startMenu_update(dt)
 {
     for (var i = 0; i < MENU_SHEEP_COUNT; ++i)
-        {
+    {
         var menuSheep = menuSheeps[i];
         menuSheep.xPos += dt * 100;
         if (menuSheep.xPos > resolution.x + 100)
         {
             menuSheep.xPos -= resolution.x + 200;
         }
-        }
+    }
     for (var i = 0; i < 4; ++i)
     {
         var downState = GamePad.isDown(i, Button.A);
-        if (downState && !APrevStates[i])
+        if (downState && !APrevStates[i] || (Input.isJustDown(Key.SPACE_BAR) && i == 0))
         {
             activeDogs[i] = true;
             if (menuBarkTimeouts[i] <= 0)
@@ -129,12 +129,12 @@ function startMenu_update(dt)
 
         APrevStates[i] = downState;
         menuBarkTimeouts[i] -= dt;
-        if (GamePad.isDown(i, Button.START) && startIn == 0)
+        if ((GamePad.isDown(i, Button.START) || (Input.isJustDown(Key.ENTER) && i == 0)) && startIn == 0)
         {
             startIn = START_IN;
         }
 
-        if (GamePad.isDown(i, Button.B) && startIn == 0 && activeDogs[i] == true) 
+        if ((GamePad.isDown(i, Button.B) || (Input.isJustDown(Key.ESCAPE) && i == 0)) && startIn == 0 && activeDogs[i] == true) 
         {
             activeDogs[i] = false;
             buttonPressed = true;
@@ -278,7 +278,7 @@ function gameOver_update(dt)
             {
                 for (var i = 0; i < 4; i++)
                 {
-                    if (GamePad.isDown(i, Button.A)) goStartMenu();
+                    if (GamePad.isDown(i, Button.A) || Input.isJustDown(Key.SPACE_BAR)) goStartMenu();
                 }
             }
 }
