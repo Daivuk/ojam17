@@ -16,6 +16,11 @@ var DEFAULT_RATIO = Math.sqrt(1024 * 1024 + 720 * 720);
 
 function camera_init()
 {
+    if (dogs.length < 3)
+    {
+        MAX_ZOOM = 1.5;
+        MIN_ZOOM = 1.0;
+    }
     cameraPos = new Vector2(MAP_CENTER);
     cameraZoom = 2;
     cameraMatrix = new Matrix();

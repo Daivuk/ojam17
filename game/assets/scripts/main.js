@@ -64,8 +64,8 @@ function startGame()
     pushers = [];
     
     map_init();
-    camera_init();
     dog_init();
+    camera_init();
     sheep_init();
     wolf_init();
     pusher_init();
