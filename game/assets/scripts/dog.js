@@ -90,6 +90,10 @@ function dog_update(dog, dt) {
     {
         barkingButtonState |= Input.isJustDown(Key.SPACE_BAR);
     }
+    if (dog.index == 1)
+    {
+        barkingButtonState |= Input.isJustDown(Key.RIGHT_SHIFT);
+    }
 
     dog.barkSoundCoolDown -= dt;
 
@@ -126,10 +130,17 @@ function dog_update(dog, dt) {
     if (GamePad.isDown(dog.index, Button.DPAD_DOWN)) dir.y += 1;
     if (dog.index == 0)
     {
-        if (Input.isDown(Key.RIGHT) || Input.isDown(Key.D)) dir.x += 1;
-        if (Input.isDown(Key.LEFT) || Input.isDown(Key.A)) dir.x -= 1;
-        if (Input.isDown(Key.UP) || Input.isDown(Key.W)) dir.y -= 1;
-        if (Input.isDown(Key.DOWN) || Input.isDown(Key.S)) dir.y += 1;
+        if (Input.isDown(Key.D)) dir.x += 1;
+        if (Input.isDown(Key.A)) dir.x -= 1;
+        if (Input.isDown(Key.W)) dir.y -= 1;
+        if (Input.isDown(Key.S)) dir.y += 1;
+    }
+    if (dog.index == 1)
+    {
+        if (Input.isDown(Key.RIGHT)) dir.x += 1;
+        if (Input.isDown(Key.LEFT)) dir.x -= 1;
+        if (Input.isDown(Key.UP)) dir.y -= 1;
+        if (Input.isDown(Key.DOWN)) dir.y += 1;
     }
 
     if (dir.lengthSquared() == 0) {

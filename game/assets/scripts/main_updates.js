@@ -115,7 +115,9 @@ function startMenu_update(dt)
     for (var i = 0; i < 4; ++i)
     {
         var downState = GamePad.isDown(i, Button.A);
-        if (downState && !APrevStates[i] || (Input.isJustDown(Key.SPACE_BAR) && i == 0))
+        if (downState && !APrevStates[i] || 
+            (Input.isJustDown(Key.SPACE_BAR) && i == 0) ||
+            (Input.isJustDown(Key.RIGHT_SHIFT) && i == 1))
         {
             activeDogs[i] = true;
             if (menuBarkTimeouts[i] <= 0)
@@ -134,7 +136,10 @@ function startMenu_update(dt)
             startIn = START_IN;
         }
 
-        if ((GamePad.isDown(i, Button.B) || (Input.isJustDown(Key.ESCAPE) && i == 0)) && startIn == 0 && activeDogs[i] == true) 
+        if ((GamePad.isDown(i, Button.B) || 
+            (Input.isJustDown(Key.ESCAPE) && i == 0) ||
+            (Input.isJustDown(Key.BACKSPACE) && i == 1))
+            && startIn == 0 && activeDogs[i] == true) 
         {
             activeDogs[i] = false;
             buttonPressed = true;
