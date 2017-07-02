@@ -76,9 +76,9 @@ function goStartMenu()
             spriteAnim: playSpriteAnim("sheep.spriteanim", i % 2 ? "run_e" : "scared_e", i),
             xPos: -i * 100
         };
-
-        menuMusic.play();
     }
+
+    menuMusic.play();
 
     startMenuAnims = [
         new NumberAnim(),

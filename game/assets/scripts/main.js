@@ -2,7 +2,7 @@ var START_IN = 3;
 
 var resolution;
 var renderables = [];
-var gameState = "startMenu";
+var gameState = "mainMenu";
 var difficultySettings = "normal";
 var menuFont = getFont("main.fntempty.fnt");
 var menuFontBig = getFont("mainBig.fntempty.fnt");
@@ -43,7 +43,7 @@ var MENU_SHEEP_COUNT = 8;
 
 var startMenuAnims = [];
 
-goStartMenu();
+goMainMenu();
 //goGameOver();
 
 function update(dt)
@@ -69,6 +69,11 @@ function update(dt)
             } 
             break;
         
+        case "mainMenu":
+        {
+            mainMenu_update(dt);
+            break;
+        }
         case "game":
         {
             game_update(dt);
@@ -105,6 +110,11 @@ function render()
         case "startMenu":
         {
             startMenu_render();
+            break;
+        }
+        case "mainMenu":
+        {
+            mainMenu_render();
             break;
         }
         case "game":
