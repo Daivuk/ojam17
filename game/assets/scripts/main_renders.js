@@ -72,13 +72,13 @@ function game_render()
             SpriteBatch.setFilter(FilterMode.NEAREST);
 
             // Draw ground and grass first
-            SpriteBatch.setBlend(BlendMode.OPAQUE);
+            Renderer.setBlendMode(BlendMode.OPAQUE);
             tiledMap.renderLayer(GROUND_LAYER);
-            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
+            Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
             tiledMap.renderLayer(1);
             splat_render();
+            Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
             tiledMap.renderLayer(2);
-            SpriteBatch.setBlend(BlendMode.PREMULTIPLIED);
 
             // Draw entities
             renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
