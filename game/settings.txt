@@ -5,3 +5,4 @@ fullscreen = false
 fixedStep = false
 updateFPS = 60
 onScreenLog = true
+showFPS = false
